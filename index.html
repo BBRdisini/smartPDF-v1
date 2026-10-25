@@ -464,27 +464,31 @@
                             <span>Muat Sampel Uji Nyata (Dibuat Secara Lokal):</span>
                         </span>
                         <div class="flex flex-wrap gap-1.5">
-                            <button onclick="loadGeneratedSample('pdf_text')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Berbasis Teks">
+                            <button type="button" onclick="loadGeneratedSample('pdf_text')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Berbasis Teks">
                                 <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-600"></i>
                                 <span>+ PDF Teks</span>
                             </button>
-                            <button onclick="loadGeneratedSample('pdf_scan')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Hasil Scan">
+                            <button type="button" onclick="loadGeneratedSample('pdf_scan')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Hasil Scan">
                                 <i data-lucide="scan-line" class="w-3.5 h-3.5 text-amber-600"></i>
                                 <span>+ PDF Scan</span>
                             </button>
-                            <button onclick="loadGeneratedSample('jpeg_photo')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel Foto JPEG">
+                            <button type="button" onclick="loadGeneratedSample('jpeg_photo')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel Foto JPEG">
                                 <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
                                 <span>+ Foto JPEG</span>
                             </button>
-                            <button onclick="loadGeneratedSample('png_transparent')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PNG Transparan">
+                            <button type="button" onclick="loadGeneratedSample('png_transparent')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PNG Transparan">
                                 <i data-lucide="grid" class="w-3.5 h-3.5 text-purple-600"></i>
                                 <span>+ PNG Alpha</span>
                             </button>
-                            <button onclick="loadGeneratedSample('docx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-blue-200 bg-blue-50/50 hover:bg-blue-100 text-xs font-semibold text-blue-800 flex items-center gap-1.5 transition" title="Muat Sampel Dokumen Word (.docx)">
+                            <button type="button" onclick="loadGeneratedSample('small_text_img')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-amber-200 bg-amber-50/50 hover:bg-amber-100 text-xs font-semibold text-amber-800 flex items-center gap-1.5 transition" title="Muat Sampel Gambar Tabel Bertulisan Kecil">
+                                <i data-lucide="Type" class="w-3.5 h-3.5 text-amber-600"></i>
+                                <span>+ Tulisan Kecil</span>
+                            </button>
+                            <button type="button" onclick="loadGeneratedSample('docx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-blue-200 bg-blue-50/50 hover:bg-blue-100 text-xs font-semibold text-blue-800 flex items-center gap-1.5 transition" title="Muat Sampel Dokumen Word (.docx)">
                                 <i data-lucide="file-type-2" class="w-3.5 h-3.5 text-blue-600"></i>
                                 <span>+ Word (.docx)</span>
                             </button>
-                            <button onclick="loadGeneratedSample('xlsx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100 text-xs font-semibold text-emerald-800 flex items-center gap-1.5 transition" title="Muat Sampel Spreadsheet Excel (.xlsx)">
+                            <button type="button" onclick="loadGeneratedSample('xlsx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100 text-xs font-semibold text-emerald-800 flex items-center gap-1.5 transition" title="Muat Sampel Spreadsheet Excel (.xlsx)">
                                 <i data-lucide="sheet" class="w-3.5 h-3.5 text-emerald-600"></i>
                                 <span>+ Excel (.xlsx)</span>
                             </button>
@@ -877,10 +881,10 @@
                                 <h3 class="text-xs font-bold text-slate-900 mt-1">Word ke PDF</h3>
                             </div>
                             <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="scrollToOfficeToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 flex items-center justify-center" title="Buka Panel Word ke PDF">
-                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                <button type="button" onclick="triggerTileOfficeAction('docx', true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 flex items-center justify-center" title="Pratinjau / Muat Sampel Word ke PDF">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="document.getElementById('officeToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Word (.docx) & Ubah ke PDF">
+                                <button type="button" onclick="triggerTileOfficeAction('docx', false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Word (.docx) & Ubah ke PDF">
                                     <i data-lucide="upload" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -896,10 +900,10 @@
                                 <h3 class="text-xs font-bold text-slate-900 mt-1">Excel ke PDF</h3>
                             </div>
                             <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="scrollToOfficeToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-teal-200 bg-teal-50 text-teal-700 flex items-center justify-center" title="Buka Panel Excel ke PDF">
-                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                <button type="button" onclick="triggerTileOfficeAction('xlsx', true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-teal-200 bg-teal-50 text-teal-700 flex items-center justify-center" title="Pratinjau / Muat Sampel Excel ke PDF">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="document.getElementById('officeToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Excel (.xlsx) & Ubah ke PDF">
+                                <button type="button" onclick="triggerTileOfficeAction('xlsx', false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Excel (.xlsx) & Ubah ke PDF">
                                     <i data-lucide="upload" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -915,10 +919,10 @@
                                 <h3 class="text-xs font-bold text-slate-900 mt-1">Gambar ke PDF</h3>
                             </div>
                             <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="scrollToJpgToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 flex items-center justify-center" title="Pengaturan JPG ke PDF">
-                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                <button type="button" onclick="triggerTileJpgToPdfAction(true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 flex items-center justify-center" title="Pratinjau / Pengaturan JPG ke PDF">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih Gambar JPG/PNG & Buat PDF">
+                                <button type="button" onclick="triggerTileJpgToPdfAction(false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih Gambar JPG/PNG & Buat PDF">
                                     <i data-lucide="image-plus" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -1222,16 +1226,16 @@
                     <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
                         <div class="flex items-center gap-1.5">
                             <span class="font-bold text-slate-700 mr-1">Mode Tampilan:</span>
-                            <button id="btnPrevModeSide" onclick="setPreviewMode('SIDE_BY_SIDE')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Berdampingan</button>
-                            <button id="btnPrevModeOrig" onclick="setPreviewMode('ORIGINAL')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Asli Saja</button>
-                            <button id="btnPrevModeRes" onclick="setPreviewMode('RESULT')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Hasil Saja</button>
+                            <button type="button" id="btnPrevModeSide" onclick="setPreviewMode('SIDE_BY_SIDE')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Berdampingan</button>
+                            <button type="button" id="btnPrevModeOrig" onclick="setPreviewMode('ORIGINAL')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Asli Saja</button>
+                            <button type="button" id="btnPrevModeRes" onclick="setPreviewMode('RESULT')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Hasil Saja</button>
                         </div>
 
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-slate-700">Zoom:</span>
-                            <button onclick="setPreviewZoom(0.75)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">75%</button>
-                            <button onclick="setPreviewZoom(1.0)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">100%</button>
-                            <button onclick="setPreviewZoom(1.5)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">150%</button>
+                            <button type="button" id="btnZoom75" onclick="setPreviewZoom(0.75)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold transition">75%</button>
+                            <button type="button" id="btnZoom100" onclick="setPreviewZoom(1.0)" class="px-2.5 py-1 rounded border border-blue-600 bg-blue-600 text-white font-bold transition">100%</button>
+                            <button type="button" id="btnZoom150" onclick="setPreviewZoom(1.5)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold transition">150%</button>
                         </div>
                     </div>
 
@@ -1602,6 +1606,7 @@
             officeToPdfFile: null,
             lastGeneratedOfficePdf: null,
             lastConvertedBlob: null,
+            pendingConvertRequest: null,
             options: {
                 imageFormat: 'ORIGINAL',
                 maxDimension: 'PRESET',
@@ -3074,6 +3079,40 @@
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        async function triggerTileOfficeAction(type, isPreviewButton) {
+            scrollToOfficeToPdfSection();
+            if (isPreviewButton) {
+                if (AppState.officeToPdfFile) {
+                    await executeOfficeToPdfConversion(true);
+                } else {
+                    await loadSampleForOfficeToPdf(type);
+                }
+            } else {
+                document.getElementById('officeToPdfInput').click();
+            }
+        }
+
+        async function triggerTileJpgToPdfAction(isPreviewButton) {
+            scrollToJpgToPdfSection();
+            if (isPreviewButton) {
+                if (AppState.jpgToPdfQueue.length > 0) {
+                    await executeJpgToPdfConversion(true);
+                } else {
+                    const imgJobs = AppState.filesQueue.filter(j => j.category === 'IMAGE');
+                    if (imgJobs.length > 0) {
+                        await addImagesToJpgToPdfQueue(imgJobs.map(j => j.file));
+                        await executeJpgToPdfConversion(true);
+                    } else {
+                        const sampleJpg = await createSampleFile('jpeg_photo');
+                        await addImagesToJpgToPdfQueue([sampleJpg]);
+                        await executeJpgToPdfConversion(true);
+                    }
+                }
+            } else {
+                document.getElementById('jpgToPdfInput').click();
+            }
+        }
+
         async function handleOfficeToPdfSelect(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
@@ -3387,13 +3426,22 @@
             updateConvertFileInfoUI(job.file);
         }
 
-        function handleConvertPdfUpload(event) {
+        async function handleConvertPdfUpload(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
             AppState.convertSourceFile = file;
             updateConvertFileInfoUI(file);
-            addFilesToQueue([file]);
+            await addFilesToQueue([file]);
+            populateConvertQueueSelector();
             event.target.value = '';
+
+            if (AppState.pendingConvertRequest) {
+                const { targetFormat, previewOnly } = AppState.pendingConvertRequest;
+                AppState.pendingConvertRequest = null;
+                await runPdfConversion(targetFormat, previewOnly);
+            } else {
+                showToast('PDF Siap Dikonversi', `"${file.name}" berhasil dimuat. Pilih format Word, Excel, atau JPG di bawah.`, 'success');
+            }
         }
 
         function updateConvertFileInfoUI(file) {
@@ -3597,7 +3645,9 @@
             if (!AppState.convertSourceFile) {
                 syncConvertFromQueueIfEmpty();
                 if (!AppState.convertSourceFile) {
-                    showToast('Pilih File PDF Terlebih Dahulu', 'Unggah file PDF atau pilih PDF dari daftar antrean untuk dikonversi.', 'warning');
+                    AppState.pendingConvertRequest = { targetFormat, previewOnly };
+                    showToast('Pilih File PDF', `Silakan pilih file PDF yang ingin dikonversi ke ${targetFormat}.`, 'info');
+                    document.getElementById('convertPdfInput').click();
                     return;
                 }
             }
@@ -4182,6 +4232,14 @@
 
         function setPreviewZoom(zoomFactor) {
             AppState.previewZoom = zoomFactor;
+            const z75 = document.getElementById('btnZoom75');
+            const z100 = document.getElementById('btnZoom100');
+            const z150 = document.getElementById('btnZoom150');
+            const activeClass = 'px-2.5 py-1 rounded border border-blue-600 bg-blue-600 text-white font-bold transition';
+            const idleClass = 'px-2.5 py-1 rounded border border-slate-300 bg-white font-bold transition';
+            if (z75) z75.className = zoomFactor === 0.75 ? activeClass : idleClass;
+            if (z100) z100.className = zoomFactor === 1.0 ? activeClass : idleClass;
+            if (z150) z150.className = zoomFactor === 1.5 ? activeClass : idleClass;
             renderActivePreview();
         }
 
@@ -4199,8 +4257,21 @@
             const pdfNav = document.getElementById('previewPdfPageControls');
 
             if (!job) {
-                cOrig.width = cRes.width = 320;
-                cOrig.height = cRes.height = 160;
+                if (pdfNav) pdfNav.classList.add('hidden');
+                [cOrig, cRes].forEach((c, idx) => {
+                    if (!c) return;
+                    c.width = 420;
+                    c.height = 200;
+                    const ctx = c.getContext('2d');
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.fillRect(0, 0, c.width, c.height);
+                    ctx.fillStyle = '#64748b';
+                    ctx.font = 'bold 13px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(idx === 0 ? 'Belum ada File Asli dipilih' : 'Belum ada Hasil Kompresi', c.width / 2, c.height / 2 - 8);
+                    ctx.font = '11px sans-serif';
+                    ctx.fillText('Unggah file atau muat sampel di tab Workspace', c.width / 2, c.height / 2 + 14);
+                });
                 return;
             }
 
@@ -4781,6 +4852,18 @@
         // INITIALIZATION ON LOAD
         // =========================================================
         window.addEventListener('DOMContentLoaded', () => {
+            try {
+                const savedTheme = localStorage.getItem('synergy_theme');
+                if (savedTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    AppState.theme = 'dark';
+                    const iconEl = document.getElementById('themeToggleIcon');
+                    const textEl = document.getElementById('themeToggleText');
+                    if (iconEl) iconEl.setAttribute('data-lucide', 'sun');
+                    if (textEl) textEl.textContent = 'Mode Terang';
+                }
+            } catch (e) {}
+
             renderPresetSelector();
             renderQueueList();
             updateCountersAndBadges();
@@ -4800,6 +4883,27 @@
                     dz.classList.remove('border-blue-600', 'bg-blue-50/60');
                     const files = Array.from(e.dataTransfer.files || []);
                     if (files.length > 0) await addFilesToQueue(files);
+                });
+            }
+
+            const dzOffice = document.getElementById('officeToPdfSectionCard');
+            if (dzOffice) {
+                dzOffice.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dzOffice.classList.add('ring-2', 'ring-indigo-500');
+                });
+                dzOffice.addEventListener('dragleave', () => {
+                    dzOffice.classList.remove('ring-2', 'ring-indigo-500');
+                });
+                dzOffice.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    dzOffice.classList.remove('ring-2', 'ring-indigo-500');
+                    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                    if (file) {
+                        AppState.officeToPdfFile = file;
+                        updateOfficeToPdfInfoUI(file);
+                        await executeOfficeToPdfConversion(true);
+                    }
                 });
             }
 
