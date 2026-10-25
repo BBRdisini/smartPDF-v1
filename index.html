@@ -637,30 +637,26 @@
                                 </div>
                                 <div class="flex items-center justify-between gap-2">
                                     <span id="progressSubDetail" class="text-[11px] text-blue-700 truncate">Menyiapkan buffer...</span>
-                                    <button onclick="cancelActiveProcessing()" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1 shrink-0">
+                                    <button onclick="cancelActiveProcessing()" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1 shrink-0" title="Batalkan Proses">
                                         <i data-lucide="square" class="w-3 h-3"></i>
-                                        <span>Batalkan</span>
+                                        <span>Batal</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Execution Buttons -->
-                        <div class="pt-3.5 border-t border-slate-100 space-y-2.5">
-                            <button id="btnStartCompress" onclick="requestStartCompression()" class="w-full touch-target py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition">
+                        <!-- Execution Buttons (Compact Icon-First Bar) -->
+                        <div class="pt-3.5 border-t border-slate-100 flex items-center gap-2">
+                            <button id="btnStartCompress" onclick="requestStartCompression()" class="flex-1 touch-target py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition" title="Kompres Semua File dalam Antrean">
                                 <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
-                                <span id="btnStartCompressLabel">Kompres Semua File dalam Antrean</span>
+                                <span id="btnStartCompressLabel">Kompres Antrean</span>
                             </button>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button onclick="reprocessAllWithCurrentPreset()" class="touch-target py-2 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
-                                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 shrink-0"></i>
-                                    <span>Proses Ulang</span>
-                                </button>
-                                <button onclick="clearQueue()" class="touch-target py-2 px-3 rounded-xl border border-slate-300 hover:bg-red-50 hover:text-red-700 hover:border-red-200 text-slate-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5 shrink-0"></i>
-                                    <span>Bersihkan Antrean</span>
-                                </button>
-                            </div>
+                            <button onclick="reprocessAllWithCurrentPreset()" class="touch-target w-11 h-11 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 transition" title="Proses Ulang Semua File">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="clearQueue()" class="touch-target w-11 h-11 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 flex items-center justify-center shrink-0 transition" title="Bersihkan Seluruh Antrean">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -670,12 +666,12 @@
                     <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-4 h-4 text-blue-600 shrink-0"></i>
-                            <h3 class="text-sm sm:text-base font-bold text-slate-900">Daftar File & Status Pemrosesan (<span id="queueHeaderCount">0</span> File)</h3>
+                            <h3 class="text-sm sm:text-base font-bold text-slate-900">Antrean & Hasil (<span id="queueHeaderCount">0</span>)</h3>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button id="btnDownloadAllZipWorkspace" onclick="downloadAllCompletedAsZip()" class="hidden touch-target px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                            <button id="btnDownloadAllZipWorkspace" onclick="downloadAllCompletedAsZip()" class="hidden touch-target px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unduh Semua Hasil (.ZIP)">
                                 <i data-lucide="archive" class="w-4 h-4 shrink-0"></i>
-                                <span>Unduh Semua (.ZIP)</span>
+                                <span>ZIP</span>
                             </button>
                         </div>
                     </div>
@@ -692,340 +688,290 @@
             <!-- ========================================================= -->
             <section id="tab-convert" class="tab-panel hidden space-y-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="file-symlink" class="w-5 h-5 text-blue-600"></i>
-                                <h2 class="text-base sm:text-lg font-bold text-slate-900">Konversi PDF ke Word, Excel, Gambar (JPG) & JPG ke PDF</h2>
+                    <!-- Clean Icon Header -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="file-symlink" class="w-5 h-5"></i>
                             </div>
-                            <p class="text-xs text-slate-500 mt-0.5">Ekstraksi tata letak baris, kolom tabel, halaman beresolusi tinggi, serta penggabungan gambar JPG ke PDF • 100% Lokal oleh BBR@SYNERGY smart system.</p>
+                            <div>
+                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Konversi PDF ⇄ Word / Excel / JPG</h2>
+                                <p class="text-[11px] text-slate-500">Pilih format ikon di bawah untuk konversi & pratinjau hasil instan • 100% Lokal</p>
+                            </div>
                         </div>
-                        <div class="flex flex-wrap items-center gap-2">
+                        <div class="flex items-center gap-2">
                             <input type="file" id="convertPdfInput" accept=".pdf,application/pdf" class="hidden" onchange="handleConvertPdfUpload(event)">
-                            <button onclick="document.getElementById('convertPdfInput').click()" class="touch-target px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
-                                <i data-lucide="upload" class="w-4 h-4"></i>
-                                <span>Pilih File PDF untuk Dikonversi</span>
+                            <button onclick="document.getElementById('convertPdfInput').click()" class="touch-target px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unggah File PDF untuk Dikonversi">
+                                <i data-lucide="file-up" class="w-4 h-4"></i>
+                                <span>+ PDF</span>
                             </button>
-                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
-                                <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-                                <span>Converter JPG ke PDF</span>
+                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Menuju Converter Gambar (JPG/PNG) ke PDF">
+                                <i data-lucide="images" class="w-4 h-4"></i>
+                                <span>JPG &rarr; PDF</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Source PDF Selector & Info -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                        <div class="md:col-span-6">
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Pilih dari PDF di Antrean atau Unggah Baru:</label>
-                            <select id="convertPdfQueueSelector" onchange="selectConvertPdfFromQueue(this.value)" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="">-- Pilih File PDF --</option>
+                    <!-- Compact Source PDF Selector Bar -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div class="md:col-span-6 flex items-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4 text-blue-600 shrink-0"></i>
+                            <select id="convertPdfQueueSelector" onchange="selectConvertPdfFromQueue(this.value)" class="w-full h-9 px-3 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="">-- Pilih File PDF dari Antrean --</option>
                             </select>
                         </div>
-                        <div id="convertActiveFileInfo" class="md:col-span-6 text-xs text-slate-600 space-y-1">
-                            <p class="font-semibold text-slate-800">Belum ada file PDF yang dipilih.</p>
-                            <p>Unggah PDF atau pilih dari daftar antrean untuk mengonversi ke Word (`.docx`), Excel (`.xlsx`), atau Gambar (`.jpg`).</p>
+                        <div id="convertActiveFileInfo" class="md:col-span-6 text-xs text-slate-600 flex items-center justify-between gap-2">
+                            <span class="truncate">Belum ada PDF dipilih. Klik <strong>+ PDF</strong> di kanan atas.</span>
                         </div>
                     </div>
 
-                    <!-- 4 Conversion Format Cards (3 PDF-to-X + 1 JPG-to-PDF) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- PDF to Word (.docx) -->
-                        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-blue-400 transition flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-extrabold text-sm">DOCX</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Microsoft Word</span>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-900">PDF ke Word (.docx)</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Mempertahankan struktur paragraf, ukuran huruf, baris tabel (`&lt;w:tbl&gt;`), serta menyertakan gambar halaman secara utuh jika PDF merupakan hasil scan.
-                                </p>
+                    <!-- 4 Simpler Icon-Centric Conversion Tiles -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <!-- Tile 1: PDF to Word (.docx) -->
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-blue-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shadow-2xs" title="Konversi PDF ke Microsoft Word (.docx)">
+                                <i data-lucide="file-text" class="w-6 h-6"></i>
                             </div>
-                            <button onclick="runPdfConversion('DOCX')" class="w-full touch-target py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="file-text" class="w-4 h-4"></i>
-                                <span>Konversi & Unduh Word (.docx)</span>
-                            </button>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800">DOCX</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; Word</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('DOCX', true)" class="touch-target flex-1 h-9 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Hasil Word (.docx)">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="runPdfConversion('DOCX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Word (.docx)">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Word</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- PDF to Excel (.xlsx) -->
-                        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-emerald-400 transition flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-extrabold text-sm">XLSX</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Microsoft Excel</span>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-900">PDF ke Excel (.xlsx)</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Mendeteksi koordinat baris dan kolom secara presisi pada setiap halaman PDF dan menyusunnya menjadi lembar kerja (*Worksheet*) OpenXML `.xlsx` asli.
-                                </p>
+                        <!-- Tile 2: PDF to Excel (.xlsx) -->
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shadow-2xs" title="Konversi PDF ke Microsoft Excel (.xlsx)">
+                                <i data-lucide="table" class="w-6 h-6"></i>
                             </div>
-                            <button onclick="runPdfConversion('XLSX')" class="w-full touch-target py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="table" class="w-4 h-4"></i>
-                                <span>Konversi & Unduh Excel (.xlsx)</span>
-                            </button>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">XLSX</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; Excel</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('XLSX', true)" class="touch-target flex-1 h-9 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Hasil Tabel Excel (.xlsx)">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="runPdfConversion('XLSX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Excel (.xlsx)">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Excel</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- PDF to High-Res JPG (.jpg / .zip) -->
-                        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-amber-400 transition flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-extrabold text-sm">JPG</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">Resolusi Tinggi 2x DPI</span>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-900">PDF ke Gambar (.jpg)</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Merender setiap halaman PDF menjadi gambar `.jpg` tajam (skala 2.0x DPI). Mendukung unduhan per halaman maupun bundel `.zip`.
-                                </p>
+                        <!-- Tile 3: PDF to High-Res JPG (.jpg) -->
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shadow-2xs" title="Konversi Halaman PDF ke Gambar JPG (2x DPI)">
+                                <i data-lucide="images" class="w-6 h-6"></i>
                             </div>
-                            <button onclick="runPdfConversion('JPG')" class="w-full touch-target py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="images" class="w-4 h-4"></i>
-                                <span>Konversi ke Gambar (.jpg)</span>
-                            </button>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">JPG 2x</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; JPG</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('JPG', true)" class="touch-target flex-1 h-9 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Halaman JPG">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="runPdfConversion('JPG', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center justify-center gap-1.5 text-xs font-extrabold transition" title="Konversi & Unduh Gambar (.jpg)">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>JPG</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- JPG / Gambar to PDF (.pdf) Shortcut Card -->
-                        <div class="p-4 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-extrabold text-sm">PDF</span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">JPG / PNG &rarr; PDF</span>
-                                </div>
-                                <h3 class="text-sm font-bold text-slate-900">Gambar (JPG) ke PDF (.pdf)</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Ubah satu atau banyak gambar (JPG, JPEG, PNG, WebP) menjadi satu dokumen PDF rapi dengan pilihan ukuran kertas A4, F4/Folio, atau sesuai gambar.
-                                </p>
+                        <!-- Tile 4: Gambar (JPG/PNG) to PDF (.pdf) -->
+                        <div class="p-3.5 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center shadow-2xs" title="Gabungkan Gambar JPG/PNG menjadi PDF">
+                                <i data-lucide="file-plus-2" class="w-6 h-6"></i>
                             </div>
-                            <button onclick="document.getElementById('jpgToPdfInput').click()" class="w-full touch-target py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-                                <span>Pilih JPG & Buat PDF (.pdf)</span>
-                            </button>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">PDF</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">JPG &rarr; PDF</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="scrollToJpgToPdfSection()" class="touch-target flex-1 h-9 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Buka Panel Pengaturan JPG ke PDF">
+                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Pilih Gambar JPG/PNG untuk Dijadikan PDF">
+                                    <i data-lucide="folder-plus" class="w-4 h-4"></i>
+                                    <span>Pilih</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Conversion Status & Output Preview Area -->
-                    <div id="convertOutputArea" class="hidden p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-3">
-                        <div class="flex flex-wrap items-center justify-between gap-2">
+                    <!-- Conversion Status & LIVE RESULT PREVIEW Area (Word / Excel / JPG) -->
+                    <div id="convertOutputArea" class="hidden p-4 rounded-2xl border border-emerald-200 bg-emerald-50/40 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-emerald-200/70">
                             <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-emerald-950">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
-                                <span id="convertOutputTitle">Konversi Selesai</span>
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                <span id="convertOutputTitle">Pratinjau & Hasil Konversi</span>
                             </div>
                             <div id="convertOutputActions" class="flex flex-wrap items-center gap-2"></div>
                         </div>
+                        <!-- Live Interactive Preview Container for Word / Excel / JPG -->
                         <div id="convertOutputPreviewGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
                     </div>
                 </div>
 
                 <!-- ========================================================= -->
-                <!-- PANEL KHUSUS: CONVERTER JPG / GAMBAR KE PDF               -->
+                <!-- PANEL KHUSUS: CONVERTER JPG / GAMBAR KE PDF (ICON COMPACT) -->
                 <!-- ========================================================= -->
                 <div id="jpgToPdfSectionCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                                    <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-                                </span>
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-bold text-slate-900">Converter Gambar (JPG / PNG / WebP) ke PDF</h3>
-                                    <p class="text-xs text-slate-500">Gabungkan satu atau banyak foto/scan gambar menjadi file PDF standar yang siap diunduh atau dikompres • 100% Lokal.</p>
-                                </div>
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center shrink-0">
+                                <i data-lucide="file-plus-2" class="w-5 h-5"></i>
+                            </span>
+                            <div>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Converter Gambar (JPG / PNG) &rarr; PDF</h3>
+                                <p class="text-[11px] text-slate-500">Susun gambar, lihat pratinjau PDF, lalu unduh atau kompres</p>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-2">
+                        <div class="flex items-center gap-2">
                             <input type="file" id="jpgToPdfInput" multiple accept="image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" class="hidden" onchange="handleJpgToPdfSelect(event)">
-                            <button type="button" onclick="importQueueImagesToJpgToPdf()" class="touch-target px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition" title="Ambil semua gambar yang ada di antrean Workspace">
+                            <button type="button" onclick="importQueueImagesToJpgToPdf()" class="touch-target h-9 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition" title="Ambil semua gambar dari Antrean Workspace">
                                 <i data-lucide="folder-down" class="w-4 h-4 text-blue-600"></i>
-                                <span>+ Ambil dari Antrean</span>
+                                <span class="hidden sm:inline">Dari Antrean</span>
                             </button>
-                            <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                            <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target h-9 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Tambah Gambar JPG / PNG / WebP">
                                 <i data-lucide="image-plus" class="w-4 h-4"></i>
-                                <span>+ Pilih Gambar (JPG/PNG)</span>
+                                <span>+ Gambar</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Pengaturan Tata Letak Halaman PDF -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                    <!-- Pengaturan Tata Letak Halaman PDF (Compact Icon Labels) -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
                         <div>
-                            <label for="jpgPdfPageSize" class="block text-xs font-bold text-slate-700 mb-1">Ukuran Kertas PDF</label>
-                            <select id="jpgPdfPageSize" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="A4" selected>A4 Standar (210 × 297 mm)</option>
-                                <option value="F4">F4 / Folio (215 × 330 mm)</option>
-                                <option value="LETTER">Letter (216 × 279 mm)</option>
-                                <option value="FIT_IMAGE">Sesuai Ukuran Asli Gambar</option>
+                            <label for="jpgPdfPageSize" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
+                                <i data-lucide="maximize-2" class="w-3 h-3 text-rose-600"></i>
+                                <span>Kertas</span>
+                            </label>
+                            <select id="jpgPdfPageSize" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="A4" selected>A4 (210×297mm)</option>
+                                <option value="F4">F4 / Folio</option>
+                                <option value="LETTER">Letter</option>
+                                <option value="FIT_IMAGE">Sesuai Gambar</option>
                             </select>
                         </div>
                         <div>
-                            <label for="jpgPdfOrientation" class="block text-xs font-bold text-slate-700 mb-1">Orientasi Halaman</label>
-                            <select id="jpgPdfOrientation" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="AUTO" selected>Otomatis (Ikuti Rasio Gambar)</option>
+                            <label for="jpgPdfOrientation" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
+                                <i data-lucide="rotate-cw" class="w-3 h-3 text-rose-600"></i>
+                                <span>Orientasi</span>
+                            </label>
+                            <select id="jpgPdfOrientation" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="AUTO" selected>Otomatis</option>
                                 <option value="PORTRAIT">Portrait (Tegak)</option>
-                                <option value="LANDSCAPE">Landscape (Mendatar)</option>
+                                <option value="LANDSCAPE">Landscape (Datar)</option>
                             </select>
                         </div>
                         <div>
-                            <label for="jpgPdfMargin" class="block text-xs font-bold text-slate-700 mb-1">Margin Tepi Halaman</label>
-                            <select id="jpgPdfMargin" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="0">Tanpa Margin (Penuh)</option>
-                                <option value="20" selected>Margin Kecil (Rapi)</option>
-                                <option value="40">Margin Standar Kantor</option>
+                            <label for="jpgPdfMargin" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
+                                <i data-lucide="frame" class="w-3 h-3 text-rose-600"></i>
+                                <span>Margin</span>
+                            </label>
+                            <select id="jpgPdfMargin" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="0">Tanpa Margin</option>
+                                <option value="20" selected>Margin Kecil</option>
+                                <option value="40">Margin Standar</option>
                             </select>
                         </div>
                         <div>
-                            <label for="jpgPdfOutputName" class="block text-xs font-bold text-slate-700 mb-1">Nama File PDF Hasil</label>
-                            <input type="text" id="jpgPdfOutputName" value="Dokumen_JPG_ke_PDF_SYNERGY" placeholder="Nama file PDF..." class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                            <label for="jpgPdfOutputName" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
+                                <i data-lucide="file-signature" class="w-3 h-3 text-rose-600"></i>
+                                <span>Nama Output</span>
+                            </label>
+                            <input type="text" id="jpgPdfOutputName" value="Dokumen_JPG_ke_PDF_SYNERGY" placeholder="Nama file..." class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500">
                         </div>
                     </div>
 
                     <!-- Dropzone & Daftar Gambar yang Akan Dijadikan PDF -->
-                    <div id="jpgToPdfDropzone" onclick="handleJpgToPdfDropzoneClick(event)" class="border-2 border-dashed border-slate-300 hover:border-rose-500 bg-slate-50/70 hover:bg-rose-50/20 rounded-xl p-4 sm:p-5 text-center cursor-pointer transition flex flex-col items-center justify-center">
-                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-2">
-                            <i data-lucide="images" class="w-5 h-5"></i>
+                    <div id="jpgToPdfDropzone" onclick="handleJpgToPdfDropzoneClick(event)" class="border-2 border-dashed border-slate-300 hover:border-rose-500 bg-slate-50/70 hover:bg-rose-50/20 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center">
+                        <div class="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-1.5">
+                            <i data-lucide="images" class="w-4 h-4"></i>
                         </div>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800">Ketuk untuk Menambahkan Gambar JPG / PNG atau Tarik & Lepas ke Sini</p>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Urutan halaman PDF dapat diatur naik/turun sebelum digabungkan menjadi PDF.</p>
+                        <p class="text-xs font-bold text-slate-800">Ketuk / Tarik Gambar (JPG, PNG, WebP) ke Sini</p>
 
                         <!-- Daftar Gambar JPG ke PDF -->
-                        <div id="jpgToPdfListWrapper" onclick="event.stopPropagation()" class="hidden mt-4 pt-3.5 border-t border-slate-200 w-full text-left cursor-default space-y-3">
+                        <div id="jpgToPdfListWrapper" onclick="event.stopPropagation()" class="hidden mt-3.5 pt-3 border-t border-slate-200 w-full text-left cursor-default space-y-2.5">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span id="jpgToPdfCountLabel" class="text-xs font-bold text-slate-900">0 Gambar Siap Dijadikan PDF:</span>
+                                <span id="jpgToPdfCountLabel" class="text-xs font-bold text-slate-900">0 Gambar:</span>
                                 <div class="flex items-center gap-1.5">
-                                    <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 transition">
+                                    <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="h-8 px-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 transition" title="Tambah Gambar Lagi">
                                         <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                                        <span>Tambah Gambar</span>
                                     </button>
-                                    <button type="button" onclick="clearJpgToPdfList()" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1 transition">
+                                    <button type="button" onclick="clearJpgToPdfList()" class="h-8 px-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1 transition" title="Hapus Semua Gambar">
                                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                        <span>Hapus Semua</span>
                                     </button>
                                 </div>
                             </div>
-                            <div id="jpgToPdfItemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+                            <div id="jpgToPdfItemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"></div>
                         </div>
                     </div>
 
-                    <!-- Tombol Eksekusi Konversi JPG ke PDF & Hasil -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
-                        <div class="text-xs text-slate-500">
-                            Tips: Anda juga dapat mengirim hasil PDF langsung ke antrean kompresi jika ingin mengatur target ukuran KB/MB.
-                        </div>
-                        <button id="btnBuildJpgToPdf" type="button" onclick="executeJpgToPdfConversion()" class="touch-target px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition shrink-0">
-                            <i data-lucide="file-check" class="w-4 h-4"></i>
-                            <span>Konversi & Unduh PDF Sekarang (.pdf)</span>
+                    <!-- Tombol Eksekusi Konversi JPG ke PDF (Pratinjau & Unduh) -->
+                    <div class="flex flex-wrap items-center justify-end gap-2 pt-1">
+                        <button id="btnPreviewJpgToPdf" type="button" onclick="executeJpgToPdfConversion(true)" class="touch-target h-10 px-4 rounded-xl border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Buat PDF & Tampilkan Pratinjau Hasil Tanpa Langsung Mengunduh">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                            <span>Pratinjau Hasil PDF</span>
+                        </button>
+                        <button id="btnBuildJpgToPdf" type="button" onclick="executeJpgToPdfConversion(false)" class="touch-target h-10 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition" title="Konversi Gambar ke PDF & Unduh">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Buat & Unduh PDF</span>
                         </button>
                     </div>
 
-                    <!-- Banner Hasil Konversi JPG ke PDF -->
-                    <div id="jpgToPdfResultBanner" class="hidden p-4 rounded-xl border border-emerald-200 bg-emerald-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="space-y-1 text-xs">
-                            <div class="flex items-center gap-2 font-bold text-emerald-950 text-sm">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                                <span id="jpgToPdfResultTitle">File PDF Berhasil Dibuat</span>
+                    <!-- Banner Hasil & LIVE PREVIEW Konversi JPG ke PDF -->
+                    <div id="jpgToPdfResultBanner" class="hidden p-4 rounded-2xl border border-emerald-200 bg-emerald-50/60 space-y-3.5">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="space-y-0.5 text-xs">
+                                <div class="flex items-center gap-2 font-bold text-emerald-950 text-sm">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                    <span id="jpgToPdfResultTitle">File PDF Berhasil Dibuat</span>
+                                </div>
+                                <p id="jpgToPdfResultMeta" class="text-emerald-900 font-mono text-[11px]"></p>
                             </div>
-                            <p id="jpgToPdfResultMeta" class="text-emerald-900 font-mono"></p>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-2 shrink-0">
-                            <button type="button" onclick="sendGeneratedPdfToCompressionQueue()" class="px-3.5 py-2 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition">
-                                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-                                <span>Masukkan ke Antrean Kompresi</span>
-                            </button>
-                            <button type="button" onclick="downloadLastGeneratedJpgPdf()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
-                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                                <span>Unduh PDF (.pdf)</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- TAB 3: BEFORE & AFTER PREVIEW                             -->
-            <!-- ========================================================= -->
-            <section id="tab-preview" class="tab-panel hidden space-y-5">
-                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                        <div>
-                            <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="split-square-horizontal" class="w-5 h-5 text-blue-600"></i>
-                                <span>Before & After Preview (Pemeriksaan Keterbacaan & Kualitas Nyata)</span>
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Pratinjau di bawah berasal langsung dari byte file hasil kompresi nyata, bukan simulasi.</p>
-                        </div>
-
-                        <div class="flex flex-wrap items-center gap-2">
-                            <select id="previewJobSelector" onchange="onSelectPreviewJob(this.value)" class="h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 max-w-xs">
-                                <option value="">-- Pilih File untuk Pratinjau --</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Preview Toolbar: View Mode (Side-by-Side / Asli / Hasil) + Zoom + PDF Page Nav -->
-                    <div class="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="setPreviewMode('SIDE_BY_SIDE')" id="btnPrevModeSide" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Berdampingan</button>
-                            <button onclick="setPreviewMode('ORIGINAL')" id="btnPrevModeOrig" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Hanya Asli</button>
-                            <button onclick="setPreviewMode('RESULT')" id="btnPrevModeRes" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Hanya Hasil</button>
-                        </div>
-
-                        <!-- PDF Page Controls (Shown when previewing a PDF) -->
-                        <div id="previewPdfPageControls" class="hidden flex items-center gap-2">
-                            <button onclick="changePreviewPdfPage(-1)" class="px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100">&larr; Hal</button>
-                            <span id="previewPdfPageIndicator" class="text-xs font-mono font-bold text-slate-800">Hal 1 / 1</span>
-                            <button onclick="changePreviewPdfPage(1)" class="px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100">Hal &rarr;</button>
-                        </div>
-
-                        <!-- Independent Preview Zoom Controls -->
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-xs font-semibold text-slate-500">Perbesar Detail:</span>
-                            <button onclick="setPreviewZoom(0.75)" class="px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-700">75%</button>
-                            <button onclick="setPreviewZoom(1.0)" class="px-2 py-1 rounded-lg border border-slate-300 bg-blue-50 text-xs font-bold text-blue-700">100%</button>
-                            <button onclick="setPreviewZoom(1.5)" class="px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-700">150%</button>
-                            <button onclick="setPreviewZoom(2.0)" class="px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-700">200%</button>
-                        </div>
-                    </div>
-
-                    <!-- Metrics Comparison Bar -->
-                    <div id="previewMetricsBanner" class="p-3.5 rounded-xl border border-slate-200 bg-white grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                        <div>
-                            <span class="text-slate-500 block">Ukuran Asli</span>
-                            <strong id="prevStatOriginalSize" class="font-mono text-sm text-slate-900">-</strong>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Ukuran Hasil</span>
-                            <strong id="prevStatCompressedSize" class="font-mono text-sm text-emerald-700">-</strong>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Dimensi / Info</span>
-                            <strong id="prevStatDimensions" class="font-mono text-sm text-slate-800">-</strong>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">Indikator Kualitas</span>
-                            <strong id="prevStatQualityMetric" class="font-mono text-sm text-blue-700">-</strong>
-                        </div>
-                    </div>
-
-                    <!-- Dual / Single Viewport Container -->
-                    <div id="previewStageGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Original Pane -->
-                        <div id="previewPaneOriginal" class="rounded-xl border border-slate-200 overflow-hidden bg-checkerboard flex flex-col">
-                            <div class="px-3.5 py-2 bg-slate-900 text-white text-xs font-bold flex items-center justify-between">
-                                <span>FILE ASLI (SEBELUM)</span>
-                                <span id="prevLabelOrigSub" class="font-mono text-[11px] text-slate-300"></span>
-                            </div>
-                            <div class="p-3 overflow-auto max-h-[520px] flex items-center justify-center">
-                                <canvas id="canvasPreviewOriginal" class="max-w-full h-auto shadow-sm rounded bg-white"></canvas>
+                            <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                                <button type="button" onclick="toggleJpgPdfInlinePreview()" class="touch-target h-9 px-3 rounded-xl border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-1.5 transition" title="Tampilkan / Sembunyikan Pratinjau Halaman PDF">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                    <span>Preview</span>
+                                </button>
+                                <button type="button" onclick="sendGeneratedPdfToCompressionQueue()" class="touch-target h-9 px-3 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition" title="Masukkan PDF ini ke Antrean Kompresi & Buka Pratinjau">
+                                    <i data-lucide="layers" class="w-4 h-4"></i>
+                                    <span>Kompres</span>
+                                </button>
+                                <button type="button" onclick="downloadLastGeneratedJpgPdf()" class="touch-target h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unduh File PDF (.pdf)">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Unduh</span>
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Compressed Pane -->
-                        <div id="previewPaneResult" class="rounded-xl border border-slate-200 overflow-hidden bg-checkerboard flex flex-col">
-                            <div class="px-3.5 py-2 bg-blue-700 text-white text-xs font-bold flex items-center justify-between">
-                                <span>HASIL KOMPRESI (SESUDAH)</span>
-                                <span id="prevLabelResSub" class="font-mono text-[11px] text-blue-100"></span>
+                        <!-- Live Visual Canvas Preview of the Generated PDF Pages -->
+                        <div id="jpgToPdfLivePreviewBox" class="p-3 rounded-xl bg-white border border-slate-200 space-y-2.5">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i data-lucide="file-search" class="w-4 h-4 text-rose-600"></i>
+                                    <span>Pratinjau Hasil PDF (Render Nyata dari File PDF)</span>
+                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="changeJpgPdfPreviewPage(-1)" class="w-7 h-7 rounded-lg border border-slate-300 hover:bg-slate-100 flex items-center justify-center text-xs font-bold" title="Halaman Sebelumnya">&larr;</button>
+                                    <span id="jpgPdfPreviewPageLabel" class="text-xs font-mono font-bold text-slate-700 px-1">Hal 1/1</span>
+                                    <button type="button" onclick="changeJpgPdfPreviewPage(1)" class="w-7 h-7 rounded-lg border border-slate-300 hover:bg-slate-100 flex items-center justify-center text-xs font-bold" title="Halaman Berikutnya">&rarr;</button>
+                                </div>
                             </div>
-                            <div class="p-3 overflow-auto max-h-[520px] flex items-center justify-center">
-                                <canvas id="canvasPreviewResult" class="max-w-full h-auto shadow-sm rounded bg-white"></canvas>
+                            <div class="overflow-auto max-h-[420px] flex items-center justify-center bg-checkerboard p-2 rounded-lg">
+                                <canvas id="canvasJpgToPdfPreview" class="max-w-full h-auto shadow-sm rounded bg-white border border-slate-200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1200,6 +1146,32 @@
                 <button id="btnConfirmRiskProceed" class="touch-target px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold">
                     Lanjutkan & Tinjau Hasil
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL PRATINJAU HASIL CEPAT (LIGHTBOX GAMBAR / DOKUMEN)   -->
+    <!-- ========================================================= -->
+    <div id="quickResultPreviewModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5">
+        <div class="bg-white rounded-2xl border border-slate-200 max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <i data-lucide="eye" class="w-4 h-4 text-blue-400 shrink-0"></i>
+                    <h3 id="quickPreviewModalTitle" class="text-xs sm:text-sm font-bold truncate">Pratinjau Hasil</h3>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button id="quickPreviewModalDownloadBtn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>Unduh</span>
+                    </button>
+                    <button onclick="closeQuickPreviewModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center" title="Tutup Pratinjau">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="quickPreviewModalBody" class="p-4 overflow-auto flex-1 bg-checkerboard flex items-center justify-center">
+                <!-- Populated dynamically -->
             </div>
         </div>
     </div>
@@ -1916,6 +1888,12 @@
                         ? `<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">Hasil: ${formatBytes(j.result.compressedSize)}</span>`
                         : `<span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-semibold">Siap</span>`;
 
+                    const previewBtnHtml = isDone
+                        ? `<button type="button" onclick="openPreviewForJob('${j.id}')" class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0 transition" title="Pratinjau Hasil ${j.name}">
+                               <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                           </button>`
+                        : '';
+
                     return `
                         <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-white border border-slate-200 shadow-xs">
                             <div class="flex items-center gap-2 min-w-0">
@@ -1923,15 +1901,17 @@
                                 <div class="min-w-0">
                                     <p class="text-xs font-bold text-slate-900 truncate" title="${j.name}">${j.name}</p>
                                     <div class="flex flex-wrap items-center gap-1.5 mt-0.5">
-                                        <span class="text-[11px] font-mono font-bold text-slate-600">Ukuran Awal: ${formatBytes(j.originalSize)}</span>
+                                        <span class="text-[11px] font-mono font-bold text-slate-600">Awal: ${formatBytes(j.originalSize)}</span>
                                         ${statusBadge}
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" onclick="removeJobFromQueue('${j.id}')" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1 shrink-0 transition" title="Hapus ${j.name} dari antrean">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                <span>Hapus</span>
-                            </button>
+                            <div class="flex items-center gap-1 shrink-0">
+                                ${previewBtnHtml}
+                                <button type="button" onclick="removeJobFromQueue('${j.id}')" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 flex items-center justify-center shrink-0 transition" title="Hapus ${j.name} dari antrean">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -1969,28 +1949,27 @@
                     const m = job.result.metrics;
                     const targetStatusText = job.result.targetBytes
                         ? (job.result.targetAchieved
-                            ? `<span class="px-2 py-0.5 rounded bg-emerald-200/80 text-emerald-950 font-bold text-[10px]">✓ Sesuai Target (≤ ${formatBytes(job.result.targetBytes)})</span>`
-                            : `<span class="px-2 py-0.5 rounded bg-amber-200/80 text-amber-950 font-bold text-[10px]">Batas Aman Tercapai: ${formatBytes(job.result.compressedSize)}</span>`)
+                            ? `<span class="px-2 py-0.5 rounded bg-emerald-200/80 text-emerald-950 font-bold text-[10px]">✓ ≤ ${formatBytes(job.result.targetBytes)}</span>`
+                            : `<span class="px-2 py-0.5 rounded bg-amber-200/80 text-amber-950 font-bold text-[10px]">${formatBytes(job.result.compressedSize)}</span>`)
                         : '';
                     resultSummaryHtml = `
-                        <div class="mt-3 p-3 rounded-xl ${m.isLarger ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-emerald-50 border-emerald-200 text-emerald-950'} border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                        <div class="mt-3 p-2.5 rounded-xl ${m.isLarger ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-emerald-50 border-emerald-200 text-emerald-950'} border text-xs flex flex-wrap items-center justify-between gap-2">
                             <div class="flex flex-wrap items-center gap-2">
                                 <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                                <span>Ukuran: <strong>${formatBytes(job.originalSize)}</strong> &rarr; <strong>${formatBytes(job.result.compressedSize)}</strong> (${m.isLarger ? 'Ukuran meningkat +' : 'Hemat -'}${m.percentage}%)</span>
+                                <span><strong>${formatBytes(job.originalSize)}</strong> &rarr; <strong>${formatBytes(job.result.compressedSize)}</strong> (${m.isLarger ? '+' : '-'}${m.percentage}%)</span>
                                 ${targetStatusText}
                             </div>
-                            <div class="flex flex-wrap items-center gap-1.5 shrink-0">
-                                <button onclick="openPreviewForJob('${job.id}')" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold flex items-center gap-1 transition">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button onclick="openPreviewForJob('${job.id}')" class="h-8 px-2.5 rounded-lg border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1 transition" title="Lihat Pratinjau Asli vs Hasil (Before & After)">
                                     <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                    <span>Pratinjau</span>
+                                    <span>Preview</span>
                                 </button>
-                                <button onclick="downloadJobFile('${job.id}', false)" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 transition">
+                                <button onclick="downloadJobFile('${job.id}', false)" class="h-8 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 transition" title="Unduh Hasil Kompresi">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                                    <span>Unduh Hasil</span>
+                                    <span>Unduh</span>
                                 </button>
-                                <button onclick="removeJobFromQueue('${job.id}')" class="px-2.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center gap-1 transition">
+                                <button onclick="removeJobFromQueue('${job.id}')" class="w-8 h-8 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition" title="Hapus dari Antrean">
                                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                    <span>Hapus</span>
                                 </button>
                             </div>
                         </div>
@@ -2019,25 +1998,26 @@
                                 </div>
                             </div>
 
-                            <!-- Per-File Controls -->
+                            <!-- Compact Icon-First Per-File Controls -->
                             <div class="flex flex-wrap items-center gap-1.5 shrink-0">
                                 <div class="flex items-center rounded-lg border border-slate-300 bg-white overflow-hidden h-9" title="Target ukuran khusus file ini (KB/MB)">
-                                    <input type="number" min="5" step="any" placeholder="Target..." value="${customVal}" onchange="setJobCustomTargetSize('${job.id}', this.value, document.getElementById('unit_${job.id}').value)" class="w-16 px-2 text-xs font-bold text-slate-900 focus:outline-none">
-                                    <select id="unit_${job.id}" onchange="setJobCustomTargetSize('${job.id}', this.previousElementSibling.value, this.value)" class="px-1.5 text-xs font-bold bg-slate-100 text-slate-700 border-l border-slate-300 h-full focus:outline-none">
+                                    <input type="number" min="5" step="any" placeholder="Target" value="${customVal}" onchange="setJobCustomTargetSize('${job.id}', this.value, document.getElementById('unit_${job.id}').value)" class="w-14 px-2 text-xs font-bold text-slate-900 focus:outline-none">
+                                    <select id="unit_${job.id}" onchange="setJobCustomTargetSize('${job.id}', this.previousElementSibling.value, this.value)" class="px-1 text-xs font-bold bg-slate-100 text-slate-700 border-l border-slate-300 h-full focus:outline-none">
                                         <option value="KB" ${customUnit === 'KB' ? 'selected' : ''}>KB</option>
                                         <option value="MB" ${customUnit === 'MB' ? 'selected' : ''}>MB</option>
                                     </select>
                                 </div>
-                                <select onchange="changeSingleJobPreset('${job.id}', this.value)" title="Pilih Mode Preset" class="h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-800">
+                                <select onchange="changeSingleJobPreset('${job.id}', this.value)" title="Pilih Mode Preset" class="h-9 px-2 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-800">
                                     ${presetOptionsHtml}
                                 </select>
-                                <button onclick="requestStartCompression('${job.id}')" class="h-9 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1 transition">
-                                    <i data-lucide="play" class="w-3.5 h-3.5"></i>
-                                    <span>${job.status === 'DONE' ? 'Ulang' : 'Kompres'}</span>
+                                <button onclick="openPreviewForJob('${job.id}')" class="w-9 h-9 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center transition" title="Pratinjau File (Before & After)">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="removeJobFromQueue('${job.id}')" class="h-9 px-2.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold flex items-center gap-1 transition" title="Hapus File Ini dari Antrean">
-                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                    <span class="hidden sm:inline">Hapus</span>
+                                <button onclick="requestStartCompression('${job.id}')" class="w-9 h-9 rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition" title="${job.status === 'DONE' ? 'Kompres Ulang' : 'Kompres File Ini'}">
+                                    <i data-lucide="play" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="removeJobFromQueue('${job.id}')" class="w-9 h-9 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 flex items-center justify-center transition" title="Hapus File Ini dari Antrean">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
@@ -2532,19 +2512,221 @@
         function updateConvertFileInfoUI(file) {
             const infoEl = document.getElementById('convertActiveFileInfo');
             infoEl.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[11px]">PDF SIAP DIKONVERSI</span>
-                    <strong class="text-slate-900 truncate">${file.name}</strong>
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] shrink-0">SIAP</span>
+                    <strong class="text-slate-900 truncate" title="${file.name}">${file.name}</strong>
+                    <span class="font-mono text-[11px] text-slate-500 shrink-0">(${formatBytes(file.size)})</span>
                 </div>
-                <p class="text-slate-500">Ukuran File: <strong class="font-mono">${formatBytes(file.size)}</strong> • Pilih format Word (.docx), Excel (.xlsx), atau Gambar (.jpg) di bawah.</p>
             `;
         }
-
-        async function extractPdfStructuredPages(file) {
-            const buffer = await file.arrayBuffer();
-            if (!window.pdfjsLib) {
-                throw new Error('Pustaka pembaca PDF lokal belum siap.');
+        async function runPdfConversion(targetFormat, previewOnly = false) {
+            if (!AppState.convertSourceFile) {
+                syncConvertFromQueueIfEmpty();
+                if (!AppState.convertSourceFile) {
+                    showToast('Pilih File PDF Terlebih Dahulu', 'Unggah file PDF (+ PDF) atau pilih PDF dari daftar antrean untuk dikonversi.', 'warning');
+                    return;
+                }
             }
+
+            const file = AppState.convertSourceFile;
+            const baseName = file.name.replace(/\.[^/.]+$/, '');
+            showToast('Memproses Konversi PDF', `Mengekstrak teks, tabel, dan pratinjau dari "${file.name}"...`, 'info');
+
+            try {
+                const pages = await extractPdfStructuredPages(file);
+                const outArea = document.getElementById('convertOutputArea');
+                const outTitle = document.getElementById('convertOutputTitle');
+                const outActions = document.getElementById('convertOutputActions');
+                const outGrid = document.getElementById('convertOutputPreviewGrid');
+                outArea.classList.remove('hidden');
+                outGrid.innerHTML = '';
+
+                if (targetFormat === 'DOCX') {
+                    const docxBlob = await buildValidDocxBlob(pages, baseName);
+                    const fileName = `${baseName}_synergy.docx`;
+                    AppState.lastConvertedBlob = { blob: docxBlob, name: fileName };
+
+                    outTitle.textContent = `Hasil Konversi Word: ${fileName} (${formatBytes(docxBlob.size)})`;
+                    outActions.innerHTML = `
+                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Unduh Word (.docx)</span>
+                        </button>
+                    `;
+
+                    // Build Live Visual Preview of the Word Document Content + Page Snapshot
+                    outGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+                    outGrid.innerHTML = pages.map(p => {
+                        const pageImgUrl = URL.createObjectURL(p.jpgBlob);
+                        const linesHtml = p.rows.length > 0
+                            ? p.rows.slice(0, 18).map(r => `<p class="text-[11px] text-slate-800 font-sans border-b border-slate-100 py-0.5 truncate">${escapeXml(r.cells.map(c => c.str).join('   '))}</p>`).join('')
+                            : `<p class="text-xs text-slate-500 italic">Halaman Scan Gambar (Disematkan utuh ke Word)</p>`;
+
+                        return `
+                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                                    <span class="text-xs font-bold text-blue-700 flex items-center gap-1">
+                                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                        <span>Pratinjau Word — Halaman ${p.pageNumber}</span>
+                                    </span>
+                                    <button onclick="openQuickImagePreview('${pageImgUrl}', 'Pratinjau Halaman ${p.pageNumber} (${fileName})')" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-blue-50 text-blue-600 flex items-center justify-center" title="Perbesar Pratinjau Halaman">
+                                        <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-start">
+                                    <img src="${pageImgUrl}" alt="Hal ${p.pageNumber}" class="w-full h-36 object-contain bg-slate-50 rounded-lg border border-slate-200 cursor-pointer" onclick="openQuickImagePreview('${pageImgUrl}', 'Halaman ${p.pageNumber}')">
+                                    <div class="p-2 rounded-lg bg-slate-50 border border-slate-200 max-h-36 overflow-y-auto">
+                                        <span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Teks & Baris Tereksraksi:</span>
+                                        ${linesHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (!previewOnly) {
+                        triggerBlobDownload(docxBlob, fileName);
+                        showToast('Konversi Word Berhasil', `File "${fileName}" diunduh & pratinjau hasil ditampilkan di bawah.`, 'success');
+                    } else {
+                        showToast('Pratinjau Word Siap', `Menampilkan pratinjau hasil konversi Word (${pages.length} halaman).`, 'info');
+                    }
+                    if (window.lucide) lucide.createIcons();
+
+                } else if (targetFormat === 'XLSX') {
+                    const xlsxBlob = await buildValidXlsxBlob(pages);
+                    const fileName = `${baseName}_synergy.xlsx`;
+                    AppState.lastConvertedBlob = { blob: xlsxBlob, name: fileName };
+
+                    outTitle.textContent = `Hasil Konversi Excel: ${fileName} (${formatBytes(xlsxBlob.size)})`;
+                    outActions.innerHTML = `
+                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Unduh Excel (.xlsx)</span>
+                        </button>
+                    `;
+
+                    // Build Live Interactive Table Preview of the Excel Worksheets
+                    outGrid.className = 'grid grid-cols-1 gap-3';
+                    outGrid.innerHTML = pages.map(p => {
+                        const tableRowsHtml = p.rows.length > 0
+                            ? p.rows.slice(0, 15).map((r, rIdx) => `
+                                <tr class="border-b border-slate-200 hover:bg-emerald-50/40">
+                                    <td class="px-2 py-1 bg-slate-100 font-mono text-[10px] font-bold text-slate-500 border-r border-slate-200 w-8 text-center">${rIdx + 1}</td>
+                                    ${r.cells.slice(0, 8).map(c => `<td class="px-2.5 py-1 text-[11px] text-slate-800 border-r border-slate-200 font-mono">${escapeXml(c.str)}</td>`).join('')}
+                                </tr>
+                            `).join('')
+                            : `<tr><td class="p-3 text-xs text-slate-500">Halaman ${p.pageNumber} berisi gambar scan penuh.</td></tr>`;
+
+                        return `
+                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                                        <i data-lucide="table" class="w-4 h-4"></i>
+                                        <span>Pratinjau Sheet Excel: Halaman_${p.pageNumber} (${p.rows.length} Baris)</span>
+                                    </span>
+                                </div>
+                                <div class="overflow-x-auto max-h-48 border border-slate-200 rounded-lg">
+                                    <table class="w-full text-left border-collapse">
+                                        <tbody>${tableRowsHtml}</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (!previewOnly) {
+                        triggerBlobDownload(xlsxBlob, fileName);
+                        showToast('Konversi Excel Berhasil', `File "${fileName}" diunduh & pratinjau tabel ditampilkan di bawah.`, 'success');
+                    } else {
+                        showToast('Pratinjau Tabel Excel Siap', `Menampilkan pratinjau hasil ekstraksi tabel Excel.`, 'info');
+                    }
+                    if (window.lucide) lucide.createIcons();
+
+                } else if (targetFormat === 'JPG') {
+                    AppState.convertGeneratedJpgs = pages.map(p => ({
+                        name: `${baseName}_hal_${p.pageNumber}.jpg`,
+                        blob: p.jpgBlob,
+                        url: URL.createObjectURL(p.jpgBlob),
+                        pageNumber: p.pageNumber
+                    }));
+
+                    outTitle.textContent = `Pratinjau & Hasil Konversi Gambar JPG (${pages.length} Halaman • 2x DPI)`;
+                    outActions.innerHTML = `
+                        <button onclick="downloadConvertedJpgsAsZip('${baseName}')" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5">
+                            <i data-lucide="archive" class="w-4 h-4"></i>
+                            <span>Unduh ZIP</span>
+                        </button>
+                    `;
+
+                    outGrid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3';
+                    outGrid.innerHTML = AppState.convertGeneratedJpgs.map((item, idx) => `
+                        <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-2 shadow-2xs">
+                            <div class="relative group cursor-pointer" onclick="openQuickImagePreview('${item.url}', '${item.name} (${formatBytes(item.blob.size)})', ${idx})">
+                                <img src="${item.url}" alt="Halaman ${item.pageNumber}" class="w-full h-40 object-contain bg-slate-100 rounded-lg border border-slate-200">
+                                <span class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-slate-900/75 text-white flex items-center justify-center" title="Perbesar Pratinjau">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-xs">
+                                <span class="font-bold text-slate-800 truncate">Hal ${item.pageNumber} (${formatBytes(item.blob.size)})</span>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="openQuickImagePreview('${item.url}', '${item.name}', ${idx})" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center" title="Lihat Pratinjau Penuh">
+                                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                    <button onclick="downloadSingleConvertedJpg(${idx})" class="h-8 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1" title="Unduh JPG Ini">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    if (!previewOnly && pages.length === 1) {
+                        triggerBlobDownload(pages[0].jpgBlob, `${baseName}_hal_1.jpg`);
+                    }
+                    if (window.lucide) lucide.createIcons();
+                    showToast('Pratinjau & Konversi JPG Selesai', `${pages.length} halaman PDF berhasil dirender menjadi gambar JPG tajam.`, 'success');
+                }
+            } catch (err) {
+                showToast('Gagal Mengonversi PDF', err.message || 'Terjadi kesalahan saat membaca struktur PDF.', 'error');
+            }
+        }
+
+        function downloadLastConvertedBlob() {
+            if (AppState.lastConvertedBlob) {
+                triggerBlobDownload(AppState.lastConvertedBlob.blob, AppState.lastConvertedBlob.name);
+            }
+        }
+
+        function openQuickImagePreview(imgUrl, titleText, jpgIndex = null) {
+            const modal = document.getElementById('quickResultPreviewModal');
+            const titleEl = document.getElementById('quickPreviewModalTitle');
+            const bodyEl = document.getElementById('quickPreviewModalBody');
+            const dlBtn = document.getElementById('quickPreviewModalDownloadBtn');
+
+            titleEl.textContent = titleText || 'Pratinjau Hasil';
+            bodyEl.innerHTML = `<img src="${imgUrl}" alt="${titleText}" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-md bg-white">`;
+
+            dlBtn.onclick = () => {
+                if (jpgIndex !== null && AppState.convertGeneratedJpgs[jpgIndex]) {
+                    downloadSingleConvertedJpg(jpgIndex);
+                } else if (AppState.lastConvertedBlob) {
+                    downloadLastConvertedBlob();
+                } else {
+                    const a = document.createElement('a');
+                    a.href = imgUrl;
+                    a.download = 'pratinjau_synergy.jpg';
+                    a.click();
+                }
+            };
+
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeQuickPreviewModal() {
+            document.getElementById('quickResultPreviewModal').classList.add('hidden');
+        }
             const loadingTask = pdfjsLib.getDocument({ data: buffer });
             const pdf = await loadingTask.promise;
             const pages = [];
@@ -3015,42 +3197,7 @@
                 }
 
                 let pageW, pageH;
-                if (pageSizeMode === 'FIT_IMAGE') {
-                    pageW = imgW + marginPt * 2;
-                    pageH = imgH + marginPt * 2;
-                } else {
-                    const baseDim = PAGE_PRESETS[pageSizeMode] || PAGE_PRESETS.A4;
-                    let isLandscape = false;
-                    if (orientationMode === 'LANDSCAPE') isLandscape = true;
-                    else if (orientationMode === 'PORTRAIT') isLandscape = false;
-                    else isLandscape = imgW > imgH;
-
-                    pageW = isLandscape ? Math.max(baseDim[0], baseDim[1]) : Math.min(baseDim[0], baseDim[1]);
-                    pageH = isLandscape ? Math.min(baseDim[0], baseDim[1]) : Math.max(baseDim[0], baseDim[1]);
-                }
-
-                const page = pdfDoc.addPage([pageW, pageH]);
-                const availW = Math.max(20, pageW - marginPt * 2);
-                const availH = Math.max(20, pageH - marginPt * 2);
-                const scale = Math.min(availW / imgW, availH / imgH);
-                const drawW = imgW * scale;
-                const drawH = imgH * scale;
-                const drawX = (pageW - drawW) / 2;
-                const drawY = (pageH - drawH) / 2;
-
-                page.drawImage(embeddedImg, {
-                    x: drawX,
-                    y: drawY,
-                    width: drawW,
-                    height: drawH
-                });
-            }
-
-            const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
-            return new Blob([pdfBytes], { type: 'application/pdf' });
-        }
-
-        async function executeJpgToPdfConversion() {
+        async function executeJpgToPdfConversion(previewOnly = false) {
             if (AppState.jpgToPdfQueue.length === 0) {
                 showToast('Pilih Gambar Terlebih Dahulu', 'Tambahkan satu atau beberapa gambar (JPG, PNG, WebP) untuk dikonversi menjadi PDF.', 'warning');
                 document.getElementById('jpgToPdfInput').click();
@@ -3078,7 +3225,8 @@
                 AppState.lastGeneratedJpgPdf = {
                     blob: pdfBlob,
                     name: fileName,
-                    pageCount: AppState.jpgToPdfQueue.length
+                    pageCount: AppState.jpgToPdfQueue.length,
+                    previewPage: 1
                 };
 
                 const banner = document.getElementById('jpgToPdfResultBanner');
@@ -3088,14 +3236,48 @@
                 titleEl.textContent = `PDF Berhasil Dibuat: ${fileName}`;
                 metaEl.textContent = `${AppState.jpgToPdfQueue.length} Halaman • Ukuran PDF: ${formatBytes(pdfBlob.size)} • Kertas: ${pageSize}`;
 
-                triggerBlobDownload(pdfBlob, fileName);
-                showToast('Konversi JPG ke PDF Berhasil', `File "${fileName}" (${formatBytes(pdfBlob.size)}) telah diunduh.`, 'success');
+                // Render Real Visual Preview of the newly generated PDF
+                document.getElementById('jpgToPdfLivePreviewBox').classList.remove('hidden');
+                await renderGeneratedJpgPdfPreviewPage(1);
+
+                if (!previewOnly) {
+                    triggerBlobDownload(pdfBlob, fileName);
+                    showToast('Konversi JPG ke PDF Berhasil', `File "${fileName}" (${formatBytes(pdfBlob.size)}) telah diunduh & pratinjau ditampilkan.`, 'success');
+                } else {
+                    showToast('Pratinjau PDF Siap', `Pratinjau hasil "${fileName}" (${formatBytes(pdfBlob.size)}) ditampilkan di bawah.`, 'info');
+                }
             } catch (err) {
                 showToast('Gagal Membuat PDF', err.message || 'Terjadi kesalahan saat menyusun halaman PDF.', 'error');
             } finally {
                 btn.disabled = false;
                 if (window.lucide) lucide.createIcons();
             }
+        }
+
+        async function renderGeneratedJpgPdfPreviewPage(pageNum) {
+            if (!AppState.lastGeneratedJpgPdf || !AppState.lastGeneratedJpgPdf.blob) return;
+            const total = AppState.lastGeneratedJpgPdf.pageCount || 1;
+            const safePage = Math.min(Math.max(1, pageNum), total);
+            AppState.lastGeneratedJpgPdf.previewPage = safePage;
+
+            const label = document.getElementById('jpgPdfPreviewPageLabel');
+            if (label) label.textContent = `Hal ${safePage}/${total}`;
+
+            const canvas = document.getElementById('canvasJpgToPdfPreview');
+            if (canvas) {
+                await renderPdfBlobPageToCanvas(AppState.lastGeneratedJpgPdf.blob, safePage, canvas, 1.0, false);
+            }
+        }
+
+        function changeJpgPdfPreviewPage(delta) {
+            if (!AppState.lastGeneratedJpgPdf) return;
+            const next = (AppState.lastGeneratedJpgPdf.previewPage || 1) + delta;
+            renderGeneratedJpgPdfPreviewPage(next);
+        }
+
+        function toggleJpgPdfInlinePreview() {
+            const box = document.getElementById('jpgToPdfLivePreviewBox');
+            if (box) box.classList.toggle('hidden');
         }
 
         function downloadLastGeneratedJpgPdf() {
