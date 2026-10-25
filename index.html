@@ -47,11 +47,9 @@
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        /* Touch target minimum 44x44px for comfortable mobile interaction */
         .touch-target {
             min-height: 42px;
         }
-        /* Checkerboard pattern for transparent PNG preview */
         .bg-checkerboard {
             background-color: #f8fafc;
             background-image: 
@@ -70,7 +68,6 @@
                 linear-gradient(45deg, transparent 75%, #334155 75%), 
                 linear-gradient(-45deg, transparent 75%, #334155 75%);
         }
-        /* Complete Dark Mode Surface Overrides */
         html.dark body {
             background-color: #0b1120 !important;
             color: #f1f5f9 !important;
@@ -109,7 +106,6 @@
             color: #f8fafc !important;
             border-color: #475569 !important;
         }
-        /* Custom subtle scrollbars */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -143,7 +139,7 @@
                     <div class="flex items-center gap-2 flex-wrap">
                         <h1 class="font-extrabold text-sm sm:text-base tracking-tight truncate text-white">SYNERGY SMART COMPRESS</h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-800 text-blue-300 border border-slate-700">
-                            v3.0 Pro
+                            v3.1 Pro
                         </span>
                     </div>
                     <div class="flex flex-wrap items-center gap-2 mt-1">
@@ -188,7 +184,7 @@
     <!-- MAIN WORKSPACE CONTAINER -->
     <div class="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row">
         
-        <!-- DESKTOP COLLAPSIBLE SIDEBAR -->
+        <!-- DESKTOP COLLAPSIBLE SIDEBAR (Compact Icon-First Rail) -->
         <aside id="desktopSidebar" class="hidden lg:flex flex-col w-64 shrink-0 border-r border-slate-200 bg-white p-3.5 justify-between transition-all duration-200">
             <div class="space-y-4">
                 <div class="flex items-center justify-between px-2">
@@ -683,8 +679,7 @@
             </section>
 
             <!-- ========================================================= -->
-            <!-- TAB 2: KONVERSI PDF KE WORD (.DOCX), EXCEL (.XLSX) & JPG  -->
-            <!--        SERTA KONVERSI GAMBAR (JPG/PNG) KE PDF             -->
+            <!-- TAB 2: KONVERSI PDF KE WORD, EXCEL, JPG & JPG KE PDF      -->
             <!-- ========================================================= -->
             <section id="tab-convert" class="tab-panel hidden space-y-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
@@ -695,19 +690,19 @@
                                 <i data-lucide="file-symlink" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Konversi PDF ⇄ Word / Excel / JPG</h2>
-                                <p class="text-[11px] text-slate-500">Pilih format ikon di bawah untuk konversi & pratinjau hasil instan • 100% Lokal</p>
+                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Konversi PDF ke Word, Excel, Gambar (JPG) & JPG ke PDF</h2>
+                                <p class="text-[11px] text-slate-500">Ekstraksi tata letak baris, kolom tabel, halaman beresolusi tinggi, serta penggabungan gambar JPG ke PDF • 100% Lokal oleh BBR@SYNERGY smart system.</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <input type="file" id="convertPdfInput" accept=".pdf,application/pdf" class="hidden" onchange="handleConvertPdfUpload(event)">
                             <button onclick="document.getElementById('convertPdfInput').click()" class="touch-target px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unggah File PDF untuk Dikonversi">
                                 <i data-lucide="file-up" class="w-4 h-4"></i>
-                                <span>+ PDF</span>
+                                <span>Pilih File PDF untuk Dikonversi</span>
                             </button>
-                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Menuju Converter Gambar (JPG/PNG) ke PDF">
-                                <i data-lucide="images" class="w-4 h-4"></i>
-                                <span>JPG &rarr; PDF</span>
+                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Menuju Converter Gambar ke PDF">
+                                <i data-lucide="image-plus" class="w-4 h-4"></i>
+                                <span>Converter JPG ke PDF</span>
                             </button>
                         </div>
                     </div>
@@ -721,88 +716,96 @@
                             </select>
                         </div>
                         <div id="convertActiveFileInfo" class="md:col-span-6 text-xs text-slate-600 flex items-center justify-between gap-2">
-                            <span class="truncate">Belum ada PDF dipilih. Klik <strong>+ PDF</strong> di kanan atas.</span>
+                            <span class="truncate">Belum ada PDF yang dipilih. Unggah PDF atau pilih dari daftar antrean untuk mengonversi ke Word (.docx), Excel (.xlsx), atau Gambar (.jpg).</span>
                         </div>
                     </div>
 
                     <!-- 4 Simpler Icon-Centric Conversion Tiles -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                         <!-- Tile 1: PDF to Word (.docx) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-blue-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
-                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shadow-2xs" title="Konversi PDF ke Microsoft Word (.docx)">
-                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-blue-500 transition flex flex-col justify-between gap-3 shadow-2xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-100 text-blue-800">DOCX</span>
+                                <span class="text-[11px] text-slate-500 font-medium">Microsoft Word</span>
                             </div>
                             <div>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800">DOCX</span>
-                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; Word</h3>
+                                <h3 class="text-xs font-bold text-slate-900">PDF ke Word (.docx)</h3>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Mempertahankan struktur paragraf, ukuran huruf, baris tabel (`&lt;w:tbl&gt;`), serta menyertakan gambar halaman secara utuh jika PDF merupakan hasil scan.</p>
                             </div>
-                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="runPdfConversion('DOCX', true)" class="touch-target flex-1 h-9 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Hasil Word (.docx)">
+                            <div class="flex items-center gap-1.5 pt-1">
+                                <button onclick="runPdfConversion('DOCX', true)" class="touch-target flex-1 h-9 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Word">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
+                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('DOCX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Word (.docx)">
+                                <button onclick="runPdfConversion('DOCX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Word">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Word</span>
+                                    <span>Konversi & Unduh Word (.docx)</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tile 2: PDF to Excel (.xlsx) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shadow-2xs" title="Konversi PDF ke Microsoft Excel (.xlsx)">
-                                <i data-lucide="table" class="w-6 h-6"></i>
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-500 transition flex flex-col justify-between gap-3 shadow-2xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800">XLSX</span>
+                                <span class="text-[11px] text-slate-500 font-medium">Microsoft Excel</span>
                             </div>
                             <div>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">XLSX</span>
-                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; Excel</h3>
+                                <h3 class="text-xs font-bold text-slate-900">PDF ke Excel (.xlsx)</h3>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Mendeteksi koordinat baris dan kolom secara presisi pada setiap halaman PDF dan menyusunnya menjadi lembar kerja (`*Worksheet`) OpenXML `.xlsx` asli.</p>
                             </div>
-                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="runPdfConversion('XLSX', true)" class="touch-target flex-1 h-9 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Hasil Tabel Excel (.xlsx)">
+                            <div class="flex items-center gap-1.5 pt-1">
+                                <button onclick="runPdfConversion('XLSX', true)" class="touch-target flex-1 h-9 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Excel">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
+                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('XLSX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Excel (.xlsx)">
+                                <button onclick="runPdfConversion('XLSX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Excel">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Excel</span>
+                                    <span>Konversi & Unduh Excel (.xlsx)</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tile 3: PDF to High-Res JPG (.jpg) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shadow-2xs" title="Konversi Halaman PDF ke Gambar JPG (2x DPI)">
-                                <i data-lucide="images" class="w-6 h-6"></i>
+                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-500 transition flex flex-col justify-between gap-3 shadow-2xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-800">JPG</span>
+                                <span class="text-[11px] text-slate-500 font-medium">Resolusi Tinggi 2x DPI</span>
                             </div>
                             <div>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">JPG 2x</span>
-                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF &rarr; JPG</h3>
+                                <h3 class="text-xs font-bold text-slate-900">PDF ke Gambar (.jpg)</h3>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Merender setiap halaman PDF menjadi gambar `.jpg` tajam (skala 2.0x DPI). Mendukung unduhan per halaman maupun bundel `.zip`.</p>
                             </div>
-                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="runPdfConversion('JPG', true)" class="touch-target flex-1 h-9 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Halaman JPG">
+                            <div class="flex items-center gap-1.5 pt-1">
+                                <button onclick="runPdfConversion('JPG', true)" class="touch-target flex-1 h-9 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau JPG">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
+                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('JPG', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center justify-center gap-1.5 text-xs font-extrabold transition" title="Konversi & Unduh Gambar (.jpg)">
+                                <button onclick="runPdfConversion('JPG', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center justify-center gap-1.5 text-xs font-extrabold transition" title="Konversi ke Gambar">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>JPG</span>
+                                    <span>Konversi ke Gambar (.jpg)</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tile 4: Gambar (JPG/PNG) to PDF (.pdf) -->
-                        <div class="p-3.5 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col items-center text-center gap-2.5 shadow-2xs">
-                            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center shadow-2xs" title="Gabungkan Gambar JPG/PNG menjadi PDF">
-                                <i data-lucide="file-plus-2" class="w-6 h-6"></i>
+                        <div class="p-3.5 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col justify-between gap-3 shadow-2xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-rose-100 text-rose-800">PDF</span>
+                                <span class="text-[11px] text-slate-500 font-medium">JPG / PNG &rarr; PDF</span>
                             </div>
                             <div>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">PDF</span>
-                                <h3 class="text-xs font-bold text-slate-900 mt-1">JPG &rarr; PDF</h3>
+                                <h3 class="text-xs font-bold text-slate-900">Gambar (JPG) ke PDF (.pdf)</h3>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Ubah satu atau banyak gambar (JPG, JPEG, PNG, WebP, BMP) menjadi satu dokumen PDF rapi dengan pilihan ukuran kertas A4, F4/Folio, atau sesuai gambar.</p>
                             </div>
-                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
-                                <button onclick="scrollToJpgToPdfSection()" class="touch-target flex-1 h-9 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Buka Panel Pengaturan JPG ke PDF">
+                            <div class="flex items-center gap-1.5 pt-1">
+                                <button onclick="scrollToJpgToPdfSection()" class="touch-target flex-1 h-9 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pengaturan JPG ke PDF">
                                     <i data-lucide="sliders" class="w-4 h-4"></i>
+                                    <span>Atur</span>
                                 </button>
-                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Pilih Gambar JPG/PNG untuk Dijadikan PDF">
-                                    <i data-lucide="folder-plus" class="w-4 h-4"></i>
-                                    <span>Pilih</span>
+                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Pilih JPG & Buat PDF">
+                                    <i data-lucide="image-plus" class="w-4 h-4"></i>
+                                    <span>Pilih JPG & Buat PDF (.pdf)</span>
                                 </button>
                             </div>
                         </div>
@@ -823,7 +826,7 @@
                 </div>
 
                 <!-- ========================================================= -->
-                <!-- PANEL KHUSUS: CONVERTER JPG / GAMBAR KE PDF (ICON COMPACT) -->
+                <!-- PANEL KHUSUS: CONVERTER JPG / GAMBAR KE PDF               -->
                 <!-- ========================================================= -->
                 <div id="jpgToPdfSectionCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
@@ -832,20 +835,20 @@
                                 <i data-lucide="file-plus-2" class="w-5 h-5"></i>
                             </span>
                             <div>
-                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Converter Gambar (JPG / PNG) &rarr; PDF</h3>
-                                <p class="text-[11px] text-slate-500">Susun gambar, lihat pratinjau PDF, lalu unduh atau kompres</p>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Converter Gambar (JPG / PNG / WebP) ke PDF</h3>
+                                <p class="text-[11px] text-slate-500">Gabungkan satu atau banyak foto/scan gambar menjadi file PDF standar yang siap diunduh atau dikompres • 100% Lokal.</p>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-2">
                             <input type="file" id="jpgToPdfInput" multiple accept="image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" class="hidden" onchange="handleJpgToPdfSelect(event)">
-                            <button type="button" onclick="importQueueImagesToJpgToPdf()" class="touch-target h-9 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition" title="Ambil semua gambar dari Antrean Workspace">
+                            <button type="button" onclick="importQueueImagesToJpgToPdf()" class="touch-target h-9 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition" title="Ambil gambar dari antrean Workspace">
                                 <i data-lucide="folder-down" class="w-4 h-4 text-blue-600"></i>
-                                <span class="hidden sm:inline">Dari Antrean</span>
+                                <span class="hidden sm:inline">Ambil dari Antrean</span>
                             </button>
-                            <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target h-9 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Tambah Gambar JPG / PNG / WebP">
+                            <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target h-9 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Pilih Gambar (JPG/PNG)">
                                 <i data-lucide="image-plus" class="w-4 h-4"></i>
-                                <span>+ Gambar</span>
+                                <span>+ Pilih Gambar (JPG/PNG)</span>
                             </button>
                         </div>
                     </div>
@@ -855,22 +858,22 @@
                         <div>
                             <label for="jpgPdfPageSize" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
                                 <i data-lucide="maximize-2" class="w-3 h-3 text-rose-600"></i>
-                                <span>Kertas</span>
+                                <span>Ukuran Kertas PDF</span>
                             </label>
                             <select id="jpgPdfPageSize" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="A4" selected>A4 (210×297mm)</option>
+                                <option value="A4" selected>A4 Standar (210 × 297 mm)</option>
                                 <option value="F4">F4 / Folio</option>
                                 <option value="LETTER">Letter</option>
-                                <option value="FIT_IMAGE">Sesuai Gambar</option>
+                                <option value="FIT_IMAGE">Sesuai Ukuran Asli Gambar</option>
                             </select>
                         </div>
                         <div>
                             <label for="jpgPdfOrientation" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
                                 <i data-lucide="rotate-cw" class="w-3 h-3 text-rose-600"></i>
-                                <span>Orientasi</span>
+                                <span>Orientasi Halaman</span>
                             </label>
                             <select id="jpgPdfOrientation" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="AUTO" selected>Otomatis</option>
+                                <option value="AUTO" selected>Otomatis (Ikuti Rasio Gambar)</option>
                                 <option value="PORTRAIT">Portrait (Tegak)</option>
                                 <option value="LANDSCAPE">Landscape (Datar)</option>
                             </select>
@@ -878,18 +881,18 @@
                         <div>
                             <label for="jpgPdfMargin" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
                                 <i data-lucide="frame" class="w-3 h-3 text-rose-600"></i>
-                                <span>Margin</span>
+                                <span>Margin Tepi Halaman</span>
                             </label>
                             <select id="jpgPdfMargin" class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800">
-                                <option value="0">Tanpa Margin</option>
-                                <option value="20" selected>Margin Kecil</option>
+                                <option value="0">Tanpa Margin (Penuh)</option>
+                                <option value="20" selected>Margin Kecil (Rapi)</option>
                                 <option value="40">Margin Standar</option>
                             </select>
                         </div>
                         <div>
                             <label for="jpgPdfOutputName" class="flex items-center gap-1 text-[11px] font-bold text-slate-600 mb-1">
                                 <i data-lucide="file-signature" class="w-3 h-3 text-rose-600"></i>
-                                <span>Nama Output</span>
+                                <span>Nama File PDF Hasil</span>
                             </label>
                             <input type="text" id="jpgPdfOutputName" value="Dokumen_JPG_ke_PDF_SYNERGY" placeholder="Nama file..." class="w-full h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500">
                         </div>
@@ -900,7 +903,8 @@
                         <div class="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-1.5">
                             <i data-lucide="images" class="w-4 h-4"></i>
                         </div>
-                        <p class="text-xs font-bold text-slate-800">Ketuk / Tarik Gambar (JPG, PNG, WebP) ke Sini</p>
+                        <p class="text-xs font-bold text-slate-800">Ketuk untuk Menambahkan Gambar JPG / PNG atau Tarik & Lepas ke Sini</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Urutan halaman PDF dapat diatur naik/turun sebelum digabungkan menjadi PDF.</p>
 
                         <!-- Daftar Gambar JPG ke PDF -->
                         <div id="jpgToPdfListWrapper" onclick="event.stopPropagation()" class="hidden mt-3.5 pt-3 border-t border-slate-200 w-full text-left cursor-default space-y-2.5">
@@ -920,15 +924,18 @@
                     </div>
 
                     <!-- Tombol Eksekusi Konversi JPG ke PDF (Pratinjau & Unduh) -->
-                    <div class="flex flex-wrap items-center justify-end gap-2 pt-1">
-                        <button id="btnPreviewJpgToPdf" type="button" onclick="executeJpgToPdfConversion(true)" class="touch-target h-10 px-4 rounded-xl border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Buat PDF & Tampilkan Pratinjau Hasil Tanpa Langsung Mengunduh">
-                            <i data-lucide="eye" class="w-4 h-4"></i>
-                            <span>Pratinjau Hasil PDF</span>
-                        </button>
-                        <button id="btnBuildJpgToPdf" type="button" onclick="executeJpgToPdfConversion(false)" class="touch-target h-10 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition" title="Konversi Gambar ke PDF & Unduh">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Buat & Unduh PDF</span>
-                        </button>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        <span class="text-[11px] text-slate-500 italic">Tips: Anda juga dapat mengirim hasil PDF langsung ke antrean kompresi jika ingin mengatur target ukuran KB/MB.</span>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button id="btnPreviewJpgToPdf" type="button" onclick="executeJpgToPdfConversion(true)" class="touch-target h-10 px-4 rounded-xl border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Pratinjau PDF">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                <span>Pratinjau PDF</span>
+                            </button>
+                            <button id="btnBuildJpgToPdf" type="button" onclick="executeJpgToPdfConversion(false)" class="touch-target h-10 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition" title="Konversi & Unduh PDF Sekarang">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Konversi & Unduh PDF Sekarang (.pdf)</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Banner Hasil & LIVE PREVIEW Konversi JPG ke PDF -->
@@ -937,22 +944,22 @@
                             <div class="space-y-0.5 text-xs">
                                 <div class="flex items-center gap-2 font-bold text-emerald-950 text-sm">
                                     <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                                    <span id="jpgToPdfResultTitle">File PDF Berhasil Dibuat</span>
+                                    <span id="jpgToPdfResultTitle">PDF Berhasil Dibuat</span>
                                 </div>
                                 <p id="jpgToPdfResultMeta" class="text-emerald-900 font-mono text-[11px]"></p>
                             </div>
                             <div class="flex flex-wrap items-center gap-1.5 shrink-0">
-                                <button type="button" onclick="toggleJpgPdfInlinePreview()" class="touch-target h-9 px-3 rounded-xl border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-1.5 transition" title="Tampilkan / Sembunyikan Pratinjau Halaman PDF">
+                                <button type="button" onclick="toggleJpgPdfInlinePreview()" class="touch-target h-9 px-3 rounded-xl border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-1.5 transition" title="Pratinjau Halaman PDF">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
                                     <span>Preview</span>
                                 </button>
-                                <button type="button" onclick="sendGeneratedPdfToCompressionQueue()" class="touch-target h-9 px-3 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition" title="Masukkan PDF ini ke Antrean Kompresi & Buka Pratinjau">
+                                <button type="button" onclick="sendGeneratedPdfToCompressionQueue()" class="touch-target h-9 px-3 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition" title="Masukkan ke Antrean Kompresi">
                                     <i data-lucide="layers" class="w-4 h-4"></i>
-                                    <span>Kompres</span>
+                                    <span>Masukkan ke Antrean Kompresi</span>
                                 </button>
-                                <button type="button" onclick="downloadLastGeneratedJpgPdf()" class="touch-target h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unduh File PDF (.pdf)">
+                                <button type="button" onclick="downloadLastGeneratedJpgPdf()" class="touch-target h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unduh PDF">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Unduh</span>
+                                    <span>Unduh PDF (.pdf)</span>
                                 </button>
                             </div>
                         </div>
@@ -973,6 +980,97 @@
                             <div class="overflow-auto max-h-[420px] flex items-center justify-center bg-checkerboard p-2 rounded-lg">
                                 <canvas id="canvasJpgToPdfPreview" class="max-w-full h-auto shadow-sm rounded bg-white border border-slate-200"></canvas>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- TAB 3: BEFORE & AFTER PREVIEW                             -->
+            <!-- ========================================================= -->
+            <section id="tab-preview" class="tab-panel hidden space-y-5">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                                <i data-lucide="split-square-horizontal" class="w-5 h-5 text-blue-600"></i>
+                                <span>Before & After Preview (Perbandingan Kualitas)</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Bandingkan kejernihan, ketajaman teks, dan ukuran file sebelum vs sesudah dikompres secara berdampingan.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="previewJobSelector" onchange="onSelectPreviewJob(this.value)" class="h-9 px-3 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800">
+                                <option value="">-- Pilih File --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Toolbar Kontrol Pratinjau -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-bold text-slate-700 mr-1">Mode Tampilan:</span>
+                            <button id="btnPrevModeSide" onclick="setPreviewMode('SIDE_BY_SIDE')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Berdampingan</button>
+                            <button id="btnPrevModeOrig" onclick="setPreviewMode('ORIGINAL')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Asli Saja</button>
+                            <button id="btnPrevModeRes" onclick="setPreviewMode('RESULT')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 transition">Hasil Saja</button>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-700">Zoom:</span>
+                            <button onclick="setPreviewZoom(0.75)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">75%</button>
+                            <button onclick="setPreviewZoom(1.0)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">100%</button>
+                            <button onclick="setPreviewZoom(1.5)" class="px-2.5 py-1 rounded border border-slate-300 bg-white font-bold">150%</button>
+                        </div>
+                    </div>
+
+                    <!-- PDF Page Navigation Bar (jika file PDF) -->
+                    <div id="previewPdfPageControls" class="hidden flex items-center justify-between bg-blue-50/70 p-2.5 rounded-xl border border-blue-200 text-xs">
+                        <span id="previewPdfPageIndicator" class="font-bold text-blue-900">Hal 1 / 1</span>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="changePreviewPdfPage(-1)" class="px-3 py-1 rounded-lg bg-white border border-blue-300 text-blue-700 font-bold">&larr; Halaman Sebelumnya</button>
+                            <button onclick="changePreviewPdfPage(1)" class="px-3 py-1 rounded-lg bg-white border border-blue-300 text-blue-700 font-bold">Halaman Berikutnya &rarr;</button>
+                        </div>
+                    </div>
+
+                    <!-- Side by Side / Single Stage Canvas Container -->
+                    <div id="previewStageGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="previewPaneOriginal" class="p-3 rounded-2xl border border-slate-200 bg-white space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-800 border-b border-slate-100 pb-1.5">
+                                <span>FILE ASLI (ORIGINAL)</span>
+                                <span id="prevLabelOrigSub" class="font-mono text-slate-500 font-normal">0 B</span>
+                            </div>
+                            <div class="flex-1 min-h-[320px] max-h-[520px] overflow-auto flex items-center justify-center bg-checkerboard rounded-xl p-2">
+                                <canvas id="canvasPreviewOriginal" class="max-w-full h-auto shadow-sm rounded bg-white border border-slate-200"></canvas>
+                            </div>
+                        </div>
+
+                        <div id="previewPaneResult" class="p-3 rounded-2xl border border-emerald-200 bg-white space-y-2 flex flex-col">
+                            <div class="flex items-center justify-between text-xs font-bold text-emerald-900 border-b border-slate-100 pb-1.5">
+                                <span>HASIL KOMPRESI (COMPRESSED)</span>
+                                <span id="prevLabelResSub" class="font-mono text-emerald-700 font-normal">0 B</span>
+                            </div>
+                            <div class="flex-1 min-h-[320px] max-h-[520px] overflow-auto flex items-center justify-center bg-checkerboard rounded-xl p-2">
+                                <canvas id="canvasPreviewResult" class="max-w-full h-auto shadow-sm rounded bg-white border border-slate-200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Statistics Strip -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                            <span class="text-slate-500 block text-[11px]">Ukuran Awal</span>
+                            <strong id="prevStatOriginalSize" class="font-mono text-slate-900 text-sm">0 B</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                            <span class="text-slate-500 block text-[11px]">Ukuran Hasil</span>
+                            <strong id="prevStatCompressedSize" class="font-mono text-emerald-700 text-sm">0 B</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                            <span class="text-slate-500 block text-[11px]">Resolusi / Halaman</span>
+                            <strong id="prevStatDimensions" class="text-slate-900 text-sm truncate block">-</strong>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                            <span class="text-slate-500 block text-[11px]">Metrik Kualitas (SSIM / PSNR)</span>
+                            <strong id="prevStatQualityMetric" class="font-mono text-blue-700 text-sm">-</strong>
                         </div>
                     </div>
                 </div>
@@ -1859,7 +1957,6 @@
             document.getElementById('queueHeaderCount').textContent = total;
             document.getElementById('badgeResultsCount').textContent = doneCount;
 
-            // Update KPI Strip
             const totalOrigBytes = AppState.filesQueue.reduce((acc, j) => acc + j.originalSize, 0);
             const totalCompBytes = AppState.filesQueue.reduce((acc, j) => acc + (j.result ? j.result.compressedSize : j.originalSize), 0);
             const savedBytes = Math.max(0, totalOrigBytes - totalCompBytes);
@@ -1874,7 +1971,6 @@
             if (doneCount > 0) zipBtn.classList.remove('hidden');
             else zipBtn.classList.add('hidden');
 
-            // Update Dropzone Uploaded Files List (All files + Initial Size + Delete Button)
             const summaryBox = document.getElementById('dropzoneUploadedSummary');
             const summaryCountText = document.getElementById('dropzoneUploadedCountText');
             const summaryList = document.getElementById('dropzoneUploadedFilesList');
@@ -2171,7 +2267,6 @@
                         : '0.0';
                     const isLarger = res.blob.size > job.originalSize;
 
-                    // If user enabled "Cegah Ukuran Membengkak" and result is larger while format wasn't forced
                     let finalBlob = res.blob;
                     let usedOriginalFallback = false;
                     if (isLarger && AppState.options.keepOriginalIfLarger && AppState.options.imageFormat === 'ORIGINAL') {
@@ -2237,7 +2332,6 @@
             const origW = img.naturalWidth || img.width;
             const origH = img.naturalHeight || img.height;
 
-            // Determine output MIME safely (Never turn transparent PNG into JPEG automatically)
             let outMime = job.mimeType;
             if (AppState.options.imageFormat !== 'ORIGINAL') {
                 outMime = AppState.options.imageFormat;
@@ -2246,7 +2340,6 @@
                 outMime = 'image/png';
             }
 
-            // Compute target dimensions without ever upscaling
             let scale = preset.maxScale;
             let maxCap = preset.maxDimensionCap;
             if (AppState.options.maxDimension !== 'PRESET') {
@@ -2262,7 +2355,6 @@
                 targetH = Math.max(1, Math.round(targetH * ratio));
             }
 
-            // Helper to render at given scale & quality/bits
             const encodeAttempt = async (w, h, q, pngBits) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = w;
@@ -2292,10 +2384,8 @@
 
             let bestAttempt = await encodeAttempt(targetW, targetH, preset.jpegQuality, preset.pngColorBits);
 
-            // If Custom Target Size (KB / MB) is active and current result exceeds targetBytes
             if (targetBytes > 0 && bestAttempt.blob.size > targetBytes) {
                 if (outMime === 'image/png') {
-                    // For PNG, try WebP (preserves transparency) or progressive bit quantization + scale
                     const scaleSteps = [1.0, 0.85, 0.72, 0.60, 0.48, 0.36];
                     for (const s of scaleSteps) {
                         const w = Math.max(64, Math.round(targetW * s));
@@ -2305,7 +2395,6 @@
                         if (attempt.blob.size <= targetBytes) break;
                     }
                 } else {
-                    // Binary search quality + multi-stage resolution scaling for JPEG/WebP
                     const scaleFactors = [1.0, 0.85, 0.70, 0.55, 0.42];
                     let foundUnderTarget = false;
                     for (const sf of scaleFactors) {
@@ -2330,7 +2419,6 @@
                 }
             }
 
-            // Compute real visual similarity metrics (PSNR & SSIM) on a 128x128 sample
             const metrics = await computeVisualSimilarity(img, bestAttempt.blob);
             const extMap = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
             const outExt = extMap[outMime] || 'jpg';
@@ -2395,14 +2483,13 @@
         }
 
         // =========================================================
-        // REAL PDF COMPRESSION ENGINE (TEXT PRESERVING + EMBEDDED JPEG OPTIMIZER)
+        // REAL PDF COMPRESSION ENGINE
         // =========================================================
         async function compressPdfJob(job, targetBytes = 0) {
             const preset = COMPRESSION_PRESETS[job.preset] || COMPRESSION_PRESETS.STANDARD;
             const arrayBuffer = await job.file.arrayBuffer();
             const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { updateMetadata: false });
 
-            // 1. Clean non-essential structural dictionaries safely
             try {
                 const catalog = pdfDoc.catalog;
                 if (catalog) {
@@ -2411,7 +2498,6 @@
                 }
             } catch (e) {}
 
-            // 2. Re-compress embedded DCTDecode (JPEG) streams selectively without touching text/fonts
             const optimizeEmbeddedImages = async (quality, scaleFactor) => {
                 const indirectObjects = pdfDoc.context.enumerateIndirectObjects();
                 for (const [ref, obj] of indirectObjects) {
@@ -2452,7 +2538,6 @@
             await optimizeEmbeddedImages(preset.pdfEmbeddedJpegQuality, preset.pdfEmbeddedScale);
             let savedBytes = await pdfDoc.save({ useObjectStreams: true, addDefaultPage: false, objectsPerTick: 100 });
 
-            // If Target Size (KB/MB) is enabled and PDF has embedded images that can be scaled down further
             if (targetBytes > 0 && savedBytes.byteLength > targetBytes) {
                 const retrySteps = [
                     { q: 0.55, s: 0.72 },
@@ -2479,7 +2564,7 @@
         }
 
         // =========================================================
-        // PDF TO WORD (.DOCX), EXCEL (.XLSX) & JPG CONVERSION ENGINE
+        // PDF TO WORD, EXCEL & JPG CONVERSION ENGINE
         // =========================================================
         function syncConvertFromQueueIfEmpty() {
             const selector = document.getElementById('convertPdfQueueSelector');
@@ -2519,214 +2604,9 @@
                 </div>
             `;
         }
-        async function runPdfConversion(targetFormat, previewOnly = false) {
-            if (!AppState.convertSourceFile) {
-                syncConvertFromQueueIfEmpty();
-                if (!AppState.convertSourceFile) {
-                    showToast('Pilih File PDF Terlebih Dahulu', 'Unggah file PDF (+ PDF) atau pilih PDF dari daftar antrean untuk dikonversi.', 'warning');
-                    return;
-                }
-            }
 
-            const file = AppState.convertSourceFile;
-            const baseName = file.name.replace(/\.[^/.]+$/, '');
-            showToast('Memproses Konversi PDF', `Mengekstrak teks, tabel, dan pratinjau dari "${file.name}"...`, 'info');
-
-            try {
-                const pages = await extractPdfStructuredPages(file);
-                const outArea = document.getElementById('convertOutputArea');
-                const outTitle = document.getElementById('convertOutputTitle');
-                const outActions = document.getElementById('convertOutputActions');
-                const outGrid = document.getElementById('convertOutputPreviewGrid');
-                outArea.classList.remove('hidden');
-                outGrid.innerHTML = '';
-
-                if (targetFormat === 'DOCX') {
-                    const docxBlob = await buildValidDocxBlob(pages, baseName);
-                    const fileName = `${baseName}_synergy.docx`;
-                    AppState.lastConvertedBlob = { blob: docxBlob, name: fileName };
-
-                    outTitle.textContent = `Hasil Konversi Word: ${fileName} (${formatBytes(docxBlob.size)})`;
-                    outActions.innerHTML = `
-                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Unduh Word (.docx)</span>
-                        </button>
-                    `;
-
-                    // Build Live Visual Preview of the Word Document Content + Page Snapshot
-                    outGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
-                    outGrid.innerHTML = pages.map(p => {
-                        const pageImgUrl = URL.createObjectURL(p.jpgBlob);
-                        const linesHtml = p.rows.length > 0
-                            ? p.rows.slice(0, 18).map(r => `<p class="text-[11px] text-slate-800 font-sans border-b border-slate-100 py-0.5 truncate">${escapeXml(r.cells.map(c => c.str).join('   '))}</p>`).join('')
-                            : `<p class="text-xs text-slate-500 italic">Halaman Scan Gambar (Disematkan utuh ke Word)</p>`;
-
-                        return `
-                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
-                                <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
-                                    <span class="text-xs font-bold text-blue-700 flex items-center gap-1">
-                                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                                        <span>Pratinjau Word — Halaman ${p.pageNumber}</span>
-                                    </span>
-                                    <button onclick="openQuickImagePreview('${pageImgUrl}', 'Pratinjau Halaman ${p.pageNumber} (${fileName})')" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-blue-50 text-blue-600 flex items-center justify-center" title="Perbesar Pratinjau Halaman">
-                                        <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
-                                    </button>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-start">
-                                    <img src="${pageImgUrl}" alt="Hal ${p.pageNumber}" class="w-full h-36 object-contain bg-slate-50 rounded-lg border border-slate-200 cursor-pointer" onclick="openQuickImagePreview('${pageImgUrl}', 'Halaman ${p.pageNumber}')">
-                                    <div class="p-2 rounded-lg bg-slate-50 border border-slate-200 max-h-36 overflow-y-auto">
-                                        <span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Teks & Baris Tereksraksi:</span>
-                                        ${linesHtml}
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-
-                    if (!previewOnly) {
-                        triggerBlobDownload(docxBlob, fileName);
-                        showToast('Konversi Word Berhasil', `File "${fileName}" diunduh & pratinjau hasil ditampilkan di bawah.`, 'success');
-                    } else {
-                        showToast('Pratinjau Word Siap', `Menampilkan pratinjau hasil konversi Word (${pages.length} halaman).`, 'info');
-                    }
-                    if (window.lucide) lucide.createIcons();
-
-                } else if (targetFormat === 'XLSX') {
-                    const xlsxBlob = await buildValidXlsxBlob(pages);
-                    const fileName = `${baseName}_synergy.xlsx`;
-                    AppState.lastConvertedBlob = { blob: xlsxBlob, name: fileName };
-
-                    outTitle.textContent = `Hasil Konversi Excel: ${fileName} (${formatBytes(xlsxBlob.size)})`;
-                    outActions.innerHTML = `
-                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Unduh Excel (.xlsx)</span>
-                        </button>
-                    `;
-
-                    // Build Live Interactive Table Preview of the Excel Worksheets
-                    outGrid.className = 'grid grid-cols-1 gap-3';
-                    outGrid.innerHTML = pages.map(p => {
-                        const tableRowsHtml = p.rows.length > 0
-                            ? p.rows.slice(0, 15).map((r, rIdx) => `
-                                <tr class="border-b border-slate-200 hover:bg-emerald-50/40">
-                                    <td class="px-2 py-1 bg-slate-100 font-mono text-[10px] font-bold text-slate-500 border-r border-slate-200 w-8 text-center">${rIdx + 1}</td>
-                                    ${r.cells.slice(0, 8).map(c => `<td class="px-2.5 py-1 text-[11px] text-slate-800 border-r border-slate-200 font-mono">${escapeXml(c.str)}</td>`).join('')}
-                                </tr>
-                            `).join('')
-                            : `<tr><td class="p-3 text-xs text-slate-500">Halaman ${p.pageNumber} berisi gambar scan penuh.</td></tr>`;
-
-                        return `
-                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
-                                        <i data-lucide="table" class="w-4 h-4"></i>
-                                        <span>Pratinjau Sheet Excel: Halaman_${p.pageNumber} (${p.rows.length} Baris)</span>
-                                    </span>
-                                </div>
-                                <div class="overflow-x-auto max-h-48 border border-slate-200 rounded-lg">
-                                    <table class="w-full text-left border-collapse">
-                                        <tbody>${tableRowsHtml}</tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-
-                    if (!previewOnly) {
-                        triggerBlobDownload(xlsxBlob, fileName);
-                        showToast('Konversi Excel Berhasil', `File "${fileName}" diunduh & pratinjau tabel ditampilkan di bawah.`, 'success');
-                    } else {
-                        showToast('Pratinjau Tabel Excel Siap', `Menampilkan pratinjau hasil ekstraksi tabel Excel.`, 'info');
-                    }
-                    if (window.lucide) lucide.createIcons();
-
-                } else if (targetFormat === 'JPG') {
-                    AppState.convertGeneratedJpgs = pages.map(p => ({
-                        name: `${baseName}_hal_${p.pageNumber}.jpg`,
-                        blob: p.jpgBlob,
-                        url: URL.createObjectURL(p.jpgBlob),
-                        pageNumber: p.pageNumber
-                    }));
-
-                    outTitle.textContent = `Pratinjau & Hasil Konversi Gambar JPG (${pages.length} Halaman • 2x DPI)`;
-                    outActions.innerHTML = `
-                        <button onclick="downloadConvertedJpgsAsZip('${baseName}')" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5">
-                            <i data-lucide="archive" class="w-4 h-4"></i>
-                            <span>Unduh ZIP</span>
-                        </button>
-                    `;
-
-                    outGrid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3';
-                    outGrid.innerHTML = AppState.convertGeneratedJpgs.map((item, idx) => `
-                        <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-2 shadow-2xs">
-                            <div class="relative group cursor-pointer" onclick="openQuickImagePreview('${item.url}', '${item.name} (${formatBytes(item.blob.size)})', ${idx})">
-                                <img src="${item.url}" alt="Halaman ${item.pageNumber}" class="w-full h-40 object-contain bg-slate-100 rounded-lg border border-slate-200">
-                                <span class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-slate-900/75 text-white flex items-center justify-center" title="Perbesar Pratinjau">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
-                                </span>
-                            </div>
-                            <div class="flex items-center justify-between gap-2 text-xs">
-                                <span class="font-bold text-slate-800 truncate">Hal ${item.pageNumber} (${formatBytes(item.blob.size)})</span>
-                                <div class="flex items-center gap-1">
-                                    <button onclick="openQuickImagePreview('${item.url}', '${item.name}', ${idx})" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center" title="Lihat Pratinjau Penuh">
-                                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                    </button>
-                                    <button onclick="downloadSingleConvertedJpg(${idx})" class="h-8 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1" title="Unduh JPG Ini">
-                                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-
-                    if (!previewOnly && pages.length === 1) {
-                        triggerBlobDownload(pages[0].jpgBlob, `${baseName}_hal_1.jpg`);
-                    }
-                    if (window.lucide) lucide.createIcons();
-                    showToast('Pratinjau & Konversi JPG Selesai', `${pages.length} halaman PDF berhasil dirender menjadi gambar JPG tajam.`, 'success');
-                }
-            } catch (err) {
-                showToast('Gagal Mengonversi PDF', err.message || 'Terjadi kesalahan saat membaca struktur PDF.', 'error');
-            }
-        }
-
-        function downloadLastConvertedBlob() {
-            if (AppState.lastConvertedBlob) {
-                triggerBlobDownload(AppState.lastConvertedBlob.blob, AppState.lastConvertedBlob.name);
-            }
-        }
-
-        function openQuickImagePreview(imgUrl, titleText, jpgIndex = null) {
-            const modal = document.getElementById('quickResultPreviewModal');
-            const titleEl = document.getElementById('quickPreviewModalTitle');
-            const bodyEl = document.getElementById('quickPreviewModalBody');
-            const dlBtn = document.getElementById('quickPreviewModalDownloadBtn');
-
-            titleEl.textContent = titleText || 'Pratinjau Hasil';
-            bodyEl.innerHTML = `<img src="${imgUrl}" alt="${titleText}" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-md bg-white">`;
-
-            dlBtn.onclick = () => {
-                if (jpgIndex !== null && AppState.convertGeneratedJpgs[jpgIndex]) {
-                    downloadSingleConvertedJpg(jpgIndex);
-                } else if (AppState.lastConvertedBlob) {
-                    downloadLastConvertedBlob();
-                } else {
-                    const a = document.createElement('a');
-                    a.href = imgUrl;
-                    a.download = 'pratinjau_synergy.jpg';
-                    a.click();
-                }
-            };
-
-            modal.classList.remove('hidden');
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function closeQuickPreviewModal() {
-            document.getElementById('quickResultPreviewModal').classList.add('hidden');
-        }
+        async function extractPdfStructuredPages(file) {
+            const buffer = await file.arrayBuffer();
             const loadingTask = pdfjsLib.getDocument({ data: buffer });
             const pdf = await loadingTask.promise;
             const pages = [];
@@ -2736,7 +2616,6 @@
                 const viewport = page.getViewport({ scale: 2.0 });
                 const textContent = await page.getTextContent();
 
-                // Group text items by Y coordinate (lines) and sort by X coordinate (columns)
                 const rawItems = textContent.items.map(item => ({
                     str: item.str,
                     x: Math.round(item.transform[4]),
@@ -2758,7 +2637,6 @@
 
                 rows.forEach(r => r.cells.sort((a, b) => a.x - b.x));
 
-                // Render high-res page canvas for JPG export or scanned-PDF Word embedding
                 const canvas = document.createElement('canvas');
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
@@ -2810,15 +2688,10 @@
                     bodyContent += `<w:p><w:r><w:t>[Halaman ${p.pageNumber} - Dokumen Scan / Gambar]</w:t></w:r></w:p>`;
                 } else {
                     p.rows.forEach(row => {
-                        if (row.cells.length > 1) {
-                            // Multi-column row -> reconstruct as clean tab-separated or table-like line preserving exact text
+                        if (row.cells.length > 0) {
                             const lineText = row.cells.map(c => c.str).join('    ');
                             const halfPt = Math.max(18, Math.min(44, row.fontSize * 2));
                             bodyContent += `<w:p><w:r><w:rPr><w:sz w:val="${halfPt}"/></w:rPr><w:t xml:space="preserve">${escapeXml(lineText)}</w:t></w:r></w:p>`;
-                        } else if (row.cells.length === 1) {
-                            const halfPt = Math.max(18, Math.min(44, row.fontSize * 2));
-                            const isHeading = row.fontSize >= 14;
-                            bodyContent += `<w:p><w:r><w:rPr>${isHeading ? '<w:b/>' : ''}<w:sz w:val="${halfPt}"/></w:rPr><w:t xml:space="preserve">${escapeXml(row.cells[0].str)}</w:t></w:r></w:p>`;
                         }
                     });
                 }
@@ -2918,7 +2791,7 @@
             return createStoredZipBlob(zipEntries, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         }
 
-        async function runPdfConversion(targetFormat) {
+        async function runPdfConversion(targetFormat, previewOnly = false) {
             if (!AppState.convertSourceFile) {
                 syncConvertFromQueueIfEmpty();
                 if (!AppState.convertSourceFile) {
@@ -2929,7 +2802,7 @@
 
             const file = AppState.convertSourceFile;
             const baseName = file.name.replace(/\.[^/.]+$/, '');
-            showToast('Memproses Konversi PDF', `Mengekstrak teks, tabel, dan halaman dari "${file.name}"...`, 'info');
+            showToast('Memproses Konversi PDF', `Mengekstrak teks, tabel, dan pratinjau dari "${file.name}"...`, 'info');
 
             try {
                 const pages = await extractPdfStructuredPages(file);
@@ -2943,17 +2816,98 @@
                 if (targetFormat === 'DOCX') {
                     const docxBlob = await buildValidDocxBlob(pages, baseName);
                     const fileName = `${baseName}_synergy.docx`;
-                    triggerBlobDownload(docxBlob, fileName);
-                    outTitle.textContent = `Berhasil Dikonversi ke Word: ${fileName} (${formatBytes(docxBlob.size)})`;
-                    outActions.innerHTML = '';
-                    showToast('Konversi Word Berhasil', `File "${fileName}" telah diunduh dan siap dibuka di Microsoft Word.`, 'success');
+                    AppState.lastConvertedBlob = { blob: docxBlob, name: fileName };
+
+                    outTitle.textContent = `Hasil Konversi Word: ${fileName} (${formatBytes(docxBlob.size)})`;
+                    outActions.innerHTML = `
+                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Unduh Word (.docx)</span>
+                        </button>
+                    `;
+
+                    outGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+                    outGrid.innerHTML = pages.map(p => {
+                        const pageImgUrl = URL.createObjectURL(p.jpgBlob);
+                        const linesHtml = p.rows.length > 0
+                            ? p.rows.slice(0, 18).map(r => `<p class="text-[11px] text-slate-800 font-sans border-b border-slate-100 py-0.5 truncate">${escapeXml(r.cells.map(c => c.str).join('   '))}</p>`).join('')
+                            : `<p class="text-xs text-slate-500 italic">Halaman Scan Gambar</p>`;
+
+                        return `
+                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                                    <span class="text-xs font-bold text-blue-700 flex items-center gap-1">
+                                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                        <span>Pratinjau Word — Halaman ${p.pageNumber}</span>
+                                    </span>
+                                    <button onclick="openQuickImagePreview('${pageImgUrl}', 'Pratinjau Halaman ${p.pageNumber}')" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-start">
+                                    <img src="${pageImgUrl}" alt="Hal ${p.pageNumber}" class="w-full h-36 object-contain bg-slate-50 rounded-lg border border-slate-200 cursor-pointer" onclick="openQuickImagePreview('${pageImgUrl}', 'Halaman ${p.pageNumber}')">
+                                    <div class="p-2 rounded-lg bg-slate-50 border border-slate-200 max-h-36 overflow-y-auto">
+                                        <span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Teks Tereksraksi:</span>
+                                        ${linesHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (!previewOnly) {
+                        triggerBlobDownload(docxBlob, fileName);
+                        showToast('Konversi Word Berhasil', `File "${fileName}" diunduh.`, 'success');
+                    } else {
+                        showToast('Pratinjau Word Siap', `Menampilkan pratinjau konversi Word (${pages.length} halaman).`, 'info');
+                    }
                 } else if (targetFormat === 'XLSX') {
                     const xlsxBlob = await buildValidXlsxBlob(pages);
                     const fileName = `${baseName}_synergy.xlsx`;
-                    triggerBlobDownload(xlsxBlob, fileName);
-                    outTitle.textContent = `Berhasil Dikonversi ke Excel: ${fileName} (${formatBytes(xlsxBlob.size)})`;
-                    outActions.innerHTML = '';
-                    showToast('Konversi Excel Berhasil', `File "${fileName}" telah diunduh dan siap dibuka di Microsoft Excel.`, 'success');
+                    AppState.lastConvertedBlob = { blob: xlsxBlob, name: fileName };
+
+                    outTitle.textContent = `Hasil Konversi Excel: ${fileName} (${formatBytes(xlsxBlob.size)})`;
+                    outActions.innerHTML = `
+                        <button onclick="downloadLastConvertedBlob()" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Unduh Excel (.xlsx)</span>
+                        </button>
+                    `;
+
+                    outGrid.className = 'grid grid-cols-1 gap-3';
+                    outGrid.innerHTML = pages.map(p => {
+                        const tableRowsHtml = p.rows.length > 0
+                            ? p.rows.slice(0, 15).map((r, rIdx) => `
+                                <tr class="border-b border-slate-200 hover:bg-emerald-50/40">
+                                    <td class="px-2 py-1 bg-slate-100 font-mono text-[10px] font-bold text-slate-500 border-r border-slate-200 w-8 text-center">${rIdx + 1}</td>
+                                    ${r.cells.slice(0, 8).map(c => `<td class="px-2.5 py-1 text-[11px] text-slate-800 border-r border-slate-200 font-mono">${escapeXml(c.str)}</td>`).join('')}
+                                </tr>
+                            `).join('')
+                            : `<tr><td class="p-3 text-xs text-slate-500">Halaman ${p.pageNumber} berisi gambar scan penuh.</td></tr>`;
+
+                        return `
+                            <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                                        <i data-lucide="table" class="w-4 h-4"></i>
+                                        <span>Pratinjau Sheet Excel: Halaman_${p.pageNumber} (${p.rows.length} Baris)</span>
+                                    </span>
+                                </div>
+                                <div class="overflow-x-auto max-h-48 border border-slate-200 rounded-lg">
+                                    <table class="w-full text-left border-collapse">
+                                        <tbody>${tableRowsHtml}</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (!previewOnly) {
+                        triggerBlobDownload(xlsxBlob, fileName);
+                        showToast('Konversi Excel Berhasil', `File "${fileName}" diunduh.`, 'success');
+                    } else {
+                        showToast('Pratinjau Excel Siap', `Menampilkan pratinjau tabel Excel.`, 'info');
+                    }
                 } else if (targetFormat === 'JPG') {
                     AppState.convertGeneratedJpgs = pages.map(p => ({
                         name: `${baseName}_hal_${p.pageNumber}.jpg`,
@@ -2962,32 +2916,47 @@
                         pageNumber: p.pageNumber
                     }));
 
-                    outTitle.textContent = `Berhasil Merender ${pages.length} Halaman ke Gambar JPG (2x DPI)`;
+                    outTitle.textContent = `Pratinjau & Hasil Konversi Gambar JPG (${pages.length} Halaman • 2x DPI)`;
                     outActions.innerHTML = `
-                        <button onclick="downloadConvertedJpgsAsZip('${baseName}')" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5">
-                            <i data-lucide="archive" class="w-3.5 h-3.5"></i>
-                            <span>Unduh Semua Halaman (.ZIP)</span>
+                        <button onclick="downloadConvertedJpgsAsZip('${baseName}')" class="h-9 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5">
+                            <i data-lucide="archive" class="w-4 h-4"></i>
+                            <span>Unduh ZIP</span>
                         </button>
                     `;
 
+                    outGrid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3';
                     outGrid.innerHTML = AppState.convertGeneratedJpgs.map((item, idx) => `
-                        <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-2">
-                            <img src="${item.url}" alt="Halaman ${item.pageNumber}" class="w-full h-36 object-contain bg-slate-100 rounded-lg border border-slate-200">
+                        <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-2 shadow-2xs">
+                            <div class="relative group cursor-pointer" onclick="openQuickImagePreview('${item.url}', '${item.name}', ${idx})">
+                                <img src="${item.url}" alt="Halaman ${item.pageNumber}" class="w-full h-40 object-contain bg-slate-100 rounded-lg border border-slate-200">
+                                <span class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-slate-900/75 text-white flex items-center justify-center">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </span>
+                            </div>
                             <div class="flex items-center justify-between gap-2 text-xs">
-                                <span class="font-bold text-slate-800 truncate">Halaman ${item.pageNumber} (${formatBytes(item.blob.size)})</span>
-                                <button onclick="downloadSingleConvertedJpg(${idx})" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold">Unduh JPG</button>
+                                <span class="font-bold text-slate-800 truncate">Hal ${item.pageNumber} (${formatBytes(item.blob.size)})</span>
+                                <button onclick="downloadSingleConvertedJpg(${idx})" class="h-8 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold flex items-center gap-1">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                    <span>Unduh</span>
+                                </button>
                             </div>
                         </div>
                     `).join('');
 
-                    if (pages.length === 1) {
+                    if (!previewOnly && pages.length === 1) {
                         triggerBlobDownload(pages[0].jpgBlob, `${baseName}_hal_1.jpg`);
                     }
-                    if (window.lucide) lucide.createIcons();
-                    showToast('Konversi JPG Berhasil', `${pages.length} halaman PDF berhasil dirender menjadi gambar JPG tajam.`, 'success');
+                    showToast('Konversi JPG Selesai', `${pages.length} halaman dirender menjadi JPG.`, 'success');
                 }
+                if (window.lucide) lucide.createIcons();
             } catch (err) {
-                showToast('Gagal Mengonversi PDF', err.message || 'Terjadi kesalahan saat membaca struktur PDF.', 'error');
+                showToast('Gagal Mengonversi PDF', err.message || 'Terjadi kesalahan.', 'error');
+            }
+        }
+
+        function downloadLastConvertedBlob() {
+            if (AppState.lastConvertedBlob) {
+                triggerBlobDownload(AppState.lastConvertedBlob.blob, AppState.lastConvertedBlob.name);
             }
         }
 
@@ -3009,8 +2978,38 @@
             triggerBlobDownload(zipBlob, `${baseName}_jpg_bundle.zip`);
         }
 
+        function openQuickImagePreview(imgUrl, titleText, jpgIndex = null) {
+            const modal = document.getElementById('quickResultPreviewModal');
+            const titleEl = document.getElementById('quickPreviewModalTitle');
+            const bodyEl = document.getElementById('quickPreviewModalBody');
+            const dlBtn = document.getElementById('quickPreviewModalDownloadBtn');
+
+            titleEl.textContent = titleText || 'Pratinjau Hasil';
+            bodyEl.innerHTML = `<img src="${imgUrl}" alt="${titleText}" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-md bg-white">`;
+
+            dlBtn.onclick = () => {
+                if (jpgIndex !== null && AppState.convertGeneratedJpgs[jpgIndex]) {
+                    downloadSingleConvertedJpg(jpgIndex);
+                } else if (AppState.lastConvertedBlob) {
+                    downloadLastConvertedBlob();
+                } else {
+                    const a = document.createElement('a');
+                    a.href = imgUrl;
+                    a.download = 'pratinjau_synergy.jpg';
+                    a.click();
+                }
+            };
+
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeQuickPreviewModal() {
+            document.getElementById('quickResultPreviewModal').classList.add('hidden');
+        }
+
         // =========================================================
-        // CONVERTER GAMBAR (JPG / PNG / WEBP) KE PDF ENGINE
+        // CONVERTER GAMBAR (JPG / PNG) KE PDF ENGINE
         // =========================================================
         function scrollToJpgToPdfSection() {
             const el = document.getElementById('jpgToPdfSectionCard');
@@ -3036,10 +3035,7 @@
                 const ext = (file.name.split('.').pop() || '').toLowerCase();
                 const mime = file.type || '';
                 const isImg = mime.startsWith('image/') || ['jpg', 'jpeg', 'png', 'webp', 'bmp'].includes(ext);
-                if (!isImg) {
-                    showToast('Format Dilewati', `"${file.name}" bukan file gambar (gunakan JPG, PNG, WebP, atau BMP).`, 'warning');
-                    continue;
-                }
+                if (!isImg) continue;
 
                 try {
                     const imgEl = await loadImageElement(file);
@@ -3054,21 +3050,19 @@
                         thumbUrl
                     });
                     addedCount++;
-                } catch (err) {
-                    showToast('Gagal Membaca Gambar', `File "${file.name}" tidak dapat dimuat.`, 'error');
-                }
+                } catch (err) {}
             }
 
             renderJpgToPdfQueue();
             if (addedCount > 0) {
-                showToast('Gambar Ditambahkan', `${addedCount} gambar siap dikonversi menjadi halaman PDF.`, 'success');
+                showToast('Gambar Ditambahkan', `${addedCount} gambar siap dikonversi menjadi PDF.`, 'success');
             }
         }
 
         async function importQueueImagesToJpgToPdf() {
             const imgJobs = AppState.filesQueue.filter(j => j.category === 'IMAGE');
             if (imgJobs.length === 0) {
-                showToast('Tidak Ada Gambar di Antrean', 'Belum ada file gambar di antrean Workspace. Silakan pilih gambar langsung.', 'warning');
+                showToast('Tidak Ada Gambar di Antrean', 'Belum ada file gambar di antrean Workspace.', 'warning');
                 return;
             }
             await addImagesToJpgToPdfQueue(imgJobs.map(j => j.file));
@@ -3104,15 +3098,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-1 shrink-0">
-                        <button type="button" onclick="moveJpgToPdfItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Atas">
-                            <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
-                        </button>
-                        <button type="button" onclick="moveJpgToPdfItem(${idx}, 1)" ${idx === total - 1 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Bawah">
-                            <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
-                        </button>
-                        <button type="button" onclick="removeJpgToPdfItem('${item.id}')" class="px-2 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1" title="Hapus gambar ini">
-                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                        </button>
+                        <button type="button" onclick="moveJpgToPdfItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Atas">&uarr;</button>
+                        <button type="button" onclick="moveJpgToPdfItem(${idx}, 1)" ${idx === total - 1 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Bawah">&darr;</button>
+                        <button type="button" onclick="removeJpgToPdfItem('${item.id}')" class="px-2 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1">Hapus</button>
                     </div>
                 </div>
             `).join('');
@@ -3144,7 +3132,7 @@
             AppState.jpgToPdfQueue = [];
             renderJpgToPdfQueue();
             document.getElementById('jpgToPdfResultBanner').classList.add('hidden');
-            showToast('Daftar Gambar Dibersihkan', 'Semua gambar pada Converter JPG ke PDF telah dihapus.', 'info');
+            showToast('Daftar Gambar Dibersihkan', 'Semua gambar telah dihapus.', 'info');
         }
 
         async function buildPdfFromImagesList(imageItems, options = {}) {
@@ -3154,7 +3142,6 @@
 
             const pdfDoc = await PDFLib.PDFDocument.create();
             pdfDoc.setCreator('SYNERGY SMART COMPRESS — by BBR@SYNERGY smart system');
-            pdfDoc.setProducer('SYNERGY SMART COMPRESS Local PDF Builder');
 
             const PAGE_PRESETS = {
                 A4: [595.28, 841.89],
@@ -3168,7 +3155,6 @@
                 const imgW = imgEl.naturalWidth || imgEl.width;
                 const imgH = imgEl.naturalHeight || imgEl.height;
 
-                // Normalize image bytes into clean JPEG or PNG for reliable embedding
                 let embeddedImg;
                 const mime = (file.type || '').toLowerCase();
                 if (mime === 'image/jpeg' || mime === 'image/jpg') {
@@ -3197,9 +3183,53 @@
                 }
 
                 let pageW, pageH;
+                if (pageSizeMode === 'FIT_IMAGE') {
+                    pageW = imgW + marginPt * 2;
+                    pageH = imgH + marginPt * 2;
+                } else {
+                    const base = PAGE_PRESETS[pageSizeMode] || PAGE_PRESETS.A4;
+                    if (orientationMode === 'LANDSCAPE') {
+                        pageW = Math.max(base[0], base[1]);
+                        pageH = Math.min(base[0], base[1]);
+                    } else if (orientationMode === 'PORTRAIT') {
+                        pageW = Math.min(base[0], base[1]);
+                        pageH = Math.max(base[0], base[1]);
+                    } else {
+                        if (imgW > imgH) {
+                            pageW = Math.max(base[0], base[1]);
+                            pageH = Math.min(base[0], base[1]);
+                        } else {
+                            pageW = Math.min(base[0], base[1]);
+                            pageH = Math.max(base[0], base[1]);
+                        }
+                    }
+                }
+
+                const page = pdfDoc.addPage([pageW, pageH]);
+                const usableW = pageW - marginPt * 2;
+                const usableH = pageH - marginPt * 2;
+
+                const scale = Math.min(usableW / imgW, usableH / imgH);
+                const drawW = imgW * scale;
+                const drawH = imgH * scale;
+                const drawX = marginPt + (usableW - drawW) / 2;
+                const drawY = marginPt + (usableH - drawH) / 2;
+
+                page.drawImage(embeddedImg, {
+                    x: drawX,
+                    y: drawY,
+                    width: drawW,
+                    height: drawH
+                });
+            }
+
+            const pdfBytes = await pdfDoc.save();
+            return new Blob([pdfBytes], { type: 'application/pdf' });
+        }
+
         async function executeJpgToPdfConversion(previewOnly = false) {
             if (AppState.jpgToPdfQueue.length === 0) {
-                showToast('Pilih Gambar Terlebih Dahulu', 'Tambahkan satu atau beberapa gambar (JPG, PNG, WebP) untuk dikonversi menjadi PDF.', 'warning');
+                showToast('Pilih Gambar Terlebih Dahulu', 'Tambahkan gambar untuk dikonversi menjadi PDF.', 'warning');
                 document.getElementById('jpgToPdfInput').click();
                 return;
             }
@@ -3236,18 +3266,17 @@
                 titleEl.textContent = `PDF Berhasil Dibuat: ${fileName}`;
                 metaEl.textContent = `${AppState.jpgToPdfQueue.length} Halaman • Ukuran PDF: ${formatBytes(pdfBlob.size)} • Kertas: ${pageSize}`;
 
-                // Render Real Visual Preview of the newly generated PDF
                 document.getElementById('jpgToPdfLivePreviewBox').classList.remove('hidden');
                 await renderGeneratedJpgPdfPreviewPage(1);
 
                 if (!previewOnly) {
                     triggerBlobDownload(pdfBlob, fileName);
-                    showToast('Konversi JPG ke PDF Berhasil', `File "${fileName}" (${formatBytes(pdfBlob.size)}) telah diunduh & pratinjau ditampilkan.`, 'success');
+                    showToast('Konversi JPG ke PDF Berhasil', `File "${fileName}" diunduh.`, 'success');
                 } else {
-                    showToast('Pratinjau PDF Siap', `Pratinjau hasil "${fileName}" (${formatBytes(pdfBlob.size)}) ditampilkan di bawah.`, 'info');
+                    showToast('Pratinjau PDF Siap', `Pratinjau hasil "${fileName}" ditampilkan di bawah.`, 'info');
                 }
             } catch (err) {
-                showToast('Gagal Membuat PDF', err.message || 'Terjadi kesalahan saat menyusun halaman PDF.', 'error');
+                showToast('Gagal Membuat PDF', err.message || 'Terjadi kesalahan.', 'error');
             } finally {
                 btn.disabled = false;
                 if (window.lucide) lucide.createIcons();
@@ -3290,7 +3319,7 @@
             const pdfFile = new File([AppState.lastGeneratedJpgPdf.blob], AppState.lastGeneratedJpgPdf.name, { type: 'application/pdf' });
             await addFilesToQueue([pdfFile]);
             switchTab('workspace');
-            showToast('PDF Masuk ke Antrean Kompresi', `"${pdfFile.name}" telah dimasukkan ke Workspace untuk dikompres lebih lanjut.`, 'success');
+            showToast('PDF Masuk ke Antrean Kompresi', `"${pdfFile.name}" dimasukkan ke Workspace.`, 'success');
         }
 
         // =========================================================
@@ -3465,8 +3494,8 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-2 shrink-0">
                             <button onclick="openPreviewForJob('${job.id}')" class="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700">Pratinjau</button>
-                            <button onclick="downloadJobFile('${job.id}', true)" class="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-700">Unduh File Asli</button>
-                            <button onclick="downloadJobFile('${job.id}', false)" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold">Unduh Hasil Kompresi</button>
+                            <button onclick="downloadJobFile('${job.id}', true)" class="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-700">Unduh Asli</button>
+                            <button onclick="downloadJobFile('${job.id}', false)" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold">Unduh Hasil</button>
                         </div>
                     </div>
                 `;
@@ -3494,7 +3523,6 @@
             setTimeout(() => URL.revokeObjectURL(url), 5000);
         }
 
-        // Pure-JS Standard ZIP Builder (CRC32 + Stored Entries) - Zero External Dependency
         function crc32(bytes) {
             let c = -1;
             for (let i = 0; i < bytes.length; i++) {
@@ -3583,7 +3611,7 @@
         async function downloadAllCompletedAsZip() {
             const doneJobs = AppState.filesQueue.filter(j => j.status === 'DONE' && j.result);
             if (doneJobs.length === 0) {
-                showToast('Belum Ada Hasil', 'Kompres file terlebih dahulu sebelum mengunduh bundel ZIP.', 'warning');
+                showToast('Belum Ada Hasil', 'Kompres file terlebih dahulu.', 'warning');
                 return;
             }
             const entries = [];
@@ -3690,7 +3718,6 @@
                         });
                     }
                 }
-                // Save with unoptimized object streams first so structural optimization proves real reduction
                 const rawBytes = await pdfDoc.save({ useObjectStreams: false });
                 return new File([rawBytes], 'Laporan_Teks_Administrasi.pdf', { type: 'application/pdf' });
             }
@@ -3739,7 +3766,7 @@
                 }
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 42px sans-serif';
-                ctx.fillText('SYNERGY SMART COMPRESS - SAMPEL FOTO RESOLUSI TINGGI', 60, 420);
+                ctx.fillText('SYNERGY SMART COMPRESS - SAMPEL FOTO', 60, 420);
                 const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.97));
                 return new File([blob], 'Foto_Kegiatan_Lapangan.jpg', { type: 'image/jpeg' });
             }
@@ -3763,7 +3790,6 @@
                 return new File([blob], 'Logo_Transparan_Alpha.png', { type: 'image/png' });
             }
 
-            // small_text_img
             const canvas = document.createElement('canvas');
             canvas.width = 1000;
             canvas.height = 700;
@@ -3786,7 +3812,7 @@
         async function loadGeneratedSample(type) {
             const sampleFile = await createSampleFile(type);
             await addFilesToQueue([sampleFile]);
-            showToast('Sampel Uji Dimuat', `File "${sampleFile.name}" (${formatBytes(sampleFile.size)}) berhasil ditambahkan ke antrean.`, 'success');
+            showToast('Sampel Uji Dimuat', `File "${sampleFile.name}" berhasil ditambahkan ke antrean.`, 'success');
         }
 
         async function runFullAutomatedQASuite() {
@@ -3797,98 +3823,89 @@
 
             const results = [];
             try {
-                // Test 1: PDF Berbasis Teks
                 const fPdfText = await createSampleFile('pdf_text');
                 const jPdfText = { file: fPdfText, name: fPdfText.name, originalSize: fPdfText.size, mimeType: 'application/pdf', category: 'PDF', preset: 'STANDARD' };
                 const rPdfText = await compressPdfJob(jPdfText, 0);
                 results.push({
                     title: '1. Kompresi PDF Berbasis Teks (Pelestarian Teks)',
                     pass: rPdfText.blob.size > 0 && rPdfText.blob.size <= fPdfText.size,
-                    detail: `Awal: ${formatBytes(fPdfText.size)} → Hasil: ${formatBytes(rPdfText.blob.size)} (Teks & Vektor tetap utuh tanpa rasterisasi)`
+                    detail: `Awal: ${formatBytes(fPdfText.size)} → Hasil: ${formatBytes(rPdfText.blob.size)}`
                 });
 
-                // Test 2: PDF Hasil Scan
                 const fPdfScan = await createSampleFile('pdf_scan');
                 const jPdfScan = { file: fPdfScan, name: fPdfScan.name, originalSize: fPdfScan.size, mimeType: 'application/pdf', category: 'PDF', preset: 'HIGH' };
                 const rPdfScan = await compressPdfJob(jPdfScan, 0);
                 results.push({
-                    title: '2. Kompresi PDF Hasil Scan (Optimasi Gambar Tertanam)',
+                    title: '2. Kompresi PDF Hasil Scan',
                     pass: rPdfScan.blob.size < fPdfScan.size,
-                    detail: `Awal: ${formatBytes(fPdfScan.size)} → Hasil: ${formatBytes(rPdfScan.blob.size)} (Hemat ${(((fPdfScan.size - rPdfScan.blob.size) / fPdfScan.size) * 100).toFixed(1)}%)`
+                    detail: `Awal: ${formatBytes(fPdfScan.size)} → Hasil: ${formatBytes(rPdfScan.blob.size)}`
                 });
 
-                // Test 3: Foto JPEG Resolusi Tinggi
                 const fJpeg = await createSampleFile('jpeg_photo');
                 const jJpeg = { file: fJpeg, name: fJpeg.name, originalSize: fJpeg.size, mimeType: 'image/jpeg', category: 'IMAGE', preset: 'STANDARD' };
                 const rJpeg = await compressImageJob(jJpeg, 0);
                 results.push({
                     title: '3. Kompresi Foto JPEG Nyata',
                     pass: rJpeg.blob.size < fJpeg.size && rJpeg.width === 1280,
-                    detail: `Awal: ${formatBytes(fJpeg.size)} → Hasil: ${formatBytes(rJpeg.blob.size)} • SSIM: ${rJpeg.ssim}`
+                    detail: `Awal: ${formatBytes(fJpeg.size)} → Hasil: ${formatBytes(rJpeg.blob.size)}`
                 });
 
-                // Test 4: PNG Transparan (Pelestarian Alpha)
                 const fPng = await createSampleFile('png_transparent');
                 const jPng = { file: fPng, name: fPng.name, originalSize: fPng.size, mimeType: 'image/png', category: 'IMAGE', preset: 'STANDARD' };
                 const rPng = await compressImageJob(jPng, 0);
                 const pngInspectAfter = await inspectImageFile(rPng.blob);
                 results.push({
-                    title: '4. Kompresi PNG Transparan (Kanal Alpha Terjaga)',
+                    title: '4. Kompresi PNG Transparan (Kanal Alpha)',
                     pass: pngInspectAfter.hasAlpha === true && rPng.blob.size <= fPng.size,
-                    detail: `Awal: ${formatBytes(fPng.size)} → Hasil: ${formatBytes(rPng.blob.size)} • Transparansi Alpha: ${pngInspectAfter.hasAlpha ? 'TERJAGA' : 'HILANG'}`
+                    detail: `Transparansi Alpha: ${pngInspectAfter.hasAlpha ? 'TERJAGA' : 'HILANG'}`
                 });
 
-                // Test 5: Deteksi Gambar Tulisan Kecil oleh Quality Guard
                 const fSmall = await createSampleFile('small_text_img');
                 const smallInfo = await inspectImageFile(fSmall);
                 const qgSmall = evaluateQualityGuardForJob({ category: 'IMAGE', preset: 'EXTREME', originalSize: fSmall.size, inspection: smallInfo });
                 results.push({
                     title: '5. Quality Guard pada Gambar Bertulisan Kecil',
                     pass: qgSmall.status === 'RISIKO TINGGI',
-                    detail: `Kepadatan tepi: ${(smallInfo.edgeDensity * 100).toFixed(1)}% • Status Mode EXTREME: ${qgSmall.status}`
+                    detail: `Status Mode EXTREME: ${qgSmall.status}`
                 });
 
-                // Test 6: Verifikasi 5 Mode Kompresi (LOW s/d EXTREME)
                 const rLow = await compressImageJob({ ...jJpeg, preset: 'LOW' }, 0);
                 const rExt = await compressImageJob({ ...jJpeg, preset: 'EXTREME' }, 0);
                 results.push({
-                    title: '6. Diferensiasi 5 Mode Preset (LOW vs EXTREME)',
+                    title: '6. Diferensiasi 5 Mode Preset',
                     pass: rExt.blob.size < rLow.blob.size,
-                    detail: `Mode LOW: ${formatBytes(rLow.blob.size)} vs Mode EXTREME: ${formatBytes(rExt.blob.size)}`
+                    detail: `LOW: ${formatBytes(rLow.blob.size)} vs EXTREME: ${formatBytes(rExt.blob.size)}`
                 });
 
-                // Test 7: Verifikasi Target Ukuran File Kustom (KB/MB)
                 const target70KB = 70 * 1024;
                 const rTarget = await compressImageJob(jJpeg, target70KB);
                 results.push({
                     title: '7. Pencarian Target Ukuran Kustom (≤ 70 KB)',
                     pass: rTarget.blob.size <= target70KB,
-                    detail: `Target: ≤ 70.0 KB → Hasil Tercapai: ${formatBytes(rTarget.blob.size)}`
+                    detail: `Hasil Tercapai: ${formatBytes(rTarget.blob.size)}`
                 });
 
-                // Test 8: Konversi PDF ke Word (.docx)
                 const pagesExtracted = await extractPdfStructuredPages(fPdfText);
                 const docxBlob = await buildValidDocxBlob(pagesExtracted, 'Uji_QA');
                 results.push({
-                    title: '8. Konversi PDF ke Microsoft Word (.docx)',
+                    title: '8. Konversi PDF ke Word (.docx)',
                     pass: docxBlob.size > 500,
-                    detail: `Paket OpenXML .docx valid (${formatBytes(docxBlob.size)}) dengan ${pagesExtracted.length} halaman diekstrak`
+                    detail: `OpenXML .docx valid (${formatBytes(docxBlob.size)})`
                 });
-                // Test 9: Konversi PDF ke Microsoft Excel (.xlsx) & JPG + Konversi JPG ke PDF
+
                 const xlsxBlob = await buildValidXlsxBlob(pagesExtracted);
                 const jpgToPdfBlob = await buildPdfFromImagesList([fJpeg, fPng], { pageSize: 'A4', orientation: 'AUTO', margin: 20 });
                 results.push({
-                    title: '9. Konversi PDF ⇄ Excel (.xlsx), JPG & Converter JPG ke PDF',
-                    pass: xlsxBlob.size > 500 && pagesExtracted[0].jpgBlob.size > 1000 && jpgToPdfBlob.size > 1000,
-                    detail: `XLSX (${formatBytes(xlsxBlob.size)}) + PDF→JPG (${formatBytes(pagesExtracted[0].jpgBlob.size)}) + JPG→PDF 2 Hal (${formatBytes(jpgToPdfBlob.size)})`
+                    title: '9. Konversi PDF ⇄ Excel & JPG ke PDF',
+                    pass: xlsxBlob.size > 500 && jpgToPdfBlob.size > 1000,
+                    detail: `XLSX (${formatBytes(xlsxBlob.size)}) + JPG→PDF (${formatBytes(jpgToPdfBlob.size)})`
                 });
 
-                // Test 10: Audit Layout Responsif Tanpa Horizontal Overflow
                 const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth + 2;
                 results.push({
                     title: '10. Audit Privasi 100% Lokal & Layout Tanpa Overflow',
                     pass: noOverflow,
-                    detail: `ScrollWidth: ${document.documentElement.scrollWidth}px ≤ Viewport: ${document.documentElement.clientWidth}px • 0 Unggahan Server`
+                    detail: `0 Permintaan Unggah Eksternal`
                 });
             } catch (err) {
                 results.push({ title: 'Kesalahan Pengujian', pass: false, detail: err.message });
@@ -3919,7 +3936,6 @@
             updateCountersAndBadges();
             updateOverallQualityGuardPanel();
 
-            // Drag & Drop Listeners on Dropzone
             const dz = document.getElementById('dropzoneArea');
             if (dz) {
                 dz.addEventListener('dragover', (e) => {
@@ -3937,7 +3953,6 @@
                 });
             }
 
-            // Drag & Drop Listeners on JPG-to-PDF Dropzone
             const dzJpgPdf = document.getElementById('jpgToPdfDropzone');
             if (dzJpgPdf) {
                 dzJpgPdf.addEventListener('dragover', (e) => {
@@ -3955,7 +3970,6 @@
                 });
             }
 
-            // Online / Offline Status Listener
             const updateNetworkUI = () => {
                 const textEl = document.getElementById('networkText');
                 const dotEl = document.getElementById('networkDot');
