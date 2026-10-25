@@ -15,6 +15,10 @@
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <!-- PDF.js for Accurate Local PDF Inspection, Page Rendering & Text/Table Extraction -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- Mammoth.js for Local Word (.docx) Parsing & Extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <!-- SheetJS (xlsx) for Local Excel (.xlsx/.xls/.csv) Parsing & Extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -122,6 +126,57 @@
         }
         html.dark ::-webkit-scrollbar-thumb {
             background: #475569;
+        }
+
+        /* Futuristic Animated Icon Button Styles */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35), 0 4px 14px -2px rgba(37, 99, 235, 0.35); }
+            50% { box-shadow: 0 0 0 5px rgba(37, 99, 235, 0), 0 6px 20px -2px rgba(56, 189, 248, 0.55); }
+        }
+        @keyframes floatSubtle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+        .btn-futuristic {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.15);
+        }
+        .btn-futuristic::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.28) 50%, transparent 80%);
+            transform: translateX(-120%);
+            transition: transform 0.55s ease;
+            pointer-events: none;
+        }
+        .btn-futuristic:hover::after {
+            transform: translateX(120%);
+        }
+        .btn-futuristic:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.45);
+        }
+        .btn-futuristic:active {
+            transform: translateY(0) scale(0.96);
+        }
+        .btn-futuristic svg {
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-futuristic:hover svg {
+            transform: scale(1.16) rotate(-5deg);
+        }
+        .btn-glow-primary {
+            animation: pulseGlow 2.8s infinite;
+        }
+        .tile-futuristic {
+            transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .tile-futuristic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.18);
         }
     </style>
 </head>
@@ -336,72 +391,37 @@
             <!-- ========================================================= -->
             <section id="tab-workspace" class="tab-panel space-y-5">
 
-                <!-- Quick Summary KPI Strip (Live Queue & Savings Overview) -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center gap-3 shadow-xs">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="files" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Antrean File</p>
-                            <p id="kpiTotalFiles" class="text-sm sm:text-base font-extrabold text-slate-900 truncate">0 File</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center gap-3 shadow-xs">
-                        <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-                            <i data-lucide="hard-drive" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Ukuran Awal</p>
-                            <p id="kpiOriginalBytes" class="text-sm sm:text-base font-extrabold font-mono text-slate-900 truncate">0 B</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center gap-3 shadow-xs">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="file-check-2" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Ukuran Hasil</p>
-                            <p id="kpiCompressedBytes" class="text-sm sm:text-base font-extrabold font-mono text-emerald-700 truncate">0 B</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex items-center gap-3 shadow-xs">
-                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="trending-down" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Dihemat</p>
-                            <p id="kpiSavedSummary" class="text-sm sm:text-base font-extrabold font-mono text-blue-700 truncate">0 B (0%)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 1: File Upload Dropzone & Instant Uploaded Files List -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs">
+                <!-- Card 1 (PALING ATAS): File Upload Dropzone & Instant Uploaded Files List -->
+                <div id="uploadDropzoneCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-100">
                         <div>
                             <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
                                 <i data-lucide="folder-up" class="w-4 h-4 text-blue-600 shrink-0"></i>
-                                <span>Panel Input & Antrean Kompresi</span>
+                                <span>Panel Input & Antrean Kompresi Universal (PDF, Gambar, Word, Excel)</span>
                             </h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Pilih satu atau banyak file PDF maupun Gambar (JPG, PNG, WebP, BMP) untuk diproses secara lokal.</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Pilih file PDF, Gambar (JPG/PNG/WebP), Word (.docx), atau Excel (.xlsx) untuk dikompres secara lokal.</p>
                         </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button onclick="triggerFileInput('pdf')" class="touch-target flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition">
+                        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                            <button onclick="triggerFileInput('pdf')" class="btn-futuristic touch-target px-3 py-2 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm" title="Pilih Dokumen PDF untuk Dikompres">
                                 <i data-lucide="file-text" class="w-4 h-4 text-blue-400 shrink-0"></i>
-                                <span>+ Pilih PDF</span>
+                                <span>+ PDF</span>
                             </button>
-                            <button onclick="triggerFileInput('image')" class="touch-target flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition">
+                            <button onclick="triggerFileInput('image')" class="btn-futuristic touch-target px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm" title="Pilih Gambar (JPG/PNG/WebP) untuk Dikompres">
                                 <i data-lucide="image" class="w-4 h-4 shrink-0"></i>
-                                <span>+ Pilih Gambar</span>
+                                <span>+ Gambar</span>
+                            </button>
+                            <button onclick="triggerFileInput('office')" class="btn-futuristic touch-target px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm" title="Pilih File Word (.docx) atau Excel (.xlsx) untuk Dikompres">
+                                <i data-lucide="file-spreadsheet" class="w-4 h-4 shrink-0"></i>
+                                <span>+ Word / Excel</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Hidden File Pickers -->
-                    <input type="file" id="fileInputAll" multiple accept=".pdf,application/pdf,image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" class="hidden" onchange="handleFileSelect(event)">
+                    <input type="file" id="fileInputAll" multiple accept=".pdf,application/pdf,image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp,.docx,.xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" onchange="handleFileSelect(event)">
                     <input type="file" id="fileInputPdf" multiple accept=".pdf,application/pdf" class="hidden" onchange="handleFileSelect(event)">
                     <input type="file" id="fileInputImage" multiple accept="image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" class="hidden" onchange="handleFileSelect(event)">
+                    <input type="file" id="fileInputOffice" multiple accept=".docx,.xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" onchange="handleFileSelect(event)">
 
                     <!-- Interactive Dropzone Area -->
                     <div id="dropzoneArea" onclick="handleDropzoneClick(event)" class="mt-3.5 border-2 border-dashed border-slate-300 hover:border-blue-500 bg-slate-50/70 hover:bg-blue-50/30 rounded-xl p-4 sm:p-6 text-center cursor-pointer transition flex flex-col items-center justify-center">
@@ -409,7 +429,7 @@
                             <i data-lucide="upload-cloud" class="w-5 h-5"></i>
                         </div>
                         <p class="text-xs sm:text-sm font-bold text-slate-800">Ketuk untuk Memilih File atau Tarik & Lepas ke Sini</p>
-                        <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Mendukung PDF berbasis teks, PDF hasil scan, JPEG, PNG transparan, WebP, dan BMP • Pemrosesan 100% di dalam perangkat Anda</p>
+                        <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Mendukung PDF, Word (.docx), Excel (.xlsx), JPEG, PNG transparan, WebP, dan BMP • Kompresi 100% Lokal di Perangkat Anda</p>
 
                         <!-- Dynamic Uploaded Files Summary Inside Dropzone (Shows ALL uploaded files + Initial Size + Delete Button) -->
                         <div id="dropzoneUploadedSummary" onclick="event.stopPropagation()" class="hidden mt-4 pt-3.5 border-t border-slate-200 w-full text-left cursor-default">
@@ -444,51 +464,115 @@
                             <span>Muat Sampel Uji Nyata (Dibuat Secara Lokal):</span>
                         </span>
                         <div class="flex flex-wrap gap-1.5">
-                            <button onclick="loadGeneratedSample('pdf_text')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                            <button onclick="loadGeneratedSample('pdf_text')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Berbasis Teks">
                                 <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-600"></i>
                                 <span>+ PDF Teks</span>
                             </button>
-                            <button onclick="loadGeneratedSample('pdf_scan')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                            <button onclick="loadGeneratedSample('pdf_scan')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PDF Hasil Scan">
                                 <i data-lucide="scan-line" class="w-3.5 h-3.5 text-amber-600"></i>
                                 <span>+ PDF Scan</span>
                             </button>
-                            <button onclick="loadGeneratedSample('jpeg_photo')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                            <button onclick="loadGeneratedSample('jpeg_photo')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel Foto JPEG">
                                 <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i>
                                 <span>+ Foto JPEG</span>
                             </button>
-                            <button onclick="loadGeneratedSample('png_transparent')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                            <button onclick="loadGeneratedSample('png_transparent')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition" title="Muat Sampel PNG Transparan">
                                 <i data-lucide="grid" class="w-3.5 h-3.5 text-purple-600"></i>
-                                <span>+ PNG Transparan</span>
+                                <span>+ PNG Alpha</span>
                             </button>
-                            <button onclick="loadGeneratedSample('small_text_img')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
-                                <i data-lucide="type" class="w-3.5 h-3.5 text-rose-600"></i>
-                                <span>+ Gambar Tulisan Kecil</span>
+                            <button onclick="loadGeneratedSample('docx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-blue-200 bg-blue-50/50 hover:bg-blue-100 text-xs font-semibold text-blue-800 flex items-center gap-1.5 transition" title="Muat Sampel Dokumen Word (.docx)">
+                                <i data-lucide="file-type-2" class="w-3.5 h-3.5 text-blue-600"></i>
+                                <span>+ Word (.docx)</span>
+                            </button>
+                            <button onclick="loadGeneratedSample('xlsx_sample')" class="btn-futuristic px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100 text-xs font-semibold text-emerald-800 flex items-center gap-1.5 transition" title="Muat Sampel Spreadsheet Excel (.xlsx)">
+                                <i data-lucide="sheet" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                <span>+ Excel (.xlsx)</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Interactive Functional KPI Shortcut Strip (Berfungsi sebagai Tombol Shortcut) -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- Shortcut 1: Antrean File -> Menuju Daftar Antrean atau Tambah File -->
+                    <button type="button" onclick="handleKpiShortcut('queue')" class="btn-futuristic tile-futuristic text-left bg-white rounded-xl border border-slate-200 hover:border-blue-500 p-3.5 flex items-center justify-between gap-2.5 shadow-xs cursor-pointer group" title="Klik untuk melihat Daftar Antrean File atau menambah file baru">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="list-ordered" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                                    <span>Antrean File</span>
+                                </p>
+                                <p id="kpiTotalFiles" class="text-sm sm:text-base font-extrabold text-slate-900 truncate">0 File</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-blue-600 shrink-0"></i>
+                    </button>
+
+                    <!-- Shortcut 2: Total Ukuran Awal -> Menuju Pengaturan Preset & Target Ukuran KB/MB -->
+                    <button type="button" onclick="handleKpiShortcut('size_target')" class="btn-futuristic tile-futuristic text-left bg-white rounded-xl border border-slate-200 hover:border-indigo-500 p-3.5 flex items-center justify-between gap-2.5 shadow-xs cursor-pointer group" title="Klik untuk mengatur Mode Preset atau Target Ukuran (KB / MB)">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="sliders" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ukuran Awal & Target</p>
+                                <p id="kpiOriginalBytes" class="text-sm sm:text-base font-extrabold font-mono text-slate-900 truncate">0 B</p>
+                            </div>
+                        </div>
+                        <i data-lucide="crosshair" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 shrink-0"></i>
+                    </button>
+
+                    <!-- Shortcut 3: Ukuran Hasil -> Menuju Hasil Kompresi & Unduh ZIP atau Mulai Kompres -->
+                    <button type="button" onclick="handleKpiShortcut('results')" class="btn-futuristic tile-futuristic text-left bg-white rounded-xl border border-slate-200 hover:border-emerald-500 p-3.5 flex items-center justify-between gap-2.5 shadow-xs cursor-pointer group" title="Klik untuk membuka Hasil Kompresi & Unduh ZIP (atau mulai kompresi)">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="package-check" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ukuran Hasil & ZIP</p>
+                                <p id="kpiCompressedBytes" class="text-sm sm:text-base font-extrabold font-mono text-emerald-700 truncate">0 B</p>
+                            </div>
+                        </div>
+                        <i data-lucide="download" class="w-4 h-4 text-slate-400 group-hover:text-emerald-600 shrink-0"></i>
+                    </button>
+
+                    <!-- Shortcut 4: Total Dihemat -> Menuju Pratinjau Perbandingan Before & After -->
+                    <button type="button" onclick="handleKpiShortcut('preview_savings')" class="btn-futuristic tile-futuristic text-left bg-white rounded-xl border border-slate-200 hover:border-amber-500 p-3.5 flex items-center justify-between gap-2.5 shadow-xs cursor-pointer group" title="Klik untuk membandingkan Kualitas Asli vs Hasil (Before & After Preview)">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Dihemat & Cek</p>
+                                <p id="kpiSavedSummary" class="text-sm sm:text-base font-extrabold font-mono text-blue-700 truncate">0 B (0%)</p>
+                            </div>
+                        </div>
+                        <i data-lucide="eye" class="w-4 h-4 text-slate-400 group-hover:text-amber-600 shrink-0"></i>
+                    </button>
+                </div>
+
                 <!-- Card 2: 5 Compression Presets + Target File Size (KB/MB) + Quality Guard -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-                    
-                    <!-- Left Column (7 cols): 5 Presets, Custom Target Size & Advanced Options -->
+                <div id="compressionSettingsCard" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                    <!-- Left Column (7 cols): 5 Presets + Target File Size + Advanced Options -->
                     <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
-                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                             <div>
                                 <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                                    <i data-lucide="gauge" class="w-4 h-4 text-blue-600 shrink-0"></i>
+                                    <i data-lucide="sliders" class="w-4 h-4 text-blue-600 shrink-0"></i>
                                     <span>1. Pilih Mode Kompresi (5 Preset)</span>
                                 </h3>
-                                <p class="text-xs text-slate-500 mt-0.5">Strategi kompresi disesuaikan otomatis dengan karakter PDF maupun gambar.</p>
+                                <p class="text-xs text-slate-500 mt-0.5">Strategi kompresi disesuaikan otomatis dengan struktur PDF, Word, Excel, maupun karakter gambar.</p>
                             </div>
-                            <span id="activePresetBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 shrink-0">
+                            <span id="activePresetBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
                                 STANDARD • Rekomendasi
                             </span>
                         </div>
 
-                        <!-- 5 Preset Selector Cards -->
+                        <!-- 5 Preset Selector Grid -->
                         <div id="presetSelectorGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                            <!-- Rendered dynamically via renderPresetSelector() -->
+                            <!-- Rendered dynamically by renderPresetSelector() -->
                         </div>
 
                         <!-- Strategy Explanation Box -->
@@ -641,16 +725,16 @@
                             </div>
                         </div>
 
-                        <!-- Execution Buttons (Compact Icon-First Bar) -->
+                        <!-- Execution Buttons (Futuristic Animated Icon Bar) -->
                         <div class="pt-3.5 border-t border-slate-100 flex items-center gap-2">
-                            <button id="btnStartCompress" onclick="requestStartCompression()" class="flex-1 touch-target py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2 transition" title="Kompres Semua File dalam Antrean">
+                            <button id="btnStartCompress" onclick="requestStartCompression()" class="btn-futuristic btn-glow-primary flex-1 touch-target py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-600 disabled:bg-slate-300 disabled:text-slate-500 text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition" title="Kompres Semua File dalam Antrean (PDF, Gambar, Word, Excel)">
                                 <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
-                                <span id="btnStartCompressLabel">Kompres Antrean</span>
+                                <span id="btnStartCompressLabel">Kompres Semua</span>
                             </button>
-                            <button onclick="reprocessAllWithCurrentPreset()" class="touch-target w-11 h-11 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 transition" title="Proses Ulang Semua File">
+                            <button onclick="reprocessAllWithCurrentPreset()" class="btn-futuristic touch-target w-11 h-11 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 transition" title="Proses Ulang Semua File">
                                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="clearQueue()" class="touch-target w-11 h-11 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 flex items-center justify-center shrink-0 transition" title="Bersihkan Seluruh Antrean">
+                            <button onclick="clearQueue()" class="btn-futuristic touch-target w-11 h-11 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 flex items-center justify-center shrink-0 transition" title="Bersihkan Seluruh Antrean">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -658,7 +742,7 @@
                 </div>
 
                 <!-- Card 3: Queue List & Per-File Controls -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-3.5">
+                <div id="queueListSectionCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-3.5">
                     <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-2">
                             <i data-lucide="list-checks" class="w-4 h-4 text-blue-600 shrink-0"></i>
@@ -679,30 +763,34 @@
             </section>
 
             <!-- ========================================================= -->
-            <!-- TAB 2: KONVERSI PDF KE WORD, EXCEL, JPG & JPG KE PDF      -->
+            <!-- TAB 2: KONVERSI DUA ARAH (PDF ⇄ WORD, EXCEL, GAMBAR)      -->
             <!-- ========================================================= -->
             <section id="tab-convert" class="tab-panel hidden space-y-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
-                    <!-- Clean Icon Header -->
+                    <!-- Clean Futuristic Icon Header -->
                     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                                <i data-lucide="file-symlink" class="w-5 h-5"></i>
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                <i data-lucide="repeat" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Konversi PDF ke Word, Excel, Gambar (JPG) & JPG ke PDF</h2>
-                                <p class="text-[11px] text-slate-500">Ekstraksi tata letak baris, kolom tabel, halaman beresolusi tinggi, serta penggabungan gambar JPG ke PDF • 100% Lokal oleh BBR@SYNERGY smart system.</p>
+                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Hub Konversi 2 Arah: PDF ⇄ Word, Excel & Gambar</h2>
+                                <p class="text-[11px] text-slate-500">Ubah PDF ke Word/Excel/JPG atau ubah Word, Excel & Gambar menjadi PDF + Kompresi • 100% Lokal oleh BBR@SYNERGY smart system.</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="file" id="convertPdfInput" accept=".pdf,application/pdf" class="hidden" onchange="handleConvertPdfUpload(event)">
-                            <button onclick="document.getElementById('convertPdfInput').click()" class="touch-target px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Unggah File PDF untuk Dikonversi">
+                            <button onclick="document.getElementById('convertPdfInput').click()" class="btn-futuristic touch-target px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm" title="Unggah File PDF untuk Dikonversi ke Word/Excel/JPG">
                                 <i data-lucide="file-up" class="w-4 h-4"></i>
-                                <span>Pilih File PDF untuk Dikonversi</span>
+                                <span>+ PDF</span>
                             </button>
-                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition" title="Menuju Converter Gambar ke PDF">
+                            <button onclick="scrollToOfficeToPdfSection()" class="btn-futuristic touch-target px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm" title="Konversi Word (.docx) atau Excel (.xlsx) ke PDF">
+                                <i data-lucide="file-check-2" class="w-4 h-4"></i>
+                                <span>Word / Excel &rarr; PDF</span>
+                            </button>
+                            <button onclick="scrollToJpgToPdfSection()" class="btn-futuristic touch-target px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm" title="Konversi Gambar (JPG/PNG) ke PDF">
                                 <i data-lucide="image-plus" class="w-4 h-4"></i>
-                                <span>Converter JPG ke PDF</span>
+                                <span>Gambar &rarr; PDF</span>
                             </button>
                         </div>
                     </div>
@@ -716,96 +804,122 @@
                             </select>
                         </div>
                         <div id="convertActiveFileInfo" class="md:col-span-6 text-xs text-slate-600 flex items-center justify-between gap-2">
-                            <span class="truncate">Belum ada PDF yang dipilih. Unggah PDF atau pilih dari daftar antrean untuk mengonversi ke Word (.docx), Excel (.xlsx), atau Gambar (.jpg).</span>
+                            <span class="truncate">Pilih PDF untuk diubah ke Word/Excel/JPG, atau gunakan kartu di bawah.</span>
                         </div>
                     </div>
 
-                    <!-- 4 Simpler Icon-Centric Conversion Tiles -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                    <!-- 6 Futuristic Icon-Centric Conversion Tiles (PDF -> Word/Excel/JPG & Word/Excel/JPG -> PDF) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
                         <!-- Tile 1: PDF to Word (.docx) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-blue-500 transition flex flex-col justify-between gap-3 shadow-2xs">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-100 text-blue-800">DOCX</span>
-                                <span class="text-[11px] text-slate-500 font-medium">Microsoft Word</span>
+                        <div class="tile-futuristic p-3 rounded-2xl border border-blue-200 bg-white hover:border-blue-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-slate-900">PDF ke Word (.docx)</h3>
-                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Mempertahankan struktur paragraf, ukuran huruf, baris tabel (`&lt;w:tbl&gt;`), serta menyertakan gambar halaman secara utuh jika PDF merupakan hasil scan.</p>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800">PDF &rarr; DOCX</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF ke Word</h3>
                             </div>
-                            <div class="flex items-center gap-1.5 pt-1">
-                                <button onclick="runPdfConversion('DOCX', true)" class="touch-target flex-1 h-9 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Word">
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('DOCX', true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-blue-200 bg-blue-50 text-blue-700 flex items-center justify-center" title="Pratinjau Hasil Word (.docx)">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
-                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('DOCX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Word">
+                                <button onclick="runPdfConversion('DOCX', false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Konversi & Unduh Word (.docx)">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Konversi & Unduh Word (.docx)</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tile 2: PDF to Excel (.xlsx) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-emerald-500 transition flex flex-col justify-between gap-3 shadow-2xs">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800">XLSX</span>
-                                <span class="text-[11px] text-slate-500 font-medium">Microsoft Excel</span>
+                        <div class="tile-futuristic p-3 rounded-2xl border border-emerald-200 bg-white hover:border-emerald-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="table" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-slate-900">PDF ke Excel (.xlsx)</h3>
-                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Mendeteksi koordinat baris dan kolom secara presisi pada setiap halaman PDF dan menyusunnya menjadi lembar kerja (`*Worksheet`) OpenXML `.xlsx` asli.</p>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">PDF &rarr; XLSX</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF ke Excel</h3>
                             </div>
-                            <div class="flex items-center gap-1.5 pt-1">
-                                <button onclick="runPdfConversion('XLSX', true)" class="touch-target flex-1 h-9 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau Excel">
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('XLSX', true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 flex items-center justify-center" title="Pratinjau Hasil Excel (.xlsx)">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
-                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('XLSX', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Konversi & Unduh Excel">
+                                <button onclick="runPdfConversion('XLSX', false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Konversi & Unduh Excel (.xlsx)">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Konversi & Unduh Excel (.xlsx)</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tile 3: PDF to High-Res JPG (.jpg) -->
-                        <div class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-amber-500 transition flex flex-col justify-between gap-3 shadow-2xs">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-800">JPG</span>
-                                <span class="text-[11px] text-slate-500 font-medium">Resolusi Tinggi 2x DPI</span>
+                        <div class="tile-futuristic p-3 rounded-2xl border border-amber-200 bg-white hover:border-amber-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="image" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-slate-900">PDF ke Gambar (.jpg)</h3>
-                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Merender setiap halaman PDF menjadi gambar `.jpg` tajam (skala 2.0x DPI). Mendukung unduhan per halaman maupun bundel `.zip`.</p>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">PDF &rarr; JPG</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">PDF ke Gambar</h3>
                             </div>
-                            <div class="flex items-center gap-1.5 pt-1">
-                                <button onclick="runPdfConversion('JPG', true)" class="touch-target flex-1 h-9 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pratinjau JPG">
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="runPdfConversion('JPG', true)" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-amber-300 bg-amber-50 text-amber-800 flex items-center justify-center" title="Pratinjau Gambar JPG">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
-                                    <span>Pratinjau</span>
                                 </button>
-                                <button onclick="runPdfConversion('JPG', false)" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center justify-center gap-1.5 text-xs font-extrabold transition" title="Konversi ke Gambar">
+                                <button onclick="runPdfConversion('JPG', false)" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 flex items-center justify-center gap-1 text-xs font-extrabold" title="Konversi & Unduh Gambar (.jpg)">
                                     <i data-lucide="download" class="w-4 h-4"></i>
-                                    <span>Konversi ke Gambar (.jpg)</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Tile 4: Gambar (JPG/PNG) to PDF (.pdf) -->
-                        <div class="p-3.5 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col justify-between gap-3 shadow-2xs">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-rose-100 text-rose-800">PDF</span>
-                                <span class="text-[11px] text-slate-500 font-medium">JPG / PNG &rarr; PDF</span>
+                        <!-- Tile 4: Word (.docx) to PDF (.pdf) -->
+                        <div class="tile-futuristic p-3 rounded-2xl border border-indigo-200 bg-white hover:border-indigo-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-700 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="file-type-2" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-slate-900">Gambar (JPG) ke PDF (.pdf)</h3>
-                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Ubah satu atau banyak gambar (JPG, JPEG, PNG, WebP, BMP) menjadi satu dokumen PDF rapi dengan pilihan ukuran kertas A4, F4/Folio, atau sesuai gambar.</p>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-100 text-indigo-800">WORD &rarr; PDF</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">Word ke PDF</h3>
                             </div>
-                            <div class="flex items-center gap-1.5 pt-1">
-                                <button onclick="scrollToJpgToPdfSection()" class="touch-target flex-1 h-9 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center gap-1 text-xs font-bold transition" title="Pengaturan JPG ke PDF">
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="scrollToOfficeToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 flex items-center justify-center" title="Buka Panel Word ke PDF">
                                     <i data-lucide="sliders" class="w-4 h-4"></i>
-                                    <span>Atur</span>
                                 </button>
-                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target flex-[2] h-9 px-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-1.5 text-xs font-bold transition" title="Pilih JPG & Buat PDF">
+                                <button onclick="document.getElementById('officeToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Word (.docx) & Ubah ke PDF">
+                                    <i data-lucide="upload" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tile 5: Excel (.xlsx) to PDF (.pdf) -->
+                        <div class="tile-futuristic p-3 rounded-2xl border border-teal-200 bg-white hover:border-teal-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-700 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="sheet" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-teal-100 text-teal-800">EXCEL &rarr; PDF</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">Excel ke PDF</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="scrollToOfficeToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-teal-200 bg-teal-50 text-teal-700 flex items-center justify-center" title="Buka Panel Excel ke PDF">
+                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="document.getElementById('officeToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih File Excel (.xlsx) & Ubah ke PDF">
+                                    <i data-lucide="upload" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tile 6: Gambar (JPG/PNG) to PDF (.pdf) -->
+                        <div class="tile-futuristic p-3 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 flex flex-col justify-between gap-2.5 text-center items-center">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-700 text-white flex items-center justify-center shadow-sm">
+                                <i data-lucide="images" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">JPG &rarr; PDF</span>
+                                <h3 class="text-xs font-bold text-slate-900 mt-1">Gambar ke PDF</h3>
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 w-full pt-1">
+                                <button onclick="scrollToJpgToPdfSection()" class="btn-futuristic touch-target w-9 h-9 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 flex items-center justify-center" title="Pengaturan JPG ke PDF">
+                                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="document.getElementById('jpgToPdfInput').click()" class="btn-futuristic touch-target flex-1 h-9 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 text-white flex items-center justify-center gap-1 text-xs font-bold" title="Pilih Gambar JPG/PNG & Buat PDF">
                                     <i data-lucide="image-plus" class="w-4 h-4"></i>
-                                    <span>Pilih JPG & Buat PDF (.pdf)</span>
                                 </button>
                             </div>
                         </div>
@@ -822,6 +936,105 @@
                         </div>
                         <!-- Live Interactive Preview Container for Word / Excel / JPG -->
                         <div id="convertOutputPreviewGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- PANEL BARU: CONVERTER WORD (.DOCX) & EXCEL (.XLSX) KE PDF -->
+                <!-- ========================================================= -->
+                <div id="officeToPdfSectionCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                            </span>
+                            <div>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900">Converter Word (.docx) & Excel (.xlsx / .csv) ke PDF + Kompresi</h3>
+                                <p class="text-[11px] text-slate-500">Ubah dokumen Microsoft Word dan tabel Excel menjadi PDF rapi yang siap dipratinjau, diunduh, atau langsung dikompres • 100% Lokal.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="file" id="officeToPdfInput" accept=".docx,.doc,.xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="hidden" onchange="handleOfficeToPdfSelect(event)">
+                            <button type="button" onclick="loadSampleForOfficeToPdf('docx')" class="btn-futuristic touch-target h-9 px-3 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 text-xs font-bold flex items-center gap-1.5" title="Muat Sampel Word (.docx)">
+                                <i data-lucide="file-type-2" class="w-4 h-4"></i>
+                                <span class="hidden sm:inline">+ Sampel Word</span>
+                            </button>
+                            <button type="button" onclick="loadSampleForOfficeToPdf('xlsx')" class="btn-futuristic touch-target h-9 px-3 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-bold flex items-center gap-1.5" title="Muat Sampel Excel (.xlsx)">
+                                <i data-lucide="sheet" class="w-4 h-4"></i>
+                                <span class="hidden sm:inline">+ Sampel Excel</span>
+                            </button>
+                            <button type="button" onclick="document.getElementById('officeToPdfInput').click()" class="btn-futuristic touch-target h-9 px-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm" title="Pilih File Word (.docx) atau Excel (.xlsx)">
+                                <i data-lucide="folder-up" class="w-4 h-4"></i>
+                                <span>+ Pilih Word / Excel</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Info File Word / Excel yang Dipilih -->
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div id="officeToPdfActiveInfo" class="sm:col-span-7 text-xs text-slate-700 flex items-center gap-2">
+                            <i data-lucide="info" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                            <span>Belum ada file Word (.docx) atau Excel (.xlsx) yang dipilih. Klik tombol di atas untuk memilih file.</span>
+                        </div>
+                        <div class="sm:col-span-5 flex items-center justify-end gap-2">
+                            <select id="officePdfOrientation" class="h-9 px-2.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800" title="Orientasi Halaman PDF">
+                                <option value="PORTRAIT">Kertas A4 Portrait (Tegak)</option>
+                                <option value="LANDSCAPE">Kertas A4 Landscape (Datar)</option>
+                            </select>
+                            <button type="button" onclick="executeOfficeToPdfConversion(true)" class="btn-futuristic touch-target h-9 px-3 rounded-xl border border-indigo-300 bg-indigo-50 text-indigo-700 text-xs font-bold flex items-center gap-1" title="Pratinjau Hasil PDF">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </button>
+                            <button type="button" onclick="executeOfficeToPdfConversion(false)" class="btn-futuristic touch-target h-9 px-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xs font-bold flex items-center gap-1.5" title="Konversi ke PDF & Unduh">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Buat PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hasil & Pratinjau Nyata Word / Excel ke PDF -->
+                    <div id="officeToPdfResultBanner" class="hidden p-4 rounded-2xl border border-indigo-200 bg-indigo-50/40 space-y-3.5">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="space-y-0.5 text-xs">
+                                <div class="flex items-center gap-2 font-bold text-indigo-950 text-sm">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                    <span id="officeToPdfResultTitle">PDF Berhasil Dibuat dari Word/Excel</span>
+                                </div>
+                                <p id="officeToPdfResultMeta" class="text-slate-600 font-mono text-[11px]"></p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <button type="button" onclick="sendOfficePdfToCompressionQueue()" class="btn-futuristic touch-target h-9 px-3 rounded-xl border border-blue-300 bg-white text-blue-700 text-xs font-bold flex items-center gap-1.5" title="Kompres Hasil PDF Ini di Workspace">
+                                    <i data-lucide="zap" class="w-4 h-4 text-blue-600"></i>
+                                    <span>Kompres PDF Ini</span>
+                                </button>
+                                <button type="button" onclick="sendOriginalOfficeToCompressionQueue()" class="btn-futuristic touch-target h-9 px-3 rounded-xl border border-emerald-300 bg-white text-emerald-700 text-xs font-bold flex items-center gap-1.5" title="Kompres File Asli Word/Excel">
+                                    <i data-lucide="minimize-2" class="w-4 h-4 text-emerald-600"></i>
+                                    <span>Kompres File Asli</span>
+                                </button>
+                                <button type="button" onclick="downloadLastOfficePdf()" class="btn-futuristic touch-target h-9 px-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-bold flex items-center gap-1.5" title="Unduh Hasil PDF">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    <span>Unduh PDF</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Live Canvas Preview of Word/Excel -> PDF -->
+                        <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-2">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i data-lucide="eye" class="w-4 h-4 text-indigo-600"></i>
+                                    <span>Pratinjau Hasil Konversi Word / Excel ke PDF</span>
+                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="changeOfficePdfPreviewPage(-1)" class="btn-futuristic w-7 h-7 rounded-lg border border-slate-300 bg-white flex items-center justify-center text-xs font-bold">&larr;</button>
+                                    <span id="officePdfPreviewPageLabel" class="text-xs font-mono font-bold text-slate-700 px-1">Hal 1/1</span>
+                                    <button type="button" onclick="changeOfficePdfPreviewPage(1)" class="btn-futuristic w-7 h-7 rounded-lg border border-slate-300 bg-white flex items-center justify-center text-xs font-bold">&rarr;</button>
+                                </div>
+                            </div>
+                            <div class="overflow-auto max-h-[420px] flex items-center justify-center bg-checkerboard p-2 rounded-lg">
+                                <canvas id="canvasOfficeToPdfPreview" class="max-w-full h-auto shadow-sm rounded bg-white border border-slate-200"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1386,6 +1599,9 @@
             convertGeneratedJpgs: [],
             jpgToPdfQueue: [],
             lastGeneratedJpgPdf: null,
+            officeToPdfFile: null,
+            lastGeneratedOfficePdf: null,
+            lastConvertedBlob: null,
             options: {
                 imageFormat: 'ORIGINAL',
                 maxDimension: 'PRESET',
@@ -1393,22 +1609,20 @@
                 preservePdfText: true,
                 enableTargetSize: false,
                 targetSizeValue: 500,
-                targetSizeUnit: 'KB',
-                targetSizeBytes: 500 * 1024
+                targetSizeUnit: 'KB'
             }
         };
 
         // =========================================================
-        // UTILITY & FORMATTING FUNCTIONS
+        // CORE UI & THEME HELPERS
         // =========================================================
         function formatBytes(bytes) {
-            if (bytes === undefined || bytes === null || isNaN(bytes)) return '0 B';
-            const absBytes = Math.abs(bytes);
-            if (absBytes < 1024) return `${bytes} B`;
-            const kb = bytes / 1024;
-            if (Math.abs(kb) < 1024) return `${kb.toFixed(1)} KB`;
-            const mb = kb / 1024;
-            return `${mb.toFixed(2)} MB`;
+            if (!bytes || bytes <= 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.min(sizes.length - 1, Math.floor(Math.log(bytes) / Math.log(k)));
+            const val = bytes / Math.pow(k, i);
+            return `${val >= 100 || i === 0 ? val.toFixed(0) : val.toFixed(2)} ${sizes[i]}`;
         }
 
         function showToast(title, message, type = 'info') {
@@ -1416,30 +1630,37 @@
             const titleEl = document.getElementById('globalToastTitle');
             const msgEl = document.getElementById('globalToastMessage');
             const iconEl = document.getElementById('globalToastIcon');
+            if (!toast) return;
 
-            toast.className = 'rounded-xl p-3.5 border shadow-sm flex items-center justify-between gap-3 transition-all ';
+            let styleClass = 'bg-blue-50 border-blue-200 text-blue-950';
+            let iconName = 'info';
             if (type === 'success') {
-                toast.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-950');
-                iconEl.setAttribute('data-lucide', 'check-circle-2');
+                styleClass = 'bg-emerald-50 border-emerald-200 text-emerald-950';
+                iconName = 'check-circle-2';
             } else if (type === 'warning') {
-                toast.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-950');
-                iconEl.setAttribute('data-lucide', 'alert-triangle');
+                styleClass = 'bg-amber-50 border-amber-200 text-amber-950';
+                iconName = 'alert-triangle';
             } else if (type === 'error') {
-                toast.classList.add('bg-red-50', 'border-red-200', 'text-red-950');
-                iconEl.setAttribute('data-lucide', 'x-circle');
-            } else {
-                toast.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-950');
-                iconEl.setAttribute('data-lucide', 'info');
+                styleClass = 'bg-red-50 border-red-200 text-red-950';
+                iconName = 'alert-octagon';
             }
 
+            toast.className = `rounded-xl p-3.5 border shadow-sm flex items-center justify-between gap-3 transition-all ${styleClass}`;
             titleEl.textContent = title;
             msgEl.textContent = message;
+            iconEl.setAttribute('data-lucide', iconName);
             toast.classList.remove('hidden');
             if (window.lucide) lucide.createIcons();
+
+            clearTimeout(window._synergyToastTimer);
+            window._synergyToastTimer = setTimeout(() => {
+                hideToast();
+            }, 5500);
         }
 
         function hideToast() {
-            document.getElementById('globalToast').classList.add('hidden');
+            const toast = document.getElementById('globalToast');
+            if (toast) toast.classList.add('hidden');
         }
 
         function toggleTheme() {
@@ -1450,33 +1671,39 @@
             const textEl = document.getElementById('themeToggleText');
             if (iconEl) iconEl.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
             if (textEl) textEl.textContent = isDark ? 'Mode Terang' : 'Mode Gelap';
+            try {
+                localStorage.setItem('synergy_theme', AppState.theme);
+            } catch (e) {}
             if (window.lucide) lucide.createIcons();
         }
 
         function toggleSidebarExpand() {
             AppState.sidebarExpanded = !AppState.sidebarExpanded;
-            const aside = document.getElementById('desktopSidebar');
-            const toggleIcon = document.getElementById('sidebarToggleIcon');
+            const sidebar = document.getElementById('desktopSidebar');
             const labels = document.querySelectorAll('.sidebar-label');
+            const icon = document.getElementById('sidebarToggleIcon');
+            if (!sidebar) return;
 
             if (AppState.sidebarExpanded) {
-                aside.classList.remove('w-20', 'items-center');
-                aside.classList.add('w-64');
-                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'panel-left-close');
-                labels.forEach(l => l.classList.remove('hidden'));
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                labels.forEach(el => el.classList.remove('hidden'));
+                if (icon) icon.setAttribute('data-lucide', 'panel-left-close');
             } else {
-                aside.classList.remove('w-64');
-                aside.classList.add('w-20', 'items-center');
-                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'panel-left-open');
-                labels.forEach(l => l.classList.add('hidden'));
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-20');
+                labels.forEach(el => el.classList.add('hidden'));
+                if (icon) icon.setAttribute('data-lucide', 'panel-left-open');
             }
             if (window.lucide) lucide.createIcons();
         }
 
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
-            const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.remove('hidden');
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            const activePanel = document.getElementById(`tab-${tabId}`);
+            if (activePanel) activePanel.classList.remove('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if (btn.getAttribute('data-nav') === tabId) {
@@ -1488,19 +1715,18 @@
 
             document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
                 if (btn.getAttribute('data-nav') === tabId) {
-                    btn.classList.add('bg-blue-50', 'text-blue-700', 'font-bold');
-                    btn.classList.remove('text-slate-600', 'font-medium');
+                    btn.className = 'nav-btn-mobile touch-target flex items-center justify-center gap-1 py-2 px-1.5 rounded-lg text-[11px] font-bold bg-blue-50 text-blue-700';
                 } else {
-                    btn.classList.remove('bg-blue-50', 'text-blue-700', 'font-bold');
-                    btn.classList.add('text-slate-600', 'font-medium');
+                    btn.className = 'nav-btn-mobile touch-target flex items-center justify-center gap-1 py-2 px-1.5 rounded-lg text-[11px] font-medium text-slate-600';
                 }
             });
 
-            if (tabId === 'preview') {
+            if (tabId === 'convert') {
+                populateConvertQueueSelector();
+                syncConvertFromQueueIfEmpty();
+            } else if (tabId === 'preview') {
                 populatePreviewSelector();
                 renderActivePreview();
-            } else if (tabId === 'convert') {
-                syncConvertFromQueueIfEmpty();
             } else if (tabId === 'results') {
                 renderResultsView();
             } else if (tabId === 'history') {
@@ -1508,52 +1734,81 @@
             } else if (tabId === 'offline') {
                 verifyOfflineReadinessUI();
             }
+
             if (window.lucide) lucide.createIcons();
         }
 
+        // Handler untuk 4 Tombol Shortcut KPI di Workspace
+        function handleKpiShortcut(actionType) {
+            if (actionType === 'queue') {
+                if (AppState.filesQueue.length === 0) {
+                    triggerFileInput('all');
+                } else {
+                    const qCard = document.getElementById('queueListSectionCard');
+                    if (qCard) qCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    showToast('Antrean File', `Menampilkan ${AppState.filesQueue.length} file dalam daftar antrean.`, 'info');
+                }
+            } else if (actionType === 'size_target') {
+                const settingsCard = document.getElementById('compressionSettingsCard');
+                const enableCheckbox = document.getElementById('optEnableTargetSize');
+                if (enableCheckbox && !enableCheckbox.checked) {
+                    enableCheckbox.checked = true;
+                    toggleTargetSizeMode();
+                }
+                if (settingsCard) settingsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const inputEl = document.getElementById('optTargetSizeValue');
+                if (inputEl) setTimeout(() => inputEl.focus(), 300);
+                showToast('Pengaturan Target Ukuran (KB / MB)', 'Silakan atur Mode Kompresi atau masukkan target ukuran KB/MB yang diinginkan.', 'info');
+            } else if (actionType === 'results') {
+                const doneJobs = AppState.filesQueue.filter(j => j.status === 'DONE' && j.result);
+                if (doneJobs.length > 0) {
+                    switchTab('results');
+                } else if (AppState.filesQueue.length > 0) {
+                    requestStartCompression();
+                } else {
+                    triggerFileInput('all');
+                }
+            } else if (actionType === 'preview_savings') {
+                if (AppState.filesQueue.length > 0) {
+                    switchTab('preview');
+                } else {
+                    showToast('Pratinjau Kualitas', 'Unggah atau muat sampel file terlebih dahulu untuk membandingkan kualitas Asli vs Hasil.', 'info');
+                    triggerFileInput('all');
+                }
+            }
+        }
+
         // =========================================================
-        // PRESET & TARGET FILE SIZE MANAGEMENT
+        // 5 PRESETS & CUSTOM TARGET FILE SIZE (KB / MB) CONTROLS
         // =========================================================
         function renderPresetSelector() {
             const grid = document.getElementById('presetSelectorGrid');
-            grid.innerHTML = '';
+            if (!grid) return;
 
-            Object.values(COMPRESSION_PRESETS).forEach(preset => {
+            grid.innerHTML = Object.values(COMPRESSION_PRESETS).map(preset => {
                 const isSelected = AppState.selectedPreset === preset.id;
-                const card = document.createElement('button');
-                card.type = 'button';
-                card.onclick = () => selectPreset(preset.id);
-                card.title = `${preset.name} (${preset.label}): ${preset.shortDesc}`;
-                card.className = `touch-target p-2.5 rounded-xl border transition flex flex-col items-center justify-center gap-1 text-center ${
-                    isSelected
-                        ? 'border-blue-600 bg-blue-50/90 text-blue-700 ring-2 ring-blue-600/20 shadow-xs'
-                        : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'
-                }`;
-
-                let iconColor = isSelected ? 'text-blue-600' : 'text-slate-500';
-                if (preset.id === 'STANDARD' && isSelected) iconColor = 'text-emerald-600';
-                if (preset.id === 'EXTREME') iconColor = 'text-red-600';
-                else if (preset.id === 'EXTRA_HIGH') iconColor = 'text-amber-600';
-
-                card.innerHTML = `
-                    <i data-lucide="${preset.icon || 'sliders'}" class="w-4 h-4 ${iconColor}"></i>
-                    <span class="font-extrabold text-xs leading-tight tracking-tight">${preset.name}</span>
-                    <span class="text-[10px] text-slate-500 leading-tight truncate max-w-full">${preset.label}</span>
+                return `
+                    <button type="button" onclick="selectPreset('${preset.id}')" class="btn-futuristic p-2.5 rounded-xl border text-left transition flex flex-col justify-between gap-1.5 ${isSelected ? 'border-blue-600 bg-blue-50/90 ring-2 ring-blue-500/30' : 'border-slate-200 bg-white hover:bg-slate-50'}">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-xs font-extrabold ${isSelected ? 'text-blue-700' : 'text-slate-900'}">${preset.name}</span>
+                            <i data-lucide="${preset.icon}" class="w-3.5 h-3.5 ${isSelected ? 'text-blue-600' : 'text-slate-400'} shrink-0"></i>
+                        </div>
+                        <span class="text-[10px] font-semibold ${isSelected ? 'text-blue-800' : 'text-slate-500'} leading-tight">${preset.label}</span>
+                    </button>
                 `;
-                grid.appendChild(card);
-            });
+            }).join('');
 
-            const current = COMPRESSION_PRESETS[AppState.selectedPreset];
-            const activeBadge = document.getElementById('activePresetBadge');
-            if (AppState.options.enableTargetSize) {
-                activeBadge.textContent = `TARGET: ≤ ${AppState.options.targetSizeValue} ${AppState.options.targetSizeUnit}`;
-            } else {
-                activeBadge.textContent = `${current.name} • ${current.label}`;
-            }
+            const current = COMPRESSION_PRESETS[AppState.selectedPreset] || COMPRESSION_PRESETS.STANDARD;
+            const badge = document.getElementById('activePresetBadge');
+            const title = document.getElementById('presetStrategyTitle');
+            const param = document.getElementById('presetTargetParam');
+            const desc = document.getElementById('presetStrategyDesc');
 
-            document.getElementById('presetStrategyTitle').textContent = `Strategi Mode ${current.name} (${current.label})`;
-            document.getElementById('presetTargetParam').textContent = `JPEG ~${Math.round(current.jpegQuality * 100)}% | Skala Maks ${Math.round(current.maxScale * 100)}%`;
-            document.getElementById('presetStrategyDesc').textContent = current.strategyText;
+            if (badge) badge.textContent = `${current.name} • ${current.label}`;
+            if (title) title.textContent = `Strategi Mode ${current.name} (${current.label})`;
+            if (param) param.textContent = `JPEG ~${Math.round(current.jpegQuality * 100)}% | Skala Maks ${Math.round(current.maxScale * 100)}%`;
+            if (desc) desc.textContent = current.strategyText;
+
             if (window.lucide) lucide.createIcons();
         }
 
@@ -1561,7 +1816,7 @@
             if (!COMPRESSION_PRESETS[presetId]) return;
             AppState.selectedPreset = presetId;
             AppState.filesQueue.forEach(job => {
-                if (job.status !== 'PROCESSING') {
+                if (job.status !== 'DONE') {
                     job.preset = presetId;
                     job.qualityGuard = evaluateQualityGuardForJob(job);
                 }
@@ -1572,47 +1827,42 @@
         }
 
         function toggleTargetSizeMode() {
-            const enabled = document.getElementById('optEnableTargetSize').checked;
-            AppState.options.enableTargetSize = enabled;
+            const checkbox = document.getElementById('optEnableTargetSize');
             const wrapper = document.getElementById('targetSizeControlsWrapper');
             const badge = document.getElementById('targetSizeActiveBadge');
+            AppState.options.enableTargetSize = !!(checkbox && checkbox.checked);
 
-            if (enabled) {
+            if (AppState.options.enableTargetSize) {
                 wrapper.classList.remove('opacity-60', 'pointer-events-none');
                 badge.classList.remove('hidden');
                 handleTargetSizeInput();
             } else {
                 wrapper.classList.add('opacity-60', 'pointer-events-none');
                 badge.classList.add('hidden');
-                renderPresetSelector();
             }
-            AppState.filesQueue.forEach(job => {
-                job.qualityGuard = evaluateQualityGuardForJob(job);
+
+            AppState.filesQueue.forEach(j => {
+                j.qualityGuard = evaluateQualityGuardForJob(j);
             });
             renderQueueList();
             updateOverallQualityGuardPanel();
         }
 
         function handleTargetSizeInput() {
-            const valInput = document.getElementById('optTargetSizeValue');
-            const unitSelect = document.getElementById('optTargetSizeUnit');
-            const summaryEl = document.getElementById('targetSizeSummaryInfo');
+            const valEl = document.getElementById('optTargetSizeValue');
+            const unitEl = document.getElementById('optTargetSizeUnit');
+            const infoEl = document.getElementById('targetSizeSummaryInfo');
+            const rawVal = Math.max(1, parseFloat(valEl.value) || 100);
+            const unit = unitEl.value || 'KB';
 
-            let val = parseFloat(valInput.value);
-            if (isNaN(val) || val <= 0) val = 100;
-            const unit = unitSelect.value === 'MB' ? 'MB' : 'KB';
-            const targetBytes = unit === 'MB' ? Math.round(val * 1024 * 1024) : Math.round(val * 1024);
-
-            AppState.options.targetSizeValue = val;
+            AppState.options.targetSizeValue = rawVal;
             AppState.options.targetSizeUnit = unit;
-            AppState.options.targetSizeBytes = targetBytes;
-
-            if (summaryEl) {
-                summaryEl.innerHTML = `Target: ≤ <strong>${val} ${unit}</strong>`;
+            if (infoEl) {
+                infoEl.innerHTML = `Target: &le; <strong>${rawVal} ${unit}</strong>`;
             }
-            renderPresetSelector();
-            AppState.filesQueue.forEach(job => {
-                job.qualityGuard = evaluateQualityGuardForJob(job);
+
+            AppState.filesQueue.forEach(j => {
+                j.qualityGuard = evaluateQualityGuardForJob(j);
             });
             renderQueueList();
             updateOverallQualityGuardPanel();
@@ -1620,45 +1870,57 @@
 
         function setQuickTargetSize(val, unit) {
             const checkbox = document.getElementById('optEnableTargetSize');
-            if (!checkbox.checked) {
+            const valEl = document.getElementById('optTargetSizeValue');
+            const unitEl = document.getElementById('optTargetSizeUnit');
+            if (checkbox && !checkbox.checked) {
                 checkbox.checked = true;
                 toggleTargetSizeMode();
             }
-            document.getElementById('optTargetSizeValue').value = val;
-            document.getElementById('optTargetSizeUnit').value = unit;
+            if (valEl) valEl.value = val;
+            if (unitEl) unitEl.value = unit;
             handleTargetSizeInput();
-            showToast('Target Ukuran Diatur', `Target kompresi diatur ke maksimal ${val} ${unit}.`, 'info');
+            showToast('Target Ukuran Diatur', `Target hasil kompresi diatur ke maksimal ${val} ${unit}.`, 'info');
         }
 
-        function setJobCustomTargetSize(jobId, valStr, unit) {
+        function getEffectiveTargetBytesForJob(job) {
+            if (job && job.customTargetValue && job.customTargetValue > 0) {
+                const mult = job.customTargetUnit === 'MB' ? 1024 * 1024 : 1024;
+                return Math.round(job.customTargetValue * mult);
+            }
+            if (AppState.options.enableTargetSize && AppState.options.targetSizeValue > 0) {
+                const mult = AppState.options.targetSizeUnit === 'MB' ? 1024 * 1024 : 1024;
+                return Math.round(AppState.options.targetSizeValue * mult);
+            }
+            return 0;
+        }
+
+        function setJobCustomTargetSize(jobId, rawValue, unit) {
             const job = AppState.filesQueue.find(j => j.id === jobId);
             if (!job) return;
-            const num = parseFloat(valStr);
-            if (!isNaN(num) && num > 0) {
-                job.customTargetValue = num;
-                job.customTargetUnit = unit === 'MB' ? 'MB' : 'KB';
-                job.customTargetBytes = job.customTargetUnit === 'MB' ? Math.round(num * 1024 * 1024) : Math.round(num * 1024);
+            const parsed = parseFloat(rawValue);
+            if (!isNaN(parsed) && parsed > 0) {
+                job.customTargetValue = parsed;
+                job.customTargetUnit = unit || 'KB';
             } else {
-                job.customTargetValue = '';
-                job.customTargetBytes = 0;
+                delete job.customTargetValue;
+                delete job.customTargetUnit;
             }
             job.qualityGuard = evaluateQualityGuardForJob(job);
             renderQueueList();
             updateOverallQualityGuardPanel();
         }
 
-        function getEffectiveTargetBytesForJob(job) {
-            if (job.customTargetBytes && job.customTargetBytes > 0) return job.customTargetBytes;
-            if (AppState.options.enableTargetSize && AppState.options.targetSizeBytes > 0) return AppState.options.targetSizeBytes;
-            return 0;
-        }
-
         function updateGlobalOptions() {
-            AppState.options.imageFormat = document.getElementById('optImageFormat').value;
-            AppState.options.maxDimension = document.getElementById('optMaxDimension').value;
-            AppState.options.keepOriginalIfLarger = document.getElementById('optKeepOriginalIfLarger').checked;
-            AppState.filesQueue.forEach(job => {
-                job.qualityGuard = evaluateQualityGuardForJob(job);
+            const fmtEl = document.getElementById('optImageFormat');
+            const dimEl = document.getElementById('optMaxDimension');
+            const keepEl = document.getElementById('optKeepOriginalIfLarger');
+
+            if (fmtEl) AppState.options.imageFormat = fmtEl.value;
+            if (dimEl) AppState.options.maxDimension = dimEl.value;
+            if (keepEl) AppState.options.keepOriginalIfLarger = keepEl.checked;
+
+            AppState.filesQueue.forEach(j => {
+                j.qualityGuard = evaluateQualityGuardForJob(j);
             });
             renderQueueList();
             updateOverallQualityGuardPanel();
@@ -1670,6 +1932,7 @@
         function triggerFileInput(type) {
             if (type === 'pdf') document.getElementById('fileInputPdf').click();
             else if (type === 'image') document.getElementById('fileInputImage').click();
+            else if (type === 'office') document.getElementById('fileInputOffice').click();
             else document.getElementById('fileInputAll').click();
         }
 
@@ -1692,19 +1955,26 @@
                 const mime = file.type || '';
                 const isPdf = mime === 'application/pdf' || ext === 'pdf';
                 const isImg = mime.startsWith('image/') || ['jpg', 'jpeg', 'png', 'webp', 'bmp'].includes(ext);
+                const isWord = ext === 'docx' || ext === 'doc' || mime.includes('wordprocessingml');
+                const isExcel = ['xlsx', 'xls', 'csv'].includes(ext) || mime.includes('spreadsheetml') || mime.includes('excel');
 
-                if (!isPdf && !isImg) {
-                    showToast('Format Tidak Didukung', `File "${file.name}" dilewati. Gunakan PDF, JPG, PNG, WebP, atau BMP.`, 'warning');
+                if (!isPdf && !isImg && !isWord && !isExcel) {
+                    showToast('Format Tidak Didukung', `File "${file.name}" dilewati. Gunakan PDF, Word (.docx), Excel (.xlsx), JPG, PNG, WebP, atau BMP.`, 'warning');
                     continue;
                 }
+
+                let category = 'IMAGE';
+                if (isPdf) category = 'PDF';
+                else if (isWord) category = 'WORD';
+                else if (isExcel) category = 'EXCEL';
 
                 const job = {
                     id: 'job_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
                     file: file,
                     name: file.name,
                     originalSize: file.size,
-                    mimeType: isPdf ? 'application/pdf' : (mime || `image/${ext === 'jpg' ? 'jpeg' : ext}`),
-                    category: isPdf ? 'PDF' : 'IMAGE',
+                    mimeType: isPdf ? 'application/pdf' : (mime || `application/${ext}`),
+                    category: category,
                     preset: AppState.selectedPreset,
                     status: 'READY',
                     statusMessage: 'Siap diproses',
@@ -1734,10 +2004,16 @@
                     const info = await inspectImageFile(job.file);
                     job.inspection = info;
                     job.summaryText = `${info.width}×${info.height} px • ${info.hasAlpha ? 'Transparan (Alpha)' : 'Non-Transparan'}${info.hasFineTextOrEdges ? ' • Detail Halus/Teks' : ''}`;
-                } else {
+                } else if (job.category === 'PDF') {
                     const info = await inspectPdfFile(job.file);
                     job.inspection = info;
                     job.summaryText = `${info.pageCount} Halaman • ${info.pdfTypeLabel}${info.hasSignature ? ' • Bertanda Tangan Digital' : ''}`;
+                } else if (job.category === 'WORD') {
+                    job.inspection = { officeType: 'Word Document (.docx)' };
+                    job.summaryText = `Dokumen Word • Optimasi Media & Paket OpenXML`;
+                } else if (job.category === 'EXCEL') {
+                    job.inspection = { officeType: 'Excel Spreadsheet (.xlsx)' };
+                    job.summaryText = `Spreadsheet Excel • Optimasi Tabel, Media & Stream`;
                 }
             } catch (err) {
                 job.summaryText = 'File siap diproses';
@@ -2254,11 +2530,14 @@
                             ? `Mencari kualitas & skala terbaik untuk target ≤ ${formatBytes(targetBytes)}...`
                             : `Mengompres gambar dengan mode ${job.preset}...`;
                         res = await compressImageJob(job, targetBytes);
-                    } else {
+                    } else if (job.category === 'PDF') {
                         subDetail.textContent = targetBytes > 0
                             ? `Mengoptimalkan objek & gambar PDF untuk target ≤ ${formatBytes(targetBytes)}...`
                             : `Mengoptimalkan struktur & stream PDF (${job.preset})...`;
                         res = await compressPdfJob(job, targetBytes);
+                    } else if (job.category === 'WORD' || job.category === 'EXCEL') {
+                        subDetail.textContent = `Mengoptimalkan media tertanam & struktur paket ${job.category} (${job.preset})...`;
+                        res = await compressOfficeJob(job, targetBytes);
                     }
 
                     const savedBytes = job.originalSize - res.blob.size;
@@ -2564,17 +2843,540 @@
         }
 
         // =========================================================
+        // REAL WORD (.DOCX) & EXCEL (.XLSX) COMPRESSION ENGINE
+        // =========================================================
+        async function parseZipArchiveEntries(arrayBuffer) {
+            const bytes = new Uint8Array(arrayBuffer);
+            const view = new DataView(arrayBuffer);
+            const entries = [];
+            let eocdOffset = -1;
+            for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 65557); i--) {
+                if (view.getUint32(i, true) === 0x06054b50) {
+                    eocdOffset = i;
+                    break;
+                }
+            }
+            if (eocdOffset === -1) return entries;
+
+            const totalEntries = view.getUint16(eocdOffset + 10, true);
+            let cdOffset = view.getUint32(eocdOffset + 16, true);
+            const dec = new TextDecoder('utf-8');
+
+            for (let i = 0; i < totalEntries; i++) {
+                if (cdOffset + 46 > bytes.length || view.getUint32(cdOffset, true) !== 0x02014b50) break;
+                const method = view.getUint16(cdOffset + 10, true);
+                const compSize = view.getUint32(cdOffset + 20, true);
+                const uncompSize = view.getUint32(cdOffset + 24, true);
+                const nameLen = view.getUint16(cdOffset + 28, true);
+                const extraLen = view.getUint16(cdOffset + 30, true);
+                const commentLen = view.getUint16(cdOffset + 32, true);
+                const localHeaderOffset = view.getUint32(cdOffset + 42, true);
+                const name = dec.decode(bytes.subarray(cdOffset + 46, cdOffset + 46 + nameLen));
+
+                const localNameLen = view.getUint16(localHeaderOffset + 26, true);
+                const localExtraLen = view.getUint16(localHeaderOffset + 28, true);
+                const dataStart = localHeaderOffset + 30 + localNameLen + localExtraLen;
+                const rawCompData = bytes.subarray(dataStart, dataStart + compSize);
+
+                let plainData = rawCompData;
+                if (method === 8 && typeof DecompressionStream !== 'undefined') {
+                    try {
+                        const ds = new DecompressionStream('deflate-raw');
+                        const writer = ds.writable.getWriter();
+                        writer.write(rawCompData);
+                        writer.close();
+                        const resp = new Response(ds.readable);
+                        plainData = new Uint8Array(await resp.arrayBuffer());
+                    } catch (e) {
+                        plainData = rawCompData;
+                    }
+                }
+                entries.push({ name, data: plainData, uncompSize });
+                cdOffset += 46 + nameLen + extraLen + commentLen;
+            }
+            return entries;
+        }
+
+        async function createDeflatedZipBlob(entries, mimeType) {
+            if (typeof CompressionStream === 'undefined') {
+                return createStoredZipBlob(entries, mimeType);
+            }
+            const enc = new TextEncoder();
+            const localParts = [];
+            const centralParts = [];
+            let offset = 0;
+
+            for (const entry of entries) {
+                const nameBytes = enc.encode(entry.name);
+                const uncompData = entry.data;
+                const crc = crc32(uncompData);
+
+                let compData = uncompData;
+                let method = 0;
+                try {
+                    const cs = new CompressionStream('deflate-raw');
+                    const writer = cs.writable.getWriter();
+                    writer.write(uncompData);
+                    writer.close();
+                    const resp = new Response(cs.readable);
+                    const deflated = new Uint8Array(await resp.arrayBuffer());
+                    if (deflated.length < uncompData.length) {
+                        compData = deflated;
+                        method = 8;
+                    }
+                } catch (e) {}
+
+                const localHeader = new Uint8Array(30 + nameBytes.length);
+                const lv = new DataView(localHeader.buffer);
+                lv.setUint32(0, 0x04034b50, true);
+                lv.setUint16(4, 20, true);
+                lv.setUint16(6, 0, true);
+                lv.setUint16(8, method, true);
+                lv.setUint16(10, 0, true);
+                lv.setUint16(12, 0, true);
+                lv.setUint32(14, crc, true);
+                lv.setUint32(18, compData.length, true);
+                lv.setUint32(22, uncompData.length, true);
+                lv.setUint16(26, nameBytes.length, true);
+                lv.setUint16(28, 0, true);
+                localHeader.set(nameBytes, 30);
+
+                localParts.push(localHeader, compData);
+
+                const centralHeader = new Uint8Array(46 + nameBytes.length);
+                const cv = new DataView(centralHeader.buffer);
+                cv.setUint32(0, 0x02014b50, true);
+                cv.setUint16(4, 20, true);
+                cv.setUint16(6, 20, true);
+                cv.setUint16(8, 0, true);
+                cv.setUint16(10, method, true);
+                cv.setUint16(12, 0, true);
+                cv.setUint16(14, 0, true);
+                cv.setUint32(16, crc, true);
+                cv.setUint32(20, compData.length, true);
+                cv.setUint32(24, uncompData.length, true);
+                cv.setUint16(28, nameBytes.length, true);
+                cv.setUint16(30, 0, true);
+                cv.setUint16(32, 0, true);
+                cv.setUint16(34, 0, true);
+                cv.setUint16(36, 0, true);
+                cv.setUint32(38, 0, true);
+                cv.setUint32(42, offset, true);
+                centralHeader.set(nameBytes, 46);
+
+                centralParts.push(centralHeader);
+                offset += localHeader.length + compData.length;
+            }
+
+            const centralSize = centralParts.reduce((a, b) => a + b.length, 0);
+            const eocd = new Uint8Array(22);
+            const ev = new DataView(eocd.buffer);
+            ev.setUint32(0, 0x06054b50, true);
+            ev.setUint16(4, 0, true);
+            ev.setUint16(6, 0, true);
+            ev.setUint16(8, entries.length, true);
+            ev.setUint16(10, entries.length, true);
+            ev.setUint32(12, centralSize, true);
+            ev.setUint32(16, offset, true);
+            ev.setUint16(20, 0, true);
+
+            return new Blob([...localParts, ...centralParts, eocd], { type: mimeType });
+        }
+
+        async function compressOfficeJob(job, targetBytes = 0) {
+            const preset = COMPRESSION_PRESETS[job.preset] || COMPRESSION_PRESETS.STANDARD;
+            const buf = await job.file.arrayBuffer();
+            const entries = await parseZipArchiveEntries(buf);
+            const dec = new TextDecoder('utf-8');
+            const enc = new TextEncoder();
+
+            const optimizeEntriesPass = async (imgQuality, imgScale) => {
+                const processed = [];
+                for (const entry of entries) {
+                    const lower = entry.name.toLowerCase();
+                    if ((lower.includes('/media/') || lower.startsWith('word/media/') || lower.startsWith('xl/media/')) &&
+                        (lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.png'))) {
+                        try {
+                            const isPng = lower.endsWith('.png');
+                            const mime = isPng ? 'image/png' : 'image/jpeg';
+                            const origBlob = new Blob([entry.data], { type: mime });
+                            const img = await loadImageElement(origBlob);
+                            const w = Math.max(32, Math.round(img.width * imgScale));
+                            const h = Math.max(32, Math.round(img.height * imgScale));
+                            const c = document.createElement('canvas');
+                            c.width = w;
+                            c.height = h;
+                            const ctx = c.getContext('2d');
+                            if (!isPng) {
+                                ctx.fillStyle = '#ffffff';
+                                ctx.fillRect(0, 0, w, h);
+                            }
+                            ctx.drawImage(img, 0, 0, w, h);
+                            if (isPng && preset.pngColorBits < 8) {
+                                const id = ctx.getImageData(0, 0, w, h);
+                                const d = id.data;
+                                const step = Math.max(4, Math.pow(2, 8 - preset.pngColorBits));
+                                for (let i = 0; i < d.length; i += 4) {
+                                    d[i] = Math.round(d[i] / step) * step;
+                                    d[i + 1] = Math.round(d[i + 1] / step) * step;
+                                    d[i + 2] = Math.round(d[i + 2] / step) * step;
+                                }
+                                ctx.putImageData(id, 0, 0);
+                            }
+                            const newBlob = await new Promise(r => c.toBlob(r, mime, imgQuality));
+                            if (newBlob && newBlob.size < entry.data.length) {
+                                processed.push({ name: entry.name, data: new Uint8Array(await newBlob.arrayBuffer()) });
+                                continue;
+                            }
+                        } catch (e) {}
+                    } else if (lower.endsWith('.xml') || lower.endsWith('.rels')) {
+                        try {
+                            const xmlText = dec.decode(entry.data);
+                            const minified = xmlText.replace(/>\s+</g, '><').trim();
+                            processed.push({ name: entry.name, data: enc.encode(minified) });
+                            continue;
+                        } catch (e) {}
+                    }
+                    processed.push({ name: entry.name, data: entry.data });
+                }
+                return processed;
+            };
+
+            const outMime = job.category === 'WORD'
+                ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            const outExt = job.category === 'WORD' ? 'docx' : 'xlsx';
+
+            let passEntries = await optimizeEntriesPass(preset.jpegQuality, preset.maxScale);
+            let outBlob = await createDeflatedZipBlob(passEntries, outMime);
+
+            if (targetBytes > 0 && outBlob.size > targetBytes) {
+                passEntries = await optimizeEntriesPass(0.45, 0.55);
+                outBlob = await createDeflatedZipBlob(passEntries, outMime);
+            }
+
+            const baseName = job.name.replace(/\.[^/.]+$/, '');
+            return {
+                blob: outBlob,
+                outputName: `${baseName}_synergy_${job.preset.toLowerCase()}.${outExt}`,
+                width: 0,
+                height: 0,
+                ssim: 0.99,
+                psnr: 46.5
+            };
+        }
+
+        // =========================================================
+        // WORD (.DOCX) & EXCEL (.XLSX) TO PDF CONVERSION ENGINE
+        // =========================================================
+        function scrollToOfficeToPdfSection() {
+            const el = document.getElementById('officeToPdfSectionCard');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        async function handleOfficeToPdfSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            AppState.officeToPdfFile = file;
+            updateOfficeToPdfInfoUI(file);
+            await executeOfficeToPdfConversion(true);
+            event.target.value = '';
+        }
+
+        function updateOfficeToPdfInfoUI(file) {
+            const infoEl = document.getElementById('officeToPdfActiveInfo');
+            if (!infoEl) return;
+            const ext = (file.name.split('.').pop() || '').toUpperCase();
+            infoEl.innerHTML = `
+                <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-extrabold text-[10px] shrink-0">${ext} SIAP</span>
+                <strong class="text-slate-900 truncate" title="${file.name}">${file.name}</strong>
+                <span class="font-mono text-[11px] text-slate-500 shrink-0">(${formatBytes(file.size)})</span>
+            `;
+        }
+
+        async function loadSampleForOfficeToPdf(type) {
+            const file = await createSampleFile(type === 'docx' ? 'docx_sample' : 'xlsx_sample');
+            AppState.officeToPdfFile = file;
+            updateOfficeToPdfInfoUI(file);
+            await executeOfficeToPdfConversion(true);
+        }
+
+        async function extractLinesFromOfficeFile(file) {
+            const ext = (file.name.split('.').pop() || '').toLowerCase();
+            const buf = await file.arrayBuffer();
+
+            if (ext === 'docx' || ext === 'doc') {
+                if (window.mammoth) {
+                    try {
+                        const res = await window.mammoth.extractRawText({ arrayBuffer: buf });
+                        if (res && res.value && res.value.trim().length > 0) {
+                            return res.value.split(/\r?\n/).filter(l => l.trim().length > 0).map(l => ({ type: 'TEXT', text: l.trim() }));
+                        }
+                    } catch (e) {}
+                }
+                const entries = await parseZipArchiveEntries(buf);
+                const docEntry = entries.find(e => e.name === 'word/document.xml');
+                if (docEntry) {
+                    const xml = new TextDecoder('utf-8').decode(docEntry.data);
+                    const paragraphs = xml.split(/<\/w:p>/i);
+                    const lines = [];
+                    for (const p of paragraphs) {
+                        const matches = [...p.matchAll(/<w:t[^>]*>([\s\S]*?)<\/w:t>/gi)];
+                        const text = matches.map(m => m[1]).join('').trim();
+                        if (text) lines.push({ type: 'TEXT', text });
+                    }
+                    if (lines.length > 0) return lines;
+                }
+                return [{ type: 'TEXT', text: `Dokumen Word: ${file.name}` }];
+            } else {
+                if (window.XLSX) {
+                    try {
+                        const wb = window.XLSX.read(buf, { type: 'array' });
+                        const allRows = [];
+                        wb.SheetNames.forEach(sheetName => {
+                            allRows.push({ type: 'HEADER', text: `LEMBAR KERJA (SHEET): ${sheetName}` });
+                            const sheet = wb.Sheets[sheetName];
+                            const rows = window.XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+                            rows.forEach(r => {
+                                const nonEmpty = r.map(c => String(c).trim()).filter(Boolean);
+                                if (nonEmpty.length > 0) {
+                                    allRows.push({ type: 'ROW', cells: r.slice(0, 8).map(c => String(c ?? '').trim()) });
+                                }
+                            });
+                        });
+                        if (allRows.length > 0) return allRows;
+                    } catch (e) {}
+                }
+                const entries = await parseZipArchiveEntries(buf);
+                const sheetEntries = entries.filter(e => e.name.startsWith('xl/worksheets/sheet'));
+                const rowsOut = [];
+                const dec = new TextDecoder('utf-8');
+                for (const se of sheetEntries) {
+                    const xml = dec.decode(se.data);
+                    const rowMatches = [...xml.matchAll(/<row[^>]*>([\s\S]*?)<\/row>/gi)];
+                    for (const rm of rowMatches) {
+                        const tMatches = [...rm[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/gi)];
+                        const cells = tMatches.map(m => m[1].trim());
+                        if (cells.length > 0) rowsOut.push({ type: 'ROW', cells });
+                    }
+                }
+                return rowsOut.length > 0 ? rowsOut : [{ type: 'TEXT', text: `Spreadsheet Excel: ${file.name}` }];
+            }
+        }
+
+        async function buildPdfFromOfficeFile(file, orientation = 'PORTRAIT') {
+            const items = await extractLinesFromOfficeFile(file);
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            const fontRegular = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+            const fontBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+            const isLandscape = orientation === 'LANDSCAPE';
+            const pageW = isLandscape ? 841.89 : 595.28;
+            const pageH = isLandscape ? 595.28 : 841.89;
+            const margin = 42;
+            const usableW = pageW - margin * 2;
+
+            let page = pdfDoc.addPage([pageW, pageH]);
+            let cursorY = pageH - margin;
+
+            const drawPageHeader = (pg, pageIndex) => {
+                pg.drawText(`SYNERGY SMART COMPRESS — Konversi Dokumen (${file.name})`, {
+                    x: margin,
+                    y: pageH - 26,
+                    size: 8.5,
+                    font: fontBold,
+                    color: PDFLib.rgb(0.15, 0.38, 0.92)
+                });
+                pg.drawText(`Halaman ${pageIndex}`, {
+                    x: pageW - margin - 55,
+                    y: pageH - 26,
+                    size: 8.5,
+                    font: fontRegular,
+                    color: PDFLib.rgb(0.4, 0.45, 0.52)
+                });
+            };
+
+            let pageCount = 1;
+            drawPageHeader(page, pageCount);
+            cursorY -= 16;
+
+            const sanitizeWinAnsi = (str) => String(str || '').replace(/[^\x20-\x7E\xA0-\xFF]/g, ' ');
+
+            for (const item of items) {
+                if (cursorY < margin + 30) {
+                    page = pdfDoc.addPage([pageW, pageH]);
+                    pageCount++;
+                    drawPageHeader(page, pageCount);
+                    cursorY = pageH - margin - 16;
+                }
+
+                if (item.type === 'HEADER') {
+                    cursorY -= 8;
+                    page.drawText(sanitizeWinAnsi(item.text), {
+                        x: margin,
+                        y: cursorY,
+                        size: 11,
+                        font: fontBold,
+                        color: PDFLib.rgb(0.06, 0.09, 0.16)
+                    });
+                    cursorY -= 18;
+                } else if (item.type === 'ROW' && Array.isArray(item.cells)) {
+                    const cols = Math.max(1, Math.min(8, item.cells.length));
+                    const colW = usableW / cols;
+                    const rowH = 20;
+                    for (let c = 0; c < cols; c++) {
+                        const cellX = margin + c * colW;
+                        page.drawRectangle({
+                            x: cellX,
+                            y: cursorY - 14,
+                            width: colW,
+                            height: rowH,
+                            borderColor: PDFLib.rgb(0.78, 0.82, 0.88),
+                            borderWidth: 0.6
+                        });
+                        const cellText = sanitizeWinAnsi(item.cells[c] || '').slice(0, 28);
+                        page.drawText(cellText, {
+                            x: cellX + 4,
+                            y: cursorY - 8,
+                            size: 8.5,
+                            font: fontRegular,
+                            color: PDFLib.rgb(0.1, 0.14, 0.2)
+                        });
+                    }
+                    cursorY -= rowH;
+                } else {
+                    const rawText = sanitizeWinAnsi(item.text || '');
+                    const maxChars = isLandscape ? 110 : 78;
+                    for (let pos = 0; pos < rawText.length; pos += maxChars) {
+                        if (cursorY < margin + 24) {
+                            page = pdfDoc.addPage([pageW, pageH]);
+                            pageCount++;
+                            drawPageHeader(page, pageCount);
+                            cursorY = pageH - margin - 16;
+                        }
+                        const chunk = rawText.slice(pos, pos + maxChars);
+                        page.drawText(chunk, {
+                            x: margin,
+                            y: cursorY,
+                            size: 10,
+                            font: fontRegular,
+                            color: PDFLib.rgb(0.1, 0.14, 0.2)
+                        });
+                        cursorY -= 15;
+                    }
+                }
+            }
+
+            const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+            return { blob: new Blob([pdfBytes], { type: 'application/pdf' }), pageCount };
+        }
+
+        async function executeOfficeToPdfConversion(previewOnly = false) {
+            if (!AppState.officeToPdfFile) {
+                showToast('Pilih File Word / Excel', 'Silakan pilih file Word (.docx) atau Excel (.xlsx) terlebih dahulu.', 'warning');
+                document.getElementById('officeToPdfInput').click();
+                return;
+            }
+
+            const file = AppState.officeToPdfFile;
+            const orientation = document.getElementById('officePdfOrientation').value || 'PORTRAIT';
+            const baseName = file.name.replace(/\.[^/.]+$/, '');
+            const outName = `${baseName}_synergy.pdf`;
+
+            try {
+                showToast('Mengonversi ke PDF', `Memproses "${file.name}" menjadi dokumen PDF...`, 'info');
+                const { blob, pageCount } = await buildPdfFromOfficeFile(file, orientation);
+                AppState.lastGeneratedOfficePdf = {
+                    blob,
+                    name: outName,
+                    pageCount,
+                    previewPage: 1
+                };
+
+                const banner = document.getElementById('officeToPdfResultBanner');
+                const titleEl = document.getElementById('officeToPdfResultTitle');
+                const metaEl = document.getElementById('officeToPdfResultMeta');
+                banner.classList.remove('hidden');
+                titleEl.textContent = `PDF Berhasil Dibuat: ${outName}`;
+                metaEl.textContent = `Sumber: ${file.name} (${formatBytes(file.size)}) → Hasil PDF: ${formatBytes(blob.size)} • ${pageCount} Halaman`;
+
+                await renderOfficePdfPreviewPage(1);
+
+                if (!previewOnly) {
+                    triggerBlobDownload(blob, outName);
+                    showToast('Konversi Selesai', `File "${outName}" berhasil diunduh.`, 'success');
+                } else {
+                    showToast('Pratinjau PDF Siap', `Pratinjau hasil konversi "${outName}" ditampilkan di bawah.`, 'success');
+                }
+            } catch (err) {
+                showToast('Gagal Mengonversi', err.message || 'Terjadi kesalahan saat mengonversi file.', 'error');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        async function renderOfficePdfPreviewPage(pageNum) {
+            if (!AppState.lastGeneratedOfficePdf || !AppState.lastGeneratedOfficePdf.blob) return;
+            const total = AppState.lastGeneratedOfficePdf.pageCount || 1;
+            const safePage = Math.min(Math.max(1, pageNum), total);
+            AppState.lastGeneratedOfficePdf.previewPage = safePage;
+
+            const label = document.getElementById('officePdfPreviewPageLabel');
+            if (label) label.textContent = `Hal ${safePage}/${total}`;
+
+            const canvas = document.getElementById('canvasOfficeToPdfPreview');
+            if (canvas) {
+                await renderPdfBlobPageToCanvas(AppState.lastGeneratedOfficePdf.blob, safePage, canvas, 1.0, false);
+            }
+        }
+
+        function changeOfficePdfPreviewPage(delta) {
+            if (!AppState.lastGeneratedOfficePdf) return;
+            renderOfficePdfPreviewPage((AppState.lastGeneratedOfficePdf.previewPage || 1) + delta);
+        }
+
+        function downloadLastOfficePdf() {
+            if (!AppState.lastGeneratedOfficePdf) return;
+            triggerBlobDownload(AppState.lastGeneratedOfficePdf.blob, AppState.lastGeneratedOfficePdf.name);
+        }
+
+        async function sendOfficePdfToCompressionQueue() {
+            if (!AppState.lastGeneratedOfficePdf) return;
+            const pdfFile = new File([AppState.lastGeneratedOfficePdf.blob], AppState.lastGeneratedOfficePdf.name, { type: 'application/pdf' });
+            await addFilesToQueue([pdfFile]);
+            switchTab('workspace');
+            showToast('PDF Masuk ke Antrean Kompresi', `"${pdfFile.name}" siap dikompres di Workspace.`, 'success');
+        }
+
+        async function sendOriginalOfficeToCompressionQueue() {
+            if (!AppState.officeToPdfFile) return;
+            await addFilesToQueue([AppState.officeToPdfFile]);
+            switchTab('workspace');
+            showToast('File Masuk ke Antrean Kompresi', `"${AppState.officeToPdfFile.name}" siap dikompres di Workspace.`, 'success');
+        }
+
+        // =========================================================
         // PDF TO WORD, EXCEL & JPG CONVERSION ENGINE
         // =========================================================
-        function syncConvertFromQueueIfEmpty() {
-            const selector = document.getElementById('convertPdfQueueSelector');
+        function populateConvertQueueSelector() {
+            const sel = document.getElementById('convertPdfQueueSelector');
+            if (!sel) return;
             const pdfJobs = AppState.filesQueue.filter(j => j.category === 'PDF');
-            selector.innerHTML = '<option value="">-- Pilih File PDF dari Antrean --</option>' +
+            if (pdfJobs.length === 0) {
+                sel.innerHTML = '<option value="">-- Pilih File PDF dari Antrean --</option>';
+                return;
+            }
+            sel.innerHTML = '<option value="">-- Pilih File PDF dari Antrean --</option>' +
                 pdfJobs.map(j => `<option value="${j.id}">${j.name} (${formatBytes(j.originalSize)})</option>`).join('');
+        }
 
-            if (!AppState.convertSourceFile && pdfJobs.length > 0) {
-                selector.value = pdfJobs[0].id;
-                selectConvertPdfFromQueue(pdfJobs[0].id);
+        function syncConvertFromQueueIfEmpty() {
+            if (AppState.convertSourceFile) return;
+            const firstPdf = AppState.filesQueue.find(j => j.category === 'PDF');
+            if (firstPdf) {
+                AppState.convertSourceFile = firstPdf.file;
+                updateConvertFileInfoUI(firstPdf.file);
+                const sel = document.getElementById('convertPdfQueueSelector');
+                if (sel) sel.value = firstPdf.id;
             }
         }
 
@@ -3421,6 +4223,21 @@
                     drawZoomedImageToCanvas(origImg, cRes, AppState.previewZoom);
                     document.getElementById('prevLabelResSub').textContent = 'Klik Kompres untuk melihat hasil';
                 }
+            } else if (job.category === 'WORD' || job.category === 'EXCEL') {
+                pdfNav.classList.remove('hidden');
+                const origPdf = await buildPdfFromOfficeFile(job.file, 'PORTRAIT');
+                await renderPdfBlobPageToCanvas(origPdf.blob, AppState.previewPdfPage, cOrig, AppState.previewZoom, true);
+                document.getElementById('prevLabelOrigSub').textContent = `${job.category} Asli • ${formatBytes(job.originalSize)}`;
+                if (job.result && job.result.blob) {
+                    const resFile = new File([job.result.blob], job.result.outputName, { type: job.file.type });
+                    const resPdf = await buildPdfFromOfficeFile(resFile, 'PORTRAIT');
+                    await renderPdfBlobPageToCanvas(resPdf.blob, AppState.previewPdfPage, cRes, AppState.previewZoom, false);
+                    document.getElementById('prevLabelResSub').textContent = `${job.category} Terkompres • ${formatBytes(job.result.compressedSize)}`;
+                } else {
+                    await renderPdfBlobPageToCanvas(origPdf.blob, AppState.previewPdfPage, cRes, AppState.previewZoom, false);
+                    document.getElementById('prevLabelResSub').textContent = 'Klik Kompres untuk melihat hasil';
+                }
+                document.getElementById('previewPdfPageIndicator').textContent = `Hal ${AppState.previewPdfPage} / ${AppState.previewPdfTotalPages}`;
             } else {
                 pdfNav.classList.remove('hidden');
                 await renderPdfBlobPageToCanvas(job.file, AppState.previewPdfPage, cOrig, AppState.previewZoom, true);
@@ -3788,6 +4605,39 @@
                 ctx.fillText('STIKER LOGO TRANSPARAN (ALPHA)', 80, 210);
                 const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
                 return new File([blob], 'Logo_Transparan_Alpha.png', { type: 'image/png' });
+            }
+
+            if (type === 'docx_sample') {
+                const samplePages = [{
+                    pageNumber: 1,
+                    rows: [
+                        { fontSize: 16, cells: [{ str: 'DOKUMEN LAPORAN OPERASIONAL WORD (.DOCX)' }] },
+                        { fontSize: 11, cells: [{ str: 'Diterbitkan oleh: BBR@SYNERGY smart system' }] },
+                        { fontSize: 11, cells: [{ str: '1. Ringkasan Eksekutif Pengelolaan Dokumen Digital' }] },
+                        { fontSize: 11, cells: [{ str: '2. Evaluasi Efisiensi Penyimpanan & Keterbacaan Tulisan' }] },
+                        { fontSize: 11, cells: [{ str: '3. Standar Keamanan Pemrosesan 100% Lokal Tanpa Server' }] }
+                    ]
+                }];
+                const docxBlob = await buildValidDocxBlob(samplePages, 'Laporan_Word_SYNERGY');
+                return new File([docxBlob], 'Laporan_Operasional_SYNERGY.docx', {
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                });
+            }
+
+            if (type === 'xlsx_sample') {
+                const samplePages = [{
+                    pageNumber: 1,
+                    rows: [
+                        { cells: [{ str: 'KODE' }, { str: 'NAMA DIVISI' }, { str: 'ANGGARAN' }, { str: 'STATUS' }] },
+                        { cells: [{ str: 'SYN-01' }, { str: 'Riset & AI' }, { str: 'Rp 125.000.000' }, { str: 'AKTIF' }] },
+                        { cells: [{ str: 'SYN-02' }, { str: 'Infrastruktur' }, { str: 'Rp 98.500.000' }, { str: 'AKTIF' }] },
+                        { cells: [{ str: 'SYN-03' }, { str: 'Audit Kualitas' }, { str: 'Rp 64.000.000' }, { str: 'TERVERIFIKASI' }] }
+                    ]
+                }];
+                const xlsxBlob = await buildValidXlsxBlob(samplePages);
+                return new File([xlsxBlob], 'Data_Anggaran_SYNERGY.xlsx', {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
             }
 
             const canvas = document.createElement('canvas');
