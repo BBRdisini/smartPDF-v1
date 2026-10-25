@@ -207,10 +207,10 @@
                         <span id="badgeQueueCount" class="sidebar-label px-2 py-0.5 text-[11px] rounded-full bg-blue-600 text-white font-bold shrink-0">0</span>
                     </button>
 
-                    <button onclick="switchTab('convert')" data-nav="convert" title="Konversi PDF ke Word (.docx), Excel (.xlsx), dan Gambar (.jpg)" class="nav-btn w-full h-10 flex items-center justify-between px-3 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <button onclick="switchTab('convert')" data-nav="convert" title="Konversi PDF (Word/Excel/JPG) & Konversi JPG ke PDF" class="nav-btn w-full h-10 flex items-center justify-between px-3 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <i data-lucide="file-symlink" class="w-4 h-4 shrink-0"></i>
-                            <span class="sidebar-label truncate">Konversi PDF (Word/Excel)</span>
+                            <span class="sidebar-label truncate">Konversi PDF & JPG⇄PDF</span>
                         </div>
                     </button>
 
@@ -688,6 +688,7 @@
 
             <!-- ========================================================= -->
             <!-- TAB 2: KONVERSI PDF KE WORD (.DOCX), EXCEL (.XLSX) & JPG  -->
+            <!--        SERTA KONVERSI GAMBAR (JPG/PNG) KE PDF             -->
             <!-- ========================================================= -->
             <section id="tab-convert" class="tab-panel hidden space-y-5">
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
@@ -695,15 +696,19 @@
                         <div>
                             <div class="flex items-center gap-2">
                                 <i data-lucide="file-symlink" class="w-5 h-5 text-blue-600"></i>
-                                <h2 class="text-base sm:text-lg font-bold text-slate-900">Konversi PDF ke Word, Excel & Gambar (JPG)</h2>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900">Konversi PDF ke Word, Excel, Gambar (JPG) & JPG ke PDF</h2>
                             </div>
-                            <p class="text-xs text-slate-500 mt-0.5">Ekstraksi tata letak baris, kolom tabel, dan halaman beresolusi tinggi tanpa merusak format tulisan • 100% Lokal oleh BBR@SYNERGY smart system.</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Ekstraksi tata letak baris, kolom tabel, halaman beresolusi tinggi, serta penggabungan gambar JPG ke PDF • 100% Lokal oleh BBR@SYNERGY smart system.</p>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <input type="file" id="convertPdfInput" accept=".pdf,application/pdf" class="hidden" onchange="handleConvertPdfUpload(event)">
                             <button onclick="document.getElementById('convertPdfInput').click()" class="touch-target px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
                                 <i data-lucide="upload" class="w-4 h-4"></i>
                                 <span>Pilih File PDF untuk Dikonversi</span>
+                            </button>
+                            <button onclick="scrollToJpgToPdfSection()" class="touch-target px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                                <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                                <span>Converter JPG ke PDF</span>
                             </button>
                         </div>
                     </div>
@@ -722,8 +727,8 @@
                         </div>
                     </div>
 
-                    <!-- 3 Conversion Format Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- 4 Conversion Format Cards (3 PDF-to-X + 1 JPG-to-PDF) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- PDF to Word (.docx) -->
                         <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-blue-400 transition flex flex-col justify-between space-y-4">
                             <div class="space-y-2">
@@ -777,6 +782,24 @@
                                 <span>Konversi ke Gambar (.jpg)</span>
                             </button>
                         </div>
+
+                        <!-- JPG / Gambar to PDF (.pdf) Shortcut Card -->
+                        <div class="p-4 rounded-2xl border border-rose-200 bg-white hover:border-rose-500 transition flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-extrabold text-sm">PDF</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">JPG / PNG &rarr; PDF</span>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Gambar (JPG) ke PDF (.pdf)</h3>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Ubah satu atau banyak gambar (JPG, JPEG, PNG, WebP) menjadi satu dokumen PDF rapi dengan pilihan ukuran kertas A4, F4/Folio, atau sesuai gambar.
+                                </p>
+                            </div>
+                            <button onclick="document.getElementById('jpgToPdfInput').click()" class="w-full touch-target py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                                <span>Pilih JPG & Buat PDF (.pdf)</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Conversion Status & Output Preview Area -->
@@ -789,6 +812,129 @@
                             <div id="convertOutputActions" class="flex flex-wrap items-center gap-2"></div>
                         </div>
                         <div id="convertOutputPreviewGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- PANEL KHUSUS: CONVERTER JPG / GAMBAR KE PDF               -->
+                <!-- ========================================================= -->
+                <div id="jpgToPdfSectionCard" class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                                    <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                                </span>
+                                <div>
+                                    <h3 class="text-base sm:text-lg font-bold text-slate-900">Converter Gambar (JPG / PNG / WebP) ke PDF</h3>
+                                    <p class="text-xs text-slate-500">Gabungkan satu atau banyak foto/scan gambar menjadi file PDF standar yang siap diunduh atau dikompres • 100% Lokal.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="file" id="jpgToPdfInput" multiple accept="image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" class="hidden" onchange="handleJpgToPdfSelect(event)">
+                            <button type="button" onclick="importQueueImagesToJpgToPdf()" class="touch-target px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition" title="Ambil semua gambar yang ada di antrean Workspace">
+                                <i data-lucide="folder-down" class="w-4 h-4 text-blue-600"></i>
+                                <span>+ Ambil dari Antrean</span>
+                            </button>
+                            <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="touch-target px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                                <i data-lucide="image-plus" class="w-4 h-4"></i>
+                                <span>+ Pilih Gambar (JPG/PNG)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pengaturan Tata Letak Halaman PDF -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <div>
+                            <label for="jpgPdfPageSize" class="block text-xs font-bold text-slate-700 mb-1">Ukuran Kertas PDF</label>
+                            <select id="jpgPdfPageSize" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="A4" selected>A4 Standar (210 × 297 mm)</option>
+                                <option value="F4">F4 / Folio (215 × 330 mm)</option>
+                                <option value="LETTER">Letter (216 × 279 mm)</option>
+                                <option value="FIT_IMAGE">Sesuai Ukuran Asli Gambar</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="jpgPdfOrientation" class="block text-xs font-bold text-slate-700 mb-1">Orientasi Halaman</label>
+                            <select id="jpgPdfOrientation" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="AUTO" selected>Otomatis (Ikuti Rasio Gambar)</option>
+                                <option value="PORTRAIT">Portrait (Tegak)</option>
+                                <option value="LANDSCAPE">Landscape (Mendatar)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="jpgPdfMargin" class="block text-xs font-bold text-slate-700 mb-1">Margin Tepi Halaman</label>
+                            <select id="jpgPdfMargin" class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800">
+                                <option value="0">Tanpa Margin (Penuh)</option>
+                                <option value="20" selected>Margin Kecil (Rapi)</option>
+                                <option value="40">Margin Standar Kantor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="jpgPdfOutputName" class="block text-xs font-bold text-slate-700 mb-1">Nama File PDF Hasil</label>
+                            <input type="text" id="jpgPdfOutputName" value="Dokumen_JPG_ke_PDF_SYNERGY" placeholder="Nama file PDF..." class="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        </div>
+                    </div>
+
+                    <!-- Dropzone & Daftar Gambar yang Akan Dijadikan PDF -->
+                    <div id="jpgToPdfDropzone" onclick="handleJpgToPdfDropzoneClick(event)" class="border-2 border-dashed border-slate-300 hover:border-rose-500 bg-slate-50/70 hover:bg-rose-50/20 rounded-xl p-4 sm:p-5 text-center cursor-pointer transition flex flex-col items-center justify-center">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-2">
+                            <i data-lucide="images" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-slate-800">Ketuk untuk Menambahkan Gambar JPG / PNG atau Tarik & Lepas ke Sini</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Urutan halaman PDF dapat diatur naik/turun sebelum digabungkan menjadi PDF.</p>
+
+                        <!-- Daftar Gambar JPG ke PDF -->
+                        <div id="jpgToPdfListWrapper" onclick="event.stopPropagation()" class="hidden mt-4 pt-3.5 border-t border-slate-200 w-full text-left cursor-default space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span id="jpgToPdfCountLabel" class="text-xs font-bold text-slate-900">0 Gambar Siap Dijadikan PDF:</span>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="document.getElementById('jpgToPdfInput').click()" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 transition">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        <span>Tambah Gambar</span>
+                                    </button>
+                                    <button type="button" onclick="clearJpgToPdfList()" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1 transition">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                        <span>Hapus Semua</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="jpgToPdfItemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Eksekusi Konversi JPG ke PDF & Hasil -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                        <div class="text-xs text-slate-500">
+                            Tips: Anda juga dapat mengirim hasil PDF langsung ke antrean kompresi jika ingin mengatur target ukuran KB/MB.
+                        </div>
+                        <button id="btnBuildJpgToPdf" type="button" onclick="executeJpgToPdfConversion()" class="touch-target px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition shrink-0">
+                            <i data-lucide="file-check" class="w-4 h-4"></i>
+                            <span>Konversi & Unduh PDF Sekarang (.pdf)</span>
+                        </button>
+                    </div>
+
+                    <!-- Banner Hasil Konversi JPG ke PDF -->
+                    <div id="jpgToPdfResultBanner" class="hidden p-4 rounded-xl border border-emerald-200 bg-emerald-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-1 text-xs">
+                            <div class="flex items-center gap-2 font-bold text-emerald-950 text-sm">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                <span id="jpgToPdfResultTitle">File PDF Berhasil Dibuat</span>
+                            </div>
+                            <p id="jpgToPdfResultMeta" class="text-emerald-900 font-mono"></p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 shrink-0">
+                            <button type="button" onclick="sendGeneratedPdfToCompressionQueue()" class="px-3.5 py-2 rounded-xl border border-blue-300 bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition">
+                                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                                <span>Masukkan ke Antrean Kompresi</span>
+                            </button>
+                            <button type="button" onclick="downloadLastGeneratedJpgPdf()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                <span>Unduh PDF (.pdf)</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1168,6 +1314,8 @@
             previewPdfTotalPages: 1,
             convertSourceFile: null,
             convertGeneratedJpgs: [],
+            jpgToPdfQueue: [],
+            lastGeneratedJpgPdf: null,
             options: {
                 imageFormat: 'ORIGINAL',
                 maxDimension: 'PRESET',
@@ -2680,6 +2828,290 @@
         }
 
         // =========================================================
+        // CONVERTER GAMBAR (JPG / PNG / WEBP) KE PDF ENGINE
+        // =========================================================
+        function scrollToJpgToPdfSection() {
+            const el = document.getElementById('jpgToPdfSectionCard');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function handleJpgToPdfDropzoneClick(e) {
+            if (e.target.closest('#jpgToPdfListWrapper')) return;
+            document.getElementById('jpgToPdfInput').click();
+        }
+
+        async function handleJpgToPdfSelect(event) {
+            const files = Array.from(event.target.files || []);
+            if (files.length > 0) {
+                await addImagesToJpgToPdfQueue(files);
+            }
+            event.target.value = '';
+        }
+
+        async function addImagesToJpgToPdfQueue(fileList) {
+            let addedCount = 0;
+            for (const file of fileList) {
+                const ext = (file.name.split('.').pop() || '').toLowerCase();
+                const mime = file.type || '';
+                const isImg = mime.startsWith('image/') || ['jpg', 'jpeg', 'png', 'webp', 'bmp'].includes(ext);
+                if (!isImg) {
+                    showToast('Format Dilewati', `"${file.name}" bukan file gambar (gunakan JPG, PNG, WebP, atau BMP).`, 'warning');
+                    continue;
+                }
+
+                try {
+                    const imgEl = await loadImageElement(file);
+                    const thumbUrl = URL.createObjectURL(file);
+                    AppState.jpgToPdfQueue.push({
+                        id: 'imgpdf_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+                        file: file,
+                        name: file.name,
+                        size: file.size,
+                        width: imgEl.naturalWidth || imgEl.width,
+                        height: imgEl.naturalHeight || imgEl.height,
+                        thumbUrl
+                    });
+                    addedCount++;
+                } catch (err) {
+                    showToast('Gagal Membaca Gambar', `File "${file.name}" tidak dapat dimuat.`, 'error');
+                }
+            }
+
+            renderJpgToPdfQueue();
+            if (addedCount > 0) {
+                showToast('Gambar Ditambahkan', `${addedCount} gambar siap dikonversi menjadi halaman PDF.`, 'success');
+            }
+        }
+
+        async function importQueueImagesToJpgToPdf() {
+            const imgJobs = AppState.filesQueue.filter(j => j.category === 'IMAGE');
+            if (imgJobs.length === 0) {
+                showToast('Tidak Ada Gambar di Antrean', 'Belum ada file gambar di antrean Workspace. Silakan pilih gambar langsung.', 'warning');
+                return;
+            }
+            await addImagesToJpgToPdfQueue(imgJobs.map(j => j.file));
+        }
+
+        function renderJpgToPdfQueue() {
+            const wrapper = document.getElementById('jpgToPdfListWrapper');
+            const countLabel = document.getElementById('jpgToPdfCountLabel');
+            const grid = document.getElementById('jpgToPdfItemsGrid');
+            if (!wrapper || !grid) return;
+
+            const total = AppState.jpgToPdfQueue.length;
+            if (total === 0) {
+                wrapper.classList.add('hidden');
+                grid.innerHTML = '';
+                return;
+            }
+
+            const totalBytes = AppState.jpgToPdfQueue.reduce((acc, it) => acc + it.size, 0);
+            wrapper.classList.remove('hidden');
+            countLabel.textContent = `${total} Gambar Siap Dijadikan PDF (Total Ukuran Awal: ${formatBytes(totalBytes)}):`;
+
+            grid.innerHTML = AppState.jpgToPdfQueue.map((item, idx) => `
+                <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between gap-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <img src="${item.thumbUrl}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 font-mono text-[10px] font-extrabold">Hal ${idx + 1}</span>
+                                <p class="text-xs font-bold text-slate-900 truncate" title="${item.name}">${item.name}</p>
+                            </div>
+                            <p class="text-[11px] font-mono text-slate-500 mt-0.5">${item.width}×${item.height}px • <strong>${formatBytes(item.size)}</strong></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button type="button" onclick="moveJpgToPdfItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Atas">
+                            <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button type="button" onclick="moveJpgToPdfItem(${idx}, 1)" ${idx === total - 1 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center text-slate-700" title="Geser ke Bawah">
+                            <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button type="button" onclick="removeJpgToPdfItem('${item.id}')" class="px-2 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold flex items-center gap-1" title="Hapus gambar ini">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function moveJpgToPdfItem(index, delta) {
+            const targetIdx = index + delta;
+            if (targetIdx < 0 || targetIdx >= AppState.jpgToPdfQueue.length) return;
+            const temp = AppState.jpgToPdfQueue[index];
+            AppState.jpgToPdfQueue[index] = AppState.jpgToPdfQueue[targetIdx];
+            AppState.jpgToPdfQueue[targetIdx] = temp;
+            renderJpgToPdfQueue();
+        }
+
+        function removeJpgToPdfItem(id) {
+            const idx = AppState.jpgToPdfQueue.findIndex(it => it.id === id);
+            if (idx === -1) return;
+            const removed = AppState.jpgToPdfQueue.splice(idx, 1)[0];
+            if (removed && removed.thumbUrl) URL.revokeObjectURL(removed.thumbUrl);
+            renderJpgToPdfQueue();
+        }
+
+        function clearJpgToPdfList() {
+            AppState.jpgToPdfQueue.forEach(it => {
+                if (it.thumbUrl) URL.revokeObjectURL(it.thumbUrl);
+            });
+            AppState.jpgToPdfQueue = [];
+            renderJpgToPdfQueue();
+            document.getElementById('jpgToPdfResultBanner').classList.add('hidden');
+            showToast('Daftar Gambar Dibersihkan', 'Semua gambar pada Converter JPG ke PDF telah dihapus.', 'info');
+        }
+
+        async function buildPdfFromImagesList(imageItems, options = {}) {
+            const pageSizeMode = options.pageSize || 'A4';
+            const orientationMode = options.orientation || 'AUTO';
+            const marginPt = options.margin !== undefined ? Number(options.margin) : 20;
+
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            pdfDoc.setCreator('SYNERGY SMART COMPRESS — by BBR@SYNERGY smart system');
+            pdfDoc.setProducer('SYNERGY SMART COMPRESS Local PDF Builder');
+
+            const PAGE_PRESETS = {
+                A4: [595.28, 841.89],
+                F4: [609.45, 935.43],
+                LETTER: [612.0, 792.0]
+            };
+
+            for (const item of imageItems) {
+                const file = item.file || item;
+                const imgEl = await loadImageElement(file);
+                const imgW = imgEl.naturalWidth || imgEl.width;
+                const imgH = imgEl.naturalHeight || imgEl.height;
+
+                // Normalize image bytes into clean JPEG or PNG for reliable embedding
+                let embeddedImg;
+                const mime = (file.type || '').toLowerCase();
+                if (mime === 'image/jpeg' || mime === 'image/jpg') {
+                    const rawBytes = await file.arrayBuffer();
+                    try {
+                        embeddedImg = await pdfDoc.embedJpg(rawBytes);
+                    } catch (e) {
+                        const c = document.createElement('canvas');
+                        c.width = imgW;
+                        c.height = imgH;
+                        const ctx = c.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, imgW, imgH);
+                        ctx.drawImage(imgEl, 0, 0);
+                        const fallbackBlob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.94));
+                        embeddedImg = await pdfDoc.embedJpg(await fallbackBlob.arrayBuffer());
+                    }
+                } else {
+                    const c = document.createElement('canvas');
+                    c.width = imgW;
+                    c.height = imgH;
+                    const ctx = c.getContext('2d');
+                    ctx.drawImage(imgEl, 0, 0);
+                    const pngBlob = await new Promise(r => c.toBlob(r, 'image/png'));
+                    embeddedImg = await pdfDoc.embedPng(await pngBlob.arrayBuffer());
+                }
+
+                let pageW, pageH;
+                if (pageSizeMode === 'FIT_IMAGE') {
+                    pageW = imgW + marginPt * 2;
+                    pageH = imgH + marginPt * 2;
+                } else {
+                    const baseDim = PAGE_PRESETS[pageSizeMode] || PAGE_PRESETS.A4;
+                    let isLandscape = false;
+                    if (orientationMode === 'LANDSCAPE') isLandscape = true;
+                    else if (orientationMode === 'PORTRAIT') isLandscape = false;
+                    else isLandscape = imgW > imgH;
+
+                    pageW = isLandscape ? Math.max(baseDim[0], baseDim[1]) : Math.min(baseDim[0], baseDim[1]);
+                    pageH = isLandscape ? Math.min(baseDim[0], baseDim[1]) : Math.max(baseDim[0], baseDim[1]);
+                }
+
+                const page = pdfDoc.addPage([pageW, pageH]);
+                const availW = Math.max(20, pageW - marginPt * 2);
+                const availH = Math.max(20, pageH - marginPt * 2);
+                const scale = Math.min(availW / imgW, availH / imgH);
+                const drawW = imgW * scale;
+                const drawH = imgH * scale;
+                const drawX = (pageW - drawW) / 2;
+                const drawY = (pageH - drawH) / 2;
+
+                page.drawImage(embeddedImg, {
+                    x: drawX,
+                    y: drawY,
+                    width: drawW,
+                    height: drawH
+                });
+            }
+
+            const pdfBytes = await pdfDoc.save({ useObjectStreams: true });
+            return new Blob([pdfBytes], { type: 'application/pdf' });
+        }
+
+        async function executeJpgToPdfConversion() {
+            if (AppState.jpgToPdfQueue.length === 0) {
+                showToast('Pilih Gambar Terlebih Dahulu', 'Tambahkan satu atau beberapa gambar (JPG, PNG, WebP) untuk dikonversi menjadi PDF.', 'warning');
+                document.getElementById('jpgToPdfInput').click();
+                return;
+            }
+
+            const pageSize = document.getElementById('jpgPdfPageSize').value;
+            const orientation = document.getElementById('jpgPdfOrientation').value;
+            const margin = parseInt(document.getElementById('jpgPdfMargin').value, 10) || 0;
+            let rawName = (document.getElementById('jpgPdfOutputName').value || 'Dokumen_JPG_ke_PDF_SYNERGY').trim();
+            rawName = rawName.replace(/\.pdf$/i, '');
+            const fileName = `${rawName}.pdf`;
+
+            const btn = document.getElementById('btnBuildJpgToPdf');
+            btn.disabled = true;
+
+            try {
+                showToast('Membuat Dokumen PDF', `Menggabungkan ${AppState.jpgToPdfQueue.length} gambar ke dalam file PDF...`, 'info');
+                const pdfBlob = await buildPdfFromImagesList(AppState.jpgToPdfQueue, {
+                    pageSize,
+                    orientation,
+                    margin
+                });
+
+                AppState.lastGeneratedJpgPdf = {
+                    blob: pdfBlob,
+                    name: fileName,
+                    pageCount: AppState.jpgToPdfQueue.length
+                };
+
+                const banner = document.getElementById('jpgToPdfResultBanner');
+                const titleEl = document.getElementById('jpgToPdfResultTitle');
+                const metaEl = document.getElementById('jpgToPdfResultMeta');
+                banner.classList.remove('hidden');
+                titleEl.textContent = `PDF Berhasil Dibuat: ${fileName}`;
+                metaEl.textContent = `${AppState.jpgToPdfQueue.length} Halaman • Ukuran PDF: ${formatBytes(pdfBlob.size)} • Kertas: ${pageSize}`;
+
+                triggerBlobDownload(pdfBlob, fileName);
+                showToast('Konversi JPG ke PDF Berhasil', `File "${fileName}" (${formatBytes(pdfBlob.size)}) telah diunduh.`, 'success');
+            } catch (err) {
+                showToast('Gagal Membuat PDF', err.message || 'Terjadi kesalahan saat menyusun halaman PDF.', 'error');
+            } finally {
+                btn.disabled = false;
+                if (window.lucide) lucide.createIcons();
+            }
+        }
+
+        function downloadLastGeneratedJpgPdf() {
+            if (!AppState.lastGeneratedJpgPdf) return;
+            triggerBlobDownload(AppState.lastGeneratedJpgPdf.blob, AppState.lastGeneratedJpgPdf.name);
+        }
+
+        async function sendGeneratedPdfToCompressionQueue() {
+            if (!AppState.lastGeneratedJpgPdf) return;
+            const pdfFile = new File([AppState.lastGeneratedJpgPdf.blob], AppState.lastGeneratedJpgPdf.name, { type: 'application/pdf' });
+            await addFilesToQueue([pdfFile]);
+            switchTab('workspace');
+            showToast('PDF Masuk ke Antrean Kompresi', `"${pdfFile.name}" telah dimasukkan ke Workspace untuk dikompres lebih lanjut.`, 'success');
+        }
+
+        // =========================================================
         // BEFORE & AFTER PREVIEW ENGINE
         // =========================================================
         function openPreviewForJob(jobId) {
@@ -3260,13 +3692,13 @@
                     pass: docxBlob.size > 500,
                     detail: `Paket OpenXML .docx valid (${formatBytes(docxBlob.size)}) dengan ${pagesExtracted.length} halaman diekstrak`
                 });
-
-                // Test 9: Konversi PDF ke Microsoft Excel (.xlsx) & JPG
+                // Test 9: Konversi PDF ke Microsoft Excel (.xlsx) & JPG + Konversi JPG ke PDF
                 const xlsxBlob = await buildValidXlsxBlob(pagesExtracted);
+                const jpgToPdfBlob = await buildPdfFromImagesList([fJpeg, fPng], { pageSize: 'A4', orientation: 'AUTO', margin: 20 });
                 results.push({
-                    title: '9. Konversi PDF ke Microsoft Excel (.xlsx) & JPG',
-                    pass: xlsxBlob.size > 500 && pagesExtracted[0].jpgBlob.size > 1000,
-                    detail: `Paket .xlsx valid (${formatBytes(xlsxBlob.size)}) + Render JPG (${formatBytes(pagesExtracted[0].jpgBlob.size)})`
+                    title: '9. Konversi PDF ⇄ Excel (.xlsx), JPG & Converter JPG ke PDF',
+                    pass: xlsxBlob.size > 500 && pagesExtracted[0].jpgBlob.size > 1000 && jpgToPdfBlob.size > 1000,
+                    detail: `XLSX (${formatBytes(xlsxBlob.size)}) + PDF→JPG (${formatBytes(pagesExtracted[0].jpgBlob.size)}) + JPG→PDF 2 Hal (${formatBytes(jpgToPdfBlob.size)})`
                 });
 
                 // Test 10: Audit Layout Responsif Tanpa Horizontal Overflow
@@ -3320,6 +3752,24 @@
                     dz.classList.remove('border-blue-600', 'bg-blue-50/60');
                     const files = Array.from(e.dataTransfer.files || []);
                     if (files.length > 0) await addFilesToQueue(files);
+                });
+            }
+
+            // Drag & Drop Listeners on JPG-to-PDF Dropzone
+            const dzJpgPdf = document.getElementById('jpgToPdfDropzone');
+            if (dzJpgPdf) {
+                dzJpgPdf.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dzJpgPdf.classList.add('border-rose-600', 'bg-rose-50/60');
+                });
+                dzJpgPdf.addEventListener('dragleave', () => {
+                    dzJpgPdf.classList.remove('border-rose-600', 'bg-rose-50/60');
+                });
+                dzJpgPdf.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    dzJpgPdf.classList.remove('border-rose-600', 'bg-rose-50/60');
+                    const files = Array.from(e.dataTransfer.files || []);
+                    if (files.length > 0) await addImagesToJpgToPdfQueue(files);
                 });
             }
 
